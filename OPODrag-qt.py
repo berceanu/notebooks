@@ -385,37 +385,34 @@ psi_k[nky / 2, nkx / 2, :] += np.sqrt(nkx * nky) * \
 res_k = np.log10(np.abs(psi_k) ** 2)  # logscale
 
 
-fig_mom_S, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_k[kyl:kyr, kxl:kxr, 0],
+fig_mom_S, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 0],
                  cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-ax.set_ylabel(y_label_k)
-ax.yaxis.set_label_position("right")
-ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 2))
-ax.yaxis.set_ticks(np.arange(-7, 8, 2))
-ax.set_xticklabels([])
+axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 0]) 
+axes[1].grid()
+axes[0].set_ylabel(y_label_k)
+axes[0].set_xlabel(x_label_k)
+axes[1].set_xlabel(x_label_k)
 plt.close(fig_mom_S)
 
-fig_mom_P, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_k[kyl:kyr, kxl:kxr, 1],
+fig_mom_P, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 1],
                  cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-ax.set_ylabel(y_label_k)
-ax.yaxis.set_label_position("right")
-ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 2))
-ax.yaxis.set_ticks(np.arange(-7, 8, 2))
-ax.set_xticklabels([])
+axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 1]) 
+axes[1].grid()
+axes[0].set_ylabel(y_label_k)
+axes[0].set_xlabel(x_label_k)
+axes[1].set_xlabel(x_label_k)
 plt.close(fig_mom_P)
 
-fig_mom_I, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_k[kyl:kyr, kxl:kxr, 2],
+fig_mom_I, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 2],
                  cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-ax.set_ylabel(y_label_k)
-ax.set_xlabel(x_label_k)
-ax.yaxis.set_label_position("right")
-ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 2))
-ax.yaxis.set_ticks(np.arange(-7, 8, 2))
+axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 2]) 
+axes[1].grid()
+axes[0].set_ylabel(y_label_k)
+axes[0].set_xlabel(x_label_k)
+axes[1].set_xlabel(x_label_k)
 plt.close(fig_mom_I)
 
 
@@ -426,23 +423,32 @@ res_r = np.abs(psi_r) ** 2 / \
 
 rango = 200 / (1024/nkx)
 
-fig_real_S, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
+fig_real_S, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-ax.set_ylabel(y_label_i)
-ax.set_xticklabels([])
+axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 0])
+axes[1].grid()
+axes[0].set_ylabel(y_label_i)
+axes[0].set_xlabel(x_label_i)
+axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_S)
 
-fig_real_P, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
+fig_real_P, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-ax.set_ylabel(y_label_i)
-ax.set_xticklabels([])
+axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 1])
+axes[1].grid()
+axes[0].set_ylabel(y_label_i)
+axes[0].set_xlabel(x_label_i)
+axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_P)
 
-fig_real_I, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
+fig_real_I, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-ax.set_ylabel(y_label_i)
-ax.set_xlabel(x_label_i)
+axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 2])
+axes[1].grid()
+axes[0].set_ylabel(y_label_i)
+axes[0].set_xlabel(x_label_i)
+axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_I)
