@@ -348,10 +348,7 @@ norm = ns_chosen + ni_chosen
 N = null(matSI) * np.sqrt(norm)
 
 [sr, si, ir, ii] = N[:, 0]
-#s = sr + 1j * si
-#i = ir + 1j * ii
-s = (sr + 1j * si) * (1 + 1j) / np.sqrt(2)
-i = (ir + 1j * ii) * (1 - 1j) / np.sqrt(2)
+s = i = 0
 
 matsL = L_mats(KX, KY, nkx, nky)
 vectfd = fd_mats(KX, KY, nkx, nky)
@@ -452,3 +449,5 @@ axes[0].set_ylabel(y_label_i)
 axes[0].set_xlabel(x_label_i)
 axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_I)
+
+print 'done!'
