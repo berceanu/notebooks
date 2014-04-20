@@ -1,7 +1,7 @@
-##########################
-# global variables
-##########################
-
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from scipy import optimize
 from __future__ import division
 import ConfigParser
 
@@ -35,9 +35,9 @@ def read_input():
     def_y_pos = param.getfloat("params", "def_y_pos")
     gv        = param.getfloat("params", "gv")
 
-    ax = 2 * Lx / Nx    
-    ay = 2 * Ly / Ny    
-    norm = ax * ay    
+    ax = 2 * Lx / Nx
+    ay = 2 * Ly / Ny
+    norm = ax * ay
     norm_c = np.sqrt(Nx*Ny)/256/np.sqrt(Lx*Ly)*70
     f_p = f_p / norm_c
     return
@@ -52,52 +52,52 @@ def init_pot_c():
     return
 
 def init_pump_th():
-    !top hat pump    
+    #top hat pump
 
-    do iy=1, Ny    
-       sy=-Ly+(iy-1)*ay    
-       do ix=1, Nx    
-          sx=-Lx+(ix-1)*ax    
-          pump_spatial(ix,iy)=f_p*0.5*&    
-               ( tanh((1.0_dp/10)*( sqrt(sx**2+sy**2)+sigma_p ))-&    
-               tanh((1.0_dp/10)*( sqrt(sx**2+sy**2)-sigma_p )) ) + zero    
-       end do    
-    end do    
-        
-    do iy=1, Ny    
-       #sy=-Ly+(iy-1)*ay    
-       do ix=1, Nx    
-          sx=-Lx+(ix-1)*ax    
-          pump_spatial(ix,iy)= pump_spatial(ix,iy)*cos(k_p*sx)+I*pump_spatial(ix,iy)*sin(k_p*sx)    
-       end do    
+    do iy=1, Ny
+       sy=-Ly+(iy-1)*ay
+       do ix=1, Nx
+          sx=-Lx+(ix-1)*ax
+          pump_spatial(ix,iy)=f_p*0.5*&
+               ( tanh((1.0_dp/10)*( sqrt(sx**2+sy**2)+sigma_p ))-&
+               tanh((1.0_dp/10)*( sqrt(sx**2+sy**2)-sigma_p )) ) + zero
+       end do
+    end do
+
+    do iy=1, Ny
+       #sy=-Ly+(iy-1)*ay
+       do ix=1, Nx
+          sx=-Lx+(ix-1)*ax
+          pump_spatial(ix,iy)= pump_spatial(ix,iy)*cos(k_p*sx)+I*pump_spatial(ix,iy)*sin(k_p*sx)
+       end do
     end do
     return
 
 def setg():
-    DO j=1,(Ny/2+1)    
-       DO k=1,(Nx/2+1)    
-          kinetic(k,j)=pi**2*(&    
-               &(k-1)**2/(Lx**2)+(j-1)**2/(Ly**2))    
-       END DO    
-    END DO    
-    DO j=(Ny/2+2),Ny    
-       DO k=(Nx/2+2),Nx    
-          kinetic(k,j)=pi**2*( &    
-               & (k-1-Nx)**2/(Lx**2)+(j-1-Ny)**2/(Ly**2))    
-       END DO    
-    END DO    
-    DO j=1,(Ny/2+1)    
-       DO k=(Nx/2+2),Nx    
-          kinetic(k,j)=pi**2*(&    
-               &(k-1-Nx)**2/(Lx**2)+(j-1)**2/(Ly**2))    
-       END DO    
-    END DO    
-    DO j=(Ny/2+2),Ny    
-       DO k=1,(Nx/2+1)      
-          kinetic(k,j)=pi**2*(&    
-               &(k-1)**2/(Lx**2)+(j-1-Ny)**2/(Ly**2))    
-       END DO    
-    END DO    
+    DO j=1,(Ny/2+1)
+       DO k=1,(Nx/2+1)
+          kinetic(k,j)=pi**2*(&
+               &(k-1)**2/(Lx**2)+(j-1)**2/(Ly**2))
+       END DO
+    END DO
+    DO j=(Ny/2+2),Ny
+       DO k=(Nx/2+2),Nx
+          kinetic(k,j)=pi**2*( &
+               & (k-1-Nx)**2/(Lx**2)+(j-1-Ny)**2/(Ly**2))
+       END DO
+    END DO
+    DO j=1,(Ny/2+1)
+       DO k=(Nx/2+2),Nx
+          kinetic(k,j)=pi**2*(&
+               &(k-1-Nx)**2/(Lx**2)+(j-1)**2/(Ly**2))
+       END DO
+    END DO
+    DO j=(Ny/2+2),Ny
+       DO k=1,(Nx/2+1)
+          kinetic(k,j)=pi**2*(&
+               &(k-1)**2/(Lx**2)+(j-1-Ny)**2/(Ly**2))
+       END DO
+    END DO
     return
 
 
@@ -112,7 +112,6 @@ def main():
     init_pump_th()
 
     setg()
-        
 
 
     x1_r=0
