@@ -14,7 +14,7 @@ def read_input(filename):
     try:
         param.readfp(open(filename))
     except IOError:
-        raise IOError('cannot find input file, exiting')
+        raise IOError('cannot find {0:s}, exiting'.format(filename))
 
     kappa_C   = param.getfloat("params", "kappa_C")
     kappa_X   = param.getfloat("params", "kappa_X")
@@ -43,7 +43,9 @@ def read_input(filename):
 		    tot_h, dxsav_rk, eps_r, def_x_pos, def_y_pos, gv)
 
 
-def init_pot_c(iy, ix, strength, ny, nx):
+def init_pot_c(strength, defypos, defxpos, ly, lx, ny, nx, ay, ax):
+    iy = find_index(defypos, ly, ay)
+    ix = find_index(defxpos, lx, ax)
     potential = np.zeros((ny, nx))
     potential[iy, ix] = strength
     return potential
@@ -66,20 +68,18 @@ kappa_C, kappa_X, delta, k_p, omega_p,\
 sigma_p, f_p, Lx, Ly, Nx, Ny, Nt,\
 tot_h, dxsav_rk, eps_r, def_x_pos, def_y_pos, gv = read_input('INPUT.ini')
 
-y, ay = np.linspace(-Ly, Ly, num=Ny, endpoint=False, retstep=True)
-x, ax = np.linspace(-Lx, Lx, num=Nx, endpoint=False, retstep=True)
-#norm = ax * ay
+y, a_y = np.linspace(-Ly, Ly, num=Ny, endpoint=False, retstep=True)
+x, a_x = np.linspace(-Lx, Lx, num=Nx, endpoint=False, retstep=True)
+#norm = a_x * a_y
 X, Y = np.meshgrid(x, y)
 
-side_ky = np.pi / ay
-side_kx = np.pi / ax
+side_ky = np.pi / a_y
+side_kx = np.pi / a_x
 ky, delta_ky = np.linspace(-(2 * (Ny - 1) / float(Ny) - 1) * side_ky, side_ky, num=Ny, retstep=True)
 kx, delta_kx = np.linspace(-(2 * (Nx - 1) / float(Nx) - 1) * side_kx, side_kx, num=Nx, retstep=True)
 KX, KY = np.meshgrid(kx, ky)
 
-idx_def_y_pos = find_index(def_y_pos, Ly, ay)
-idx_def_x_pos = find_index(def_x_pos, Lx, ax)
-pot_c = init_pot_c(idx_def_y_pos, idx_def_x_pos, gv, Ny, Nx)
+pot_c = init_pot_c(gv, def_y_pos, def_x_pos, Ly, Lx, Ny, Nx, a_y, a_x)
 
 pdb = np.zeros((Ny, Nx, Nt))
 
