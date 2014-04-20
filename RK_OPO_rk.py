@@ -80,10 +80,12 @@ kx, delta_kx = np.linspace(-(2 * (Nx - 1) / float(Nx) - 1) * side_kx, side_kx, n
 KX, KY = np.meshgrid(kx, ky)
 
 pot_c = init_pot_c(gv, def_y_pos, def_x_pos, Ly, Lx, Ny, Nx, a_y, a_x)
+pdb = np.zeros((Ny, Nx, 2))
 
-pdb = np.zeros((Ny, Nx, Nt))
-
+# FIXME: compare pump_spatial to fortran output
 pump_spatial = init_pump_th(f_p, sigma_p, k_p, Y, X)
+
+# FIXME: compare kinetic to fortran output
 kinetic = setg(KY, KX)
 
 x1_r=0
