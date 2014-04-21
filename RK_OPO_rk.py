@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import ConfigParser
+import init_pump
+import kinetosis
 
 
 def find_index(dist_or_mom, side, delta):
@@ -46,7 +48,7 @@ def read_input(filename):
 def init_pot_c(strength, defypos, defxpos, ly, lx, ny, nx, ay, ax):
     iy = find_index(defypos, ly, ay)
     ix = find_index(defxpos, lx, ax)
-    potential = np.zeros((ny, nx))
+    potential = np.zeros((ny, nx), dtype=np.complex128)
     potential[iy, ix] = strength
     return potential
 
@@ -59,8 +61,13 @@ def init_pump_th(fp, sigmap, kp, Y, X):
 	    * np.exp(1j * kp * X)
 
 
-def setg(KY, KX):
-    return KY**2 + KX**2
+def setg(ny, nx, KY, KX):
+    M = KY**2 + KX**2
+#    for y in xrange(0, int(ny), int(ny/2)):
+#        for x in xrange(0, int(nx), int(nx/2)):
+#            view = M[y:y+int(ny/2), x:x+int(nx/2)]
+#	    view[:,:] = np.fft.fftshift(view)
+    return M
 
 
 #def main():
@@ -80,13 +87,11 @@ kx, delta_kx = np.linspace(-(2 * (Nx - 1) / float(Nx) - 1) * side_kx, side_kx, n
 KX, KY = np.meshgrid(kx, ky)
 
 pot_c = init_pot_c(gv, def_y_pos, def_x_pos, Ly, Lx, Ny, Nx, a_y, a_x)
-pdb = np.zeros((Ny, Nx, 2))
+pdb = np.zeros((Ny, Nx, 2), dtype=np.complex128)
 
-# FIXME: compare pump_spatial to fortran output
 pump_spatial = init_pump_th(f_p, sigma_p, k_p, Y, X)
 
-# FIXME: compare kinetic to fortran output
-kinetic = setg(KY, KX)
+kinetic = setg(Ny, Nx, KY, KX)
 
 x1_r=0
 x2_r=tot_h
@@ -94,6 +99,9 @@ h1_r=0.001
 hmin_r=0
 
 #odeint_rk(pdb,x1_r,x2_r,eps_r,h1_r,hmin_r)
+fortran_pump = np.zeros((Ny, Nx), dtype=np.complex128)
+fortran_pump = init_pump.init_pump_th(Nx,Ny,Lx,Ly,a_x,a_y,f_p,sigma_p,k_p)
+cinetic = kinetosis.setg(Nx,Ny,Lx,Ly)
 print 'done'
 
 
