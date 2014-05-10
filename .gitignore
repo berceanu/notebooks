@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 *.so
 *.c
+*.dat
+fortran-code
