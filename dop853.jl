@@ -67,17 +67,17 @@ function dop853(F::Function, y0, tspan;
     nstep = 0
     naccpt = 0
     nrejct = 0
-    k1 = 0 * y0
-    k2 = 0 * y0
-    k3 = 0 * y0
-    k4 = 0 * y0
-    k5 = 0 * y0
-    k6 = 0 * y0
-    k7 = 0 * y0
-    k8 = 0 * y0
-    k9 = 0 * y0
-    k10 = 0 * y0
-    y = 0 * y0
+    k1 = Array(typeof(y0), n)
+    k2 = Array(typeof(y0), n)
+    k3 = Array(typeof(y0), n)
+    k4 = Array(typeof(y0), n)
+    k5 = Array(typeof(y0), n)
+    k6 = Array(typeof(y0), n)
+    k7 = Array(typeof(y0), n)
+    k8 = Array(typeof(y0), n)
+    k9 = Array(typeof(y0), n)
+    k10 = Array(typeof(y0), n)
+    y = Array(typeof(y0), n)
     copy!(y, y0)
     facold = 1e-4
     expo1 = 1.0/8.0 - beta*0.2
@@ -343,7 +343,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
     er11 =  0.8192320648511571246570742613e-01
     er12 = -0.2235530786388629525884427845e-01
     
-    y1 = 0. * y 
+    y1 = Array(eltype(y), n)
     for i = 1:n
         y1[i] = y[i] + h*a21*k1[i]
     end
