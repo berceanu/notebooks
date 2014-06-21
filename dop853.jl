@@ -175,6 +175,7 @@ function dop853(F::Function, y0, tspan;
             copy!(y, k5)
             xold = x
             x = xph
+	    println('$x')
             # if
             # solout
             # end
