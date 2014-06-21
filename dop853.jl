@@ -61,23 +61,23 @@ function dop853(F::Function, y0, tspan;
 
     x = tspan[1]
     xend = tspan[end]
-    n = length(y0)
+    n = length(y0)      #1
     nrd = length(dense)
     nfcn = 0
     nstep = 0
     naccpt = 0
     nrejct = 0
-    k1 = zeros(n)
-    k2 = zeros(n)
-    k3 = zeros(n)
-    k4 = zeros(n)
-    k5 = zeros(n)
-    k6 = zeros(n)
-    k7 = zeros(n)
-    k8 = zeros(n)
-    k9 = zeros(n)
-    k10 = zeros(n)
-    y = zeros(n)
+    k1 = 0. * y0
+    k2 = 0. * y0
+    k3 = 0. * y0
+    k4 = 0. * y0
+    k5 = 0. * y0
+    k6 = 0. * y0
+    k7 = 0. * y0
+    k8 = 0. * y0
+    k9 = 0. * y0
+    k10 = 0. * y0
+    y = 0. * y0
     copy!(y, y0)
     facold = 1e-4
     expo1 = 1.0/8.0 - beta*0.2
@@ -136,7 +136,7 @@ function dop853(F::Function, y0, tspan;
         if err <= 1.0
             facold = max(err, 1e-4)
             naccpt += 1
-            F(k4, xph, k5,)
+            F(k4, xph, k5)
             nfcn += 1
             # Stiffness detection
             if mod(naccpt, nstiff) == 0 || iasti > 0
@@ -175,7 +175,7 @@ function dop853(F::Function, y0, tspan;
             copy!(y, k5)
             xold = x
             x = xph
-	    println('$x')
+	    println("$x")
             # if
             # solout
             # end
@@ -204,6 +204,7 @@ function dop853(F::Function, y0, tspan;
     end
 end
 
+#f0, f1, y0 ->  k1, k2, k3
 function hinit(n::Int64, F::Function, x::Float64, y::Vector{Float64}, xend::Float64, posneg::Float64, f0::AbstractArray{Float64,1}, f1::AbstractArray{Float64,1}, y0::AbstractArray{Float64,1}, iord::Int64, hmax::Float64, abstol::Vector{Float64}, reltol::Vector{Float64})
     dnf = 0.0
     dny = 0.0
@@ -342,7 +343,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
     er11 =  0.8192320648511571246570742613e-01
     er12 = -0.2235530786388629525884427845e-01
     
-    y1 = zeros(n)
+    y1 = 0. * y 
     for i = 1:n
         y1[i] = y[i] + h*a21*k1[i]
     end
