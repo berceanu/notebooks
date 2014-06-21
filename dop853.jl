@@ -1,9 +1,3 @@
-abstract ODEProblem
-
-type ODEProblemFunction <: ODEProblem
-    f::Function
-end
-
 function dop853(F::Function, y0, tspan;
     reltol::Vector{Float64}=[1e-6], abstol::Vector{Float64}=[sqrt(eps())],
     uround::Float64=eps(), safe::Float64=0.9, fac1::Float64=0.333, fac2::Float64=6.0,
