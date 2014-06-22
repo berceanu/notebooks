@@ -400,16 +400,16 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector, h::Float64, k1::V
     err = 0.0
     err2 = 0.0
     for i = 1:n
-        sk = abstol[i] + reltol[i]*max(abs(y[i]),abs(k5[i]))
+        sk = abstol[i] + reltol[i]*max(maximum(abs(y[i])), maximum(abs(k5[i])))
         erri = k4[i] - bhh1*k1[i] - bhh2*k9[i] - bhh3*k3[i]
         err2 += (erri/sk)*(erri/sk)
         erri = er1*k1[i] + er6*k6[i] + er7*k7[i] + er8*k8[i] + er9*k9[i] + er10*k10[i] + er11*k2[i] + er12*k3[i]
         err += (erri/sk)*(erri/sk)
     end
     deno = err + 0.01*err2
-    if deno <= 0.0
+    if maximum(abs(deno)) <= 0.0
         deno = 1.0
     end
-    err = abs(h)*err*sqrt(1.0/(n*deno))
-    return y1, err
+    err = abs(h)*err*sqrt(1.0/(n*maximum(abs(deno))))
+    return y1, maximum(abs(err))
 end
