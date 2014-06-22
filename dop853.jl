@@ -238,7 +238,7 @@ function hinit(n::Int64, F::Function, x::Float64, y::Vector, xend::Float64, posn
     return h*posneg
 end
 
-function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float64, k1::Vector{Float64}, k2::Vector{Float64}, k3::Vector{Float64}, k4::Vector{Float64}, k5::Vector{Float64}, k6::Vector{Float64}, k7::Vector{Float64}, k8::Vector{Float64}, k9::Vector{Float64}, k10::Vector{Float64}, abstol::Vector{Float64}, reltol::Vector{Float64})
+function dopcore(n::Int64, F::Function, x::Float64, y::Vector, h::Float64, k1::Vector, k2::Vector, k3::Vector, k4::Vector, k5::Vector, k6::Vector, k7::Vector, k8::Vector, k9::Vector, k10::Vector, abstol::Vector{Float64}, reltol::Vector{Float64})
     a21 =    5.26001519587677318785587544488e-2
     a31 =    1.97250569845378994544595329183e-2
     a32 =    5.91751709536136983633785987549e-2
