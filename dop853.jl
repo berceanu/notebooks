@@ -1,7 +1,7 @@
 function dop853(F::Function, y0, tspan;
     reltol::Vector{Float64}=[1e-6], abstol::Vector{Float64}=[sqrt(eps())],
     uround::Float64=eps(), safe::Float64=0.9, fac1::Float64=0.333, fac2::Float64=6.0,
-    beta::Float64=0.0, maxstepsize::Float64=tspan[end]-tspan[1], initialstep::Float64=0.0,
+    beta::Float64=0.0, maxstepsize::Float64=tspan[end]-tspan[1], initialstep::Float64=1e-7,
     maxsteps::Int64=100000, printmessages::Bool=false, nstiff::Int64=1000,
     iout::Int64=0, solout::Function=s(x...)=return, dense::Vector{Int64}=[1:length(y0)])
 
@@ -97,6 +97,7 @@ function dop853(F::Function, y0, tspan;
     iord = 8
     if h == 0.0
         h = hinit(n, F, x, y, xend, posneg, k1, k2, k3, iord, hmax, abstol, reltol)
+	println("hinit = $h")
         nfcn += 1
     end
     reject = false
@@ -126,6 +127,7 @@ function dop853(F::Function, y0, tspan;
         end
 
         y1, err = dopcore(n, F, x, y, h, k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, abstol, reltol)
+	println("error is $err")
         xph = x+h
         nfcn += 11
 
@@ -406,10 +408,10 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector, h::Float64, k1::V
         erri = er1*k1[i] + er6*k6[i] + er7*k7[i] + er8*k8[i] + er9*k9[i] + er10*k10[i] + er11*k2[i] + er12*k3[i]
         err += (erri/sk)*(erri/sk)
     end
-    deno = err + 0.01*err2
-    if maximum(abs(deno)) <= 0.0
+    deno = maximum(abs(err)) + 0.01*maximum(abs(err2))
+    if deno <= 0.0
         deno = 1.0
     end
-    err = abs(h)*err*sqrt(1.0/(n*maximum(abs(deno))))
+    err = abs(h)*err*sqrt(1.0/(n*deno))
     return y1, maximum(abs(err))
 end
