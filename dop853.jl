@@ -205,7 +205,7 @@ function dop853(F::Function, y0, tspan;
 end
 
 #f0, f1, y0 ->  k1, k2, k3
-function hinit(n::Int64, F::Function, x::Float64, y::Vector{Float64}, xend::Float64, posneg::Float64, f0::AbstractArray{Float64,1}, f1::AbstractArray{Float64,1}, y0::AbstractArray{Float64,1}, iord::Int64, hmax::Float64, abstol::Vector{Float64}, reltol::Vector{Float64})
+function hinit(n::Int64, F::Function, x::Float64, y::Vector, xend::Float64, posneg::Float64, f0::AbstractVector, f1::AbstractVector, y0::AbstractVector, iord::Int64, hmax::Float64, abstol::Vector{Float64}, reltol::Vector{Float64})
     dnf = 0.0
     dny = 0.0
     for i = 1:n
