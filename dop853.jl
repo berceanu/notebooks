@@ -175,7 +175,7 @@ function dop853(F::Function, y0, tspan;
             copy!(y, k5)
             xold = x
             x = xph
-	    println("$x")
+            println(x)
             # if
             # solout
             # end
@@ -186,12 +186,12 @@ function dop853(F::Function, y0, tspan;
                 return y
             end
             if abs(hnew) > hmax
-                hnew = posneg*hmax  
+                hnew = posneg*hmax
             end
-            if reject 
+            if reject
                 hnew = posneg*min(abs(hnew),abs(h))
             end
-            reject = false 
+            reject = false
         else
             hnew = h/min(facc1,fac11/safe)
             reject = true
@@ -213,10 +213,10 @@ function hinit(n::Int64, F::Function, x::Float64, y::Vector, xend::Float64, posn
         dnf += (f0[i]/sk)^2
         dny += (y[i]/sk)^2
     end
-    if dnf <= 1e-10 || dny <= 1e-10
+    if maximum(abs(dnf)) <= 1e-10 || maximum(abs(dny)) <= 1e-10
         h = 1e-6
     else
-        h = sqrt(dny/dnf)*0.01
+        h = sqrt(maximum(abs(dny/dnf)))*0.01
     end
     h = min(h, hmax)
     h = h*posneg
@@ -227,8 +227,8 @@ function hinit(n::Int64, F::Function, x::Float64, y::Vector, xend::Float64, posn
         sk = abstol[i] + reltol[i]*abs(y[i])
         der2 += ((f1[i]-f0[i])/sk)^2
     end
-    der2 = sqrt(der2)/h
-    der12 = max(abs(der2), sqrt(dnf))
+    der2 = sqrt(maximum(abs(der2)))/h
+    der12 = max(maximum(abs(der2)), sqrt(maximum(abs(dnf))))
     if der12 <= 1e-15
         h1 = max(1e-6, abs(h)*1e-3)
     else
@@ -342,7 +342,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
     er10 =  0.3341791187130174790297318841e+00
     er11 =  0.8192320648511571246570742613e-01
     er12 = -0.2235530786388629525884427845e-01
-    
+
     y1 = 0. * y
     for i = 1:n
         y1[i] = y[i] + h*a21*k1[i]
@@ -353,7 +353,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
     end
     F(k3, x+c3*h, y1)
     for i = 1:n
-        y1[i] = y[i]+h*(a41*k1[i]+a43*k3[i])  
+        y1[i] = y[i]+h*(a41*k1[i]+a43*k3[i])
     end
     F(k4, x+c4*h, y1)
     for i = 1:n
@@ -369,7 +369,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
     end
     F(k7, x+c7*h, y1)
     for i = 1:n
-        y1[i] = y[i]+h*(a81*k1[i]+a84*k4[i]+a85*k5[i]+a86*k6[i]+a87*k7[i])  
+        y1[i] = y[i]+h*(a81*k1[i]+a84*k4[i]+a85*k5[i]+a86*k6[i]+a87*k7[i])
     end
     F(k8, x+c8*h, y1)
     for i = 1:n
@@ -405,7 +405,7 @@ function dopcore(n::Int64, F::Function, x::Float64, y::Vector{Float64}, h::Float
         err2 += (erri/sk)*(erri/sk)
         erri = er1*k1[i] + er6*k6[i] + er7*k7[i] + er8*k8[i] + er9*k9[i] + er10*k10[i] + er11*k2[i] + er12*k3[i]
         err += (erri/sk)*(erri/sk)
-    end 
+    end
     deno = err + 0.01*err2
     if deno <= 0.0
         deno = 1.0
