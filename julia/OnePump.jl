@@ -25,15 +25,18 @@ hopfx(ky::Float64, kx::Float64) = 1/sqrt(1+((Ωr/γp) / (enlp(ky, kx) - enc(ky, 
 hopfc(ky::Float64, kx::Float64) = -1/sqrt(1+((enlp(ky, kx) - enc(ky, kx)) /(Ωr/γp))^2)
 γ(ky::Float64, kx::Float64) = (γc + hopfx(ky, kx)^2 *(γx-γc))/γp
 
-
 # The blue-shifted LP dispersion is given by $\epsilon\left(k\right)+2n_{p}\left|X(k)\right|^{2}$.
 bsenlp(ky::Float64, kx::Float64, np::Float64) = enlp(ky, kx) + 2np*abs2(hopfx(ky, kx))
 
-# $$V_d(k) = g_V e^{-k^2 \sigma^2}$$
-vd(ky, kx, σ, gv) = gv*exp(-σ^2*(kx^2+ky^2))
+# $$n_{p}^{3}+\frac{2}{\left|X_{p}\right|^{2}}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\frac{1}{\left|X_{p}\right|^{4}}\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}=I_{p}$$
 
-# Computational parameters
-global const kx = linspace(-12.8, 12.75, 512);
+function findpump(kpy::Float64, kpx::Float64, ωp::Float64, np::Float64)
+    xp = hopfx(kpy, kpx)
+    ep = enlp(kpy, kpx)
+    b = 2/abs2(xp)*(ep-ωp)
+    c = 1/abs2(xp)^2*(1/4 + (ep-ωp)^2)
+    np^3 + b*np^2 + c*np
+end
 
 # $$M(k)=\epsilon(k_{p}+k)-\omega_{p}-\frac{i}{2}\gamma(k_{p}+k)+2n_{p}\left|X(k_{p}+k)\right|^{2}$$
 # $$Q(k)=n_{p}X^{*}(k_{p}+k)X^{*}(k_{p}-k)$$
@@ -43,15 +46,9 @@ M(ky::Float64, kx::Float64, np::Float64) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kp
 Q(ky::Float64, kx::Float64, np::Float64) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
 R(ky::Float64, kx::Float64) = hopfc(kpy, kpx)/hopfx(kpy, kpx)*hopfc(kpy+ky, kpx+kx)
 
-# $$\left|\widetilde{\psi}\left(k+k_{p}\right)\right|^{2}=\frac{n_{p}}{g}\left|\frac{\delta(k)}{X_{p}}+V_{d}\left(k\right)\frac{Q\left(k\right)R^{*}\left(-k\right)-M^{*}\left(-k\right)R\left(k\right)}{M\left(k\right)M^{*}\left(-k\right)-Q\left(k\right)Q^{*}\left(-k\right)}\right|^{2}$$
+vd(ky::Float64, kx::Float64, σ::Float64, gv::Float64, y0::Float64, x0::Float64) = gv/σ*exp(-1/2*σ^2*(kx^2+ky^2))*exp(-im*(x0*kx+y0*ky))
 
-ψtmom(ky, kx, np, σ, gv) = vd(ky, kx, σ, gv)*(Q(ky, kx, np)*conj(R(-ky, -kx)) - conj(M(-ky, -kx, np))*R(ky, kx))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
-
-# $$L(k)=\left(\begin{matrix}M\left(k\right) & Q\left(k\right)e^{2i\phi_{p}}\\
-# -e^{-2i\phi_{p}}Q^{*}\left(-k\right) & -M^{*}\left(-k\right)
-# \end{matrix}\right)$$
-#L(ky::Float64, kx::Float64, np::Float64, φp::Float64) = [M(ky, kx, np) Q(ky, kx, np)*exp(2im*φp); -exp(-2im*φp)*conj(Q(-ky, -kx, np)) -conj(M(-ky, -kx, np))]
-
+ψtmom(ky::Float64, kx::Float64, np::Float64, σ::Float64, gv::Float64, y0::Float64, x0::Float64) = (Q(ky, kx, np)*conj(R(-ky, -kx))*conj(vd(-ky, -kx, σ, gv, y0, x0)) - conj(M(-ky, -kx, np))*R(ky, kx)*vd(ky, kx, σ, gv, y0, x0))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
 
 # $$w(k)=M\left(k\right)-M^{*}\left(-k\right)$$
 # $$z(k)=\left[M\left(k\right)+M^{*}\left(-k\right)\right]^{2}-4Q\left(k\right)Q^{*}\left(-k\right)$$
@@ -94,16 +91,5 @@ function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
     return (ips, rr, shade)
 end
 
-# $$n_{p}^{3}+\frac{2}{\left|X_{p}\right|^{2}}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\frac{1}{\left|X_{p}\right|^{4}}\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}=I_{p}$$
-
-function findpump(kpy::Float64, kpx::Float64, ωp::Float64, np::Float64)
-    xp = hopfx(kpy, kpx)
-    ep = enlp(kpy, kpx)
-    b = 2/abs2(xp)*(ep-ωp)
-    c = 1/abs2(xp)^2*(1/4 + (ep-ωp)^2)
-    np^3 + b*np^2 + c*np
-end
-
-# $$I(r)=\frac{\vert\psi(r)\vert^{2}}{\vert\psi_p^{\text{ss}}\vert^{2}}=\left|X_{p}\right|^{2}\left|\sum_{k}\left[\frac{\delta(k)}{X_{p}}+V_{d}\left(k\right)\frac{Q\left(k\right)R^{*}\left(-k\right)-M^{*}\left(-k\right)R\left(k\right)}{M\left(k\right)M^{*}\left(-k\right)-Q\left(k\right)Q^{*}\left(-k\right)}\right]e^{ikr}\right|^{2}$$
 
 end
