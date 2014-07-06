@@ -1,4 +1,4 @@
-module onepump
+module OnePump
 
 using JSON
 using Polynomial
@@ -7,7 +7,7 @@ export γp, hopfx, kpx, kpy, bsenlp, γ, ωp, λ1, λ2, findpump, mfroots, vd, �
 
 # read system parameters from file into dict
 #energies in eV
-pm = JSON.parsefile("params.json")
+pm = JSON.parsefile("/home/berceanu/notebooks/julia/april/params.json")
 
 # declare global constants for all values in param file
 for (k, v) in pm
