@@ -18,7 +18,6 @@ const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+�
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
 const ωp = (ωpev-ωx)/γp
 
-
 # We measure energies in units of $\gamma_p$, with the origin set to $\omega_X$.
 enc(ky::Float64, kx::Float64) = (ωc * sqrt(1 + (sqrt(kx^2 + ky^2)/kz)^2) - ωx)/γp
 enlp(ky::Float64, kx::Float64) = 1/2*enc(ky, kx) - 1/2*sqrt(enc(ky, kx)^2 + 4Ωr^2/γp^2)
@@ -46,7 +45,7 @@ R(ky::Float64, kx::Float64) = hopfc(kpy, kpx)/hopfx(kpy, kpx)*hopfc(kpy+ky, kpx+
 
 # $$\left|\widetilde{\psi}\left(k+k_{p}\right)\right|^{2}=\frac{n_{p}}{g}\left|\frac{\delta(k)}{X_{p}}+V_{d}\left(k\right)\frac{Q\left(k\right)R^{*}\left(-k\right)-M^{*}\left(-k\right)R\left(k\right)}{M\left(k\right)M^{*}\left(-k\right)-Q\left(k\right)Q^{*}\left(-k\right)}\right|^{2}$$
 
-ψtmom(ky, kx, np, σ, gv) = Vd(ky, kx, σ, gv)*(Q(ky, kx, np)*conj(R(-ky, -kx)) - conj(M(-ky, -kx, np))*R(ky, kx))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
+ψtmom(ky, kx, np, σ, gv) = vd(ky, kx, σ, gv)*(Q(ky, kx, np)*conj(R(-ky, -kx)) - conj(M(-ky, -kx, np))*R(ky, kx))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
 
 # $$L(k)=\left(\begin{matrix}M\left(k\right) & Q\left(k\right)e^{2i\phi_{p}}\\
 # -e^{-2i\phi_{p}}Q^{*}\left(-k\right) & -M^{*}\left(-k\right)
