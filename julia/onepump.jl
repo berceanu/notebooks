@@ -128,8 +128,8 @@ function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
     fill!(shade, "blue")
     for idx = 1:length(rr)
         np = rr[idx]
-        for kx = -5:0.05:5
-            if imag(λ1(0., kx, np)) > 0 || imag(λ2(0., kx, np)) > 0
+        for momx = -5:0.05:5
+            if imag(λ1(0., momx, np)) > 0 || imag(λ2(0., momx, np)) > 0
                 shade[idx] = "red"
                 break
             end
@@ -228,3 +228,5 @@ axes[2][:grid]()
 #axes[1][:set_ylabel](y_label_i)
 #axes[1][:set_xlabel](x_label_i)
 #axes[2][:set_xlabel](x_label_i)
+
+end
