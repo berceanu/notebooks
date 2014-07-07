@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, hopfx, kpx, kpy, bsenlp, γ, ωp, λ1, λ2, findpump, mfroots, vdt, ψtmom
+export γp, hopfx, kpx, kpy, bsenlp, γ, ωp, λ1, λ2, findpump, mfroots, vdt, ψtmom, getidx, fftfreq, gv
 
 # read system parameters from file into dict
 #energies in eV
@@ -17,6 +17,7 @@ end
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
 const ωp = (ωpev-ωx)/γp
+
 
 # We measure energies in units of $\gamma_p$, with the origin set to $\omega_X$.
 enc(ky::Float64, kx::Float64) = (ωc * sqrt(1 + (sqrt(kx^2 + ky^2)/kz)^2) - ωx)/γp
@@ -46,9 +47,9 @@ M(ky::Float64, kx::Float64, np::Float64) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kp
 Q(ky::Float64, kx::Float64, np::Float64) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
 R(ky::Float64, kx::Float64) = hopfc(kpy, kpx)/hopfx(kpy, kpx)*hopfc(kpy+ky, kpx+kx)
 
-vdt(ky::Float64, kx::Float64, σ::Float64, gv::Float64, y0::Float64, x0::Float64) = gv/σ*exp(-1/2*σ^2*(kx^2+ky^2))*exp(-im*(x0*kx+y0*ky))
+vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0.) = gV/σ*exp(-1/2*σ^2*(kx^2+ky^2))*exp(-im*(x0*kx+y0*ky))
 
-ψtmom(ky::Float64, kx::Float64, np::Float64, σ::Float64, gv::Float64, y0::Float64, x0::Float64) = (Q(ky, kx, np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx, σ, gv, y0, x0)) - conj(M(-ky, -kx, np))*R(ky, kx)*vdt(ky, kx, σ, gv, y0, x0))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
+ψtmom(ky::Float64, kx::Float64, np::Float64; σ=1., gV=gv, y0=0., x0=0.) = (Q(ky, kx, np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0)) - conj(M(-ky, -kx, np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
 
 # $$w(k)=M\left(k\right)-M^{*}\left(-k\right)$$
 # $$z(k)=\left[M\left(k\right)+M^{*}\left(-k\right)\right]^{2}-4Q\left(k\right)Q^{*}\left(-k\right)$$
@@ -90,6 +91,5 @@ function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
     fill!(ips, ip)
     return (ips, rr, shade)
 end
-
 
 end
