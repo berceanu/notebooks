@@ -47,7 +47,7 @@ M(ky::Float64, kx::Float64, np::Float64) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kp
 Q(ky::Float64, kx::Float64, np::Float64) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
 R(ky::Float64, kx::Float64) = hopfc(kpy, kpx)/hopfx(kpy, kpx)*hopfc(kpy+ky, kpx+kx)
 
-vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0.) = gV*σ*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/2*(kx^2+ky^2))
+vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/2*(kx^2+ky^2))
 
 ψtmom(ky::Float64, kx::Float64, np::Float64; σ=1., gV=gv, y0=0., x0=0.) = (Q(ky, kx, np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0)) - conj(M(-ky, -kx, np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
 
