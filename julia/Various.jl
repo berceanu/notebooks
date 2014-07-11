@@ -1,8 +1,9 @@
 module Various
 
 import Contour: Curve2
+import DSP: fftshift, fftfreq
 
-export getidx, fftfreq, vec2range, cropmat, sysbox
+export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ
 
 # parametrization of parabolic wavefronts for fitting
 type parabola
@@ -37,27 +38,52 @@ end
 # get the index of a certain x (or k) value in an array
 getidx(pos, len, Δ) = iround((len + pos)/Δ) + 1
 
-# TODO: replace with upstream version
-# port of numpy.fft.fftfreq
-function fftfreq(n::Int64, d::Float64)
-  N = fld(n-1,2)
-  p1 = [0:N]
-  p2 = [-fld(n,2):-1]
-  return [p1, p2]/(d*n)
+# deprecated
+#function fftfreq(n::Int64, d::Float64)
+  #N = fld(n-1,2)
+  #p1 = [0:N]
+  #p2 = [-fld(n,2):-1]
+  #return [p1, p2]/(d*n)
+#end
+
+# deprecated
+# convert a Vector to a FloatRange
+#function vec2range(v::Vector{Float64})
+  #issorted(v) || error("Not sorted")
+  #a = (v[end] - v[1])/(length(v)-1)
+  #for i in 2:length(v)
+    #isapprox(a, v[i]-v[i-1]) || error("Differences are not constant")
+  #end
+  #colon(v[1], a, v[end])
+#end
+
+function sider(;l=70., n=256)
+	Δ = 2l/(n-1)
+	-l:Δ:l
 end
 
-# convert a Vector to a FloatRange
-function vec2range(v::Vector{Float64})
-  issorted(v) || error("Not sorted")
-  a = (v[end] - v[1])/(length(v)-1)
-  for i in 2:length(v)
-    isapprox(a, v[i]-v[i-1]) || error("Differences are not constant")
-  end
-  colon(v[1], a, v[end])
+sidek(;l=70., n=256) = 2pi*fftshift(fftfreq(n, (n-1)/2l))
+
+# reading and rescaling experimental data
+function getexpfile(filename::ASCIIString)
+    m = readdlm(filename, '\t', Float64, '\n')
+    (mmin, mmax) = extrema(m)
+    m = m .- mmin
+    m[m .< 0.] = 0.
+    m *= 255.0/(mmax - mmin)
+    m[m .> 255.] = 255.
+    return m    
+end
+
+# truncating experimental data
+function truncdata(m::Matrix{Float64}; cmin=0., cmax=255.)
+    m[m .> cmax] = cmax
+    m[m .< cmin] = cmin
+    return m
 end
 
 # crop a matrix in r or k space
-function cropmat(m::Matrix, x::FloatRange{Float64}, y::FloatRange{Float64}; xcenter=0., ycenter=0., side=10.)
+function cropmat(m::Matrix, x::FloatRange{Float64}, y::FloatRange{Float64}; xcenter=0., ycenter=0., side=35.)
     lenx = maximum(x)
     stepx = step(x)
     leny = maximum(y)
@@ -69,5 +95,19 @@ function cropmat(m::Matrix, x::FloatRange{Float64}, y::FloatRange{Float64}; xcen
     return (m[idxs[3]:idxs[4],idxs[1]:idxs[2]], x[idxs[1]:idxs[2]], y[idxs[3]:idxs[4]])
 end
 
+function gettrunccrop(filename::ASCIIString, x::FloatRange{Float64}, y::FloatRange{Float64}; cmax=180., xcenter=0., ycenter=0., side=35.)
+    data = getexpfile(filename)
+    tdata = truncdata(data; cmax=cmax)
+    ctdata, cx, cy = cropmat(tdata, x, y; xcenter=xcenter, ycenter=ycenter, side=side)
+end
+
+# convert angle in degrees to radians
+torad(angle::Float64) = 2pi*angle/360.
+
+#converts nm to eV
+λtoε(λ::Float64) = 1239.84193/λ
+
+#converts eV to nm
+εtoλ(ε::Float64) = 1239.84193/ε
 
 end

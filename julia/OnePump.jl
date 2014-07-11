@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, hopfx, kpx, kpy, bsenlp, γ, ωp, λ1, λ2, findpump, mfroots, vdt, ψtmom, getidx, fftfreq, gv
+export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp
 
 # read system parameters from file into dict
 #energies in eV
@@ -14,10 +14,18 @@ for (k, v) in pm
     include_string("const " * k * " = $v")
 end
 
+
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
-const ωp = (ωpev-ωx)/γp
 
+#const ωpev = 1.48283
+#const ωp = (ωpev-ωx)/γp
+
+# effective photon mass
+const mc = kz^2/(ωc/γp)
+
+# effective LP mass
+const mlp = 2mc*(1 - ((ωc - ωx)/γp)/(sqrt(((ωc - ωx)/γp)^2 + 4(Ωr/γp)^2)))^-1.
 
 # We measure energies in units of $\gamma_p$, with the origin set to $\omega_X$.
 enc(ky::Float64, kx::Float64) = (ωc * sqrt(1 + (sqrt(kx^2 + ky^2)/kz)^2) - ωx)/γp
@@ -26,12 +34,16 @@ hopfx(ky::Float64, kx::Float64) = 1/sqrt(1+((Ωr/γp) / (enlp(ky, kx) - enc(ky, 
 hopfc(ky::Float64, kx::Float64) = -1/sqrt(1+((enlp(ky, kx) - enc(ky, kx)) /(Ωr/γp))^2)
 γ(ky::Float64, kx::Float64) = (γc + hopfx(ky, kx)^2 *(γx-γc))/γp
 
+const xp = hopfx(kpy, kpx)
+const cp = hopfc(kpy, kpx)
+
+
 # The blue-shifted LP dispersion is given by $\epsilon\left(k\right)+2n_{p}\left|X(k)\right|^{2}$.
 bsenlp(ky::Float64, kx::Float64, np::Float64) = enlp(ky, kx) + 2np*abs2(hopfx(ky, kx))
 
 # $$n_{p}^{3}+\frac{2}{\left|X_{p}\right|^{2}}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\frac{1}{\left|X_{p}\right|^{4}}\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}=I_{p}$$
 
-function findpump(kpy::Float64, kpx::Float64, ωp::Float64, np::Float64)
+function findpump(kpy::Float64, kpx::Float64; ωp=-30., np=20.)
     xp = hopfx(kpy, kpx)
     ep = enlp(kpy, kpx)
     b = 2/abs2(xp)*(ep-ωp)
@@ -43,30 +55,31 @@ end
 # $$Q(k)=n_{p}X^{*}(k_{p}+k)X^{*}(k_{p}-k)$$
 # $$R(k) = \frac{C(k_p)}{X(k_p)}C(k+k_p)$$
 
-M(ky::Float64, kx::Float64, np::Float64) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kpy+ky, kpx+kx)/2 + 2np*abs2(hopfx(kpy+ky, kpx+kx))
-Q(ky::Float64, kx::Float64, np::Float64) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
-R(ky::Float64, kx::Float64) = hopfc(kpy, kpx)/hopfx(kpy, kpx)*hopfc(kpy+ky, kpx+kx)
+M(ky::Float64, kx::Float64; ωp=-30., np=20.) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kpy+ky, kpx+kx)/2 + 2np*abs2(hopfx(kpy+ky, kpx+kx))
+Q(ky::Float64, kx::Float64; np=20.) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
+R(ky::Float64, kx::Float64) = cp/xp*hopfc(kpy+ky, kpx+kx)
 
-vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/2*(kx^2+ky^2))
+# gaussian potential in mom space
+vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/4*(a^2+b^2)*(kx^2+ky^2))*exp(-σ^2/4*(a^2-b^2)*(2sin(2α)*kx*ky+cos(2α)*(kx^2 - ky^2)))
 
-ψtmom(ky::Float64, kx::Float64, np::Float64; σ=1., gV=gv, y0=0., x0=0.) = (Q(ky, kx, np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0)) - conj(M(-ky, -kx, np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0))/(M(ky, kx, np)*conj(M(-ky, -kx, np)) - Q(ky, kx, np)*conj(Q(-ky, -kx, np)))
+
+ψtmom(ky::Float64, kx::Float64; ωp=-30., np=20., σ=1., gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = (Q(ky, kx; np=np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α)) - conj(M(-ky, -kx; ωp=ωp, np=np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α))/(M(ky, kx; ωp=ωp, np=np)*conj(M(-ky, -kx; ωp=ωp, np=np)) - Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))) 
 
 # $$w(k)=M\left(k\right)-M^{*}\left(-k\right)$$
 # $$z(k)=\left[M\left(k\right)+M^{*}\left(-k\right)\right]^{2}-4Q\left(k\right)Q^{*}\left(-k\right)$$
 
-w(ky::Float64, kx::Float64, np::Float64) = M(ky, kx, np) - conj(M(-ky, -kx, np))
-z(ky::Float64, kx::Float64, np::Float64) = (M(ky, kx, np) + conj(M(-ky, -kx, np)))^2 - 4Q(ky, kx, np)*conj(Q(-ky, -kx, np))
+w(ky::Float64, kx::Float64; ωp=-30., np=20.) = M(ky, kx; ωp=ωp, np=np) - conj(M(-ky, -kx; ωp=ωp, np=np))
+z(ky::Float64, kx::Float64; ωp=-30., np=20.) = (M(ky, kx; ωp=ωp, np=np) + conj(M(-ky, -kx; ωp=ωp, np=np)))^2 - 4Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))
 
 
 # $$\lambda\left(k\right)_{1,2}=\frac{1}{2}w\pm\frac{1}{2}\sqrt{z}$$
 
-λ1(ky::Float64, kx::Float64, np::Float64) = 1/2*w(ky, kx, np) + 1/2*sqrt(z(ky, kx, np))
-λ2(ky::Float64, kx::Float64, np::Float64) = 1/2*w(ky, kx, np) - 1/2*sqrt(z(ky, kx, np))
-
+λ1(ky::Float64, kx::Float64; ωp=-30., np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) + 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
+λ2(ky::Float64, kx::Float64; ωp=-30., np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) - 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
 
 # $$\left|X_{p}\right|^{4}n_{p}^{3}+2\left|X_{p}\right|^{2}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}-\left|X_{p}\right|^{4}I_{p}=0$$
 
-function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
+function mfroots(kpy::Float64, kpx::Float64; ωp=-30., ip=100., np=20.)
     xp = hopfx(kpy, kpx)
     ep = enlp(kpy, kpx)
     a = abs2(xp)^2
@@ -81,7 +94,7 @@ function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
     for idx = 1:length(rr)
         np = rr[idx]
         for momx = -5:0.05:5
-            if imag(λ1(0., momx, np)) > 0 || imag(λ2(0., momx, np)) > 0
+            if imag(λ1(0., momx; ωp=ωp, np=np)) > 0 || imag(λ2(0., momx; ωp=ωp, np=np)) > 0
                 shade[idx] = "red"
                 break
             end
@@ -91,5 +104,6 @@ function mfroots(kpy::Float64, kpx::Float64, ωp::Float64, ip::Float64)
     fill!(ips, ip)
     return (ips, rr, shade)
 end
+
 
 end
