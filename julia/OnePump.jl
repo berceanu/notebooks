@@ -59,7 +59,11 @@ M(ky::Float64, kx::Float64; ωp=-30., np=20.) = enlp(kpy+ky, kpx+kx) - ωp - im*
 Q(ky::Float64, kx::Float64; np=20.) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
 R(ky::Float64, kx::Float64) = cp/xp*hopfc(kpy+ky, kpx+kx)
 
+# gaussian potential in real space
+fdt(y::Float64, x::Float64; σ=1., gV=gv) = gV/(2pi*σ^2)*exp(-1/2σ^2*(x^2+y^2))
+
 # gaussian potential in mom space
+fd(qy::Float64, qx::Float64; σ=1., gV=gv) = gV*exp(-σ^2/2*(qx^2 + qy^2))
 vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/4*(a^2+b^2)*(kx^2+ky^2))*exp(-σ^2/4*(a^2-b^2)*(2sin(2α)*kx*ky+cos(2α)*(kx^2 - ky^2)))
 
 
@@ -76,6 +80,20 @@ z(ky::Float64, kx::Float64; ωp=-30., np=20.) = (M(ky, kx; ωp=ωp, np=np) + con
 
 λ1(ky::Float64, kx::Float64; ωp=-30., np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) + 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
 λ2(ky::Float64, kx::Float64; ωp=-30., np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) - 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
+
+# determinant of L(q,ω)
+function D(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
+	q = [qy, qx]
+	Vq = dot(V, q)
+	-(-Vq - λ1(qy, qx; ωp=ωp, np=np))*(-Vq - λ2(qy, qx; ωp=ωp, np=np))
+end
+
+# response function
+function χ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
+	q = [qy, qx]
+	Vq = dot(V, q)
+end
+
 
 # $$\left|X_{p}\right|^{4}n_{p}^{3}+2\left|X_{p}\right|^{2}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}-\left|X_{p}\right|^{4}I_{p}=0$$
 
