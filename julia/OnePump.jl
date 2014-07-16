@@ -84,14 +84,18 @@ z(ky::Float64, kx::Float64; ωp=-30., np=20.) = (M(ky, kx; ωp=ωp, np=np) + con
 # determinant of L(q,ω)
 function D(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	q = [qy, qx]
-	Vq = dot(V, q)
-	-(-Vq - λ1(qy, qx; ωp=ωp, np=np))*(-Vq - λ2(qy, qx; ωp=ωp, np=np))
+	ω = -dot(V, q)
+	-(ω - λ1(qy, qx; ωp=ωp, np=np))*(ω - λ2(qy, qx; ωp=ωp, np=np))
 end
 
 # response function
 function χ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	q = [qy, qx]
-	Vq = dot(V, q)
+	ω = -dot(V, q) 
+	num1 = xp((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω)*R(qy, qx) - Q(qy, qx; np=np)*conj(R(-qy, -qx)))
+	num2 = conj(xp)*((M(qy, qx; ωp=ωp, np=np)-ω)*conj(R(-qy, -qx)) - conj(Q(-qy, -qx; np=np))*R(qy, qx))
+	numerator = num1 + num2
+	- numerator / D(qy, qx; ωp=ωp, np=np, V=V)
 end
 
 
