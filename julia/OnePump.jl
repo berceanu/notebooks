@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp
+export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp, χ
 
 # read system parameters from file into dict
 #energies in eV
@@ -13,7 +13,6 @@ pm = JSON.parsefile("/home/berceanu/notebooks/julia/april/params.json")
 for (k, v) in pm
     include_string("const " * k * " = $v")
 end
-
 
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
@@ -66,6 +65,12 @@ fdt(y::Float64, x::Float64; σ=1., gV=gv) = gV/(2pi*σ^2)*exp(-1/2σ^2*(x^2+y^2)
 fd(qy::Float64, qx::Float64; σ=1., gV=gv) = gV*exp(-σ^2/2*(qx^2 + qy^2))
 vdt(ky::Float64, kx::Float64; σ=1., gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/4*(a^2+b^2)*(kx^2+ky^2))*exp(-σ^2/4*(a^2-b^2)*(2sin(2α)*kx*ky+cos(2α)*(kx^2 - ky^2)))
 
+# momentum space density perturbation
+function δρ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.], gV=gv, σ=1.)
+	q = [qy, qx]
+	ω = -dot(V, q) 
+	χ(qy, qx; ωp=ωp, np=np, V=V)*fd(qy, qx; σ=σ, gV=gV)
+end
 
 ψtmom(ky::Float64, kx::Float64; ωp=-30., np=20., σ=1., gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = (Q(ky, kx; np=np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α)) - conj(M(-ky, -kx; ωp=ωp, np=np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α))/(M(ky, kx; ωp=ωp, np=np)*conj(M(-ky, -kx; ωp=ωp, np=np)) - Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))) 
 
@@ -89,10 +94,11 @@ function D(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 end
 
 # response function
+# TODO: express num2 as num1(-q)^*
 function χ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	q = [qy, qx]
 	ω = -dot(V, q) 
-	num1 = xp((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω)*R(qy, qx) - Q(qy, qx; np=np)*conj(R(-qy, -qx)))
+	num1 = xp*((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω)*R(qy, qx) - Q(qy, qx; np=np)*conj(R(-qy, -qx)))
 	num2 = conj(xp)*((M(qy, qx; ωp=ωp, np=np)-ω)*conj(R(-qy, -qx)) - conj(Q(-qy, -qx; np=np))*R(qy, qx))
 	numerator = num1 + num2
 	- numerator / D(qy, qx; ωp=ωp, np=np, V=V)
