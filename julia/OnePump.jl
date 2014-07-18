@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp, χ, δρ
+export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp, χ, δρ, fdt
 
 # read system parameters from file into dict
 #energies in eV
@@ -101,6 +101,7 @@ function χ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	- numerator / D(qy, qx; ωp=ωp, np=np, V=V)
 end
 
+# drag force
 
 # $$\left|X_{p}\right|^{4}n_{p}^{3}+2\left|X_{p}\right|^{2}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}-\left|X_{p}\right|^{4}I_{p}=0$$
 
