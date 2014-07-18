@@ -1,9 +1,9 @@
 module Various
 
-import Contour: Curve2
+import Contour: Curve2, ContourLevel
 import DSP: fftshift, fftfreq
 
-export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ
+export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours
 
 # parametrization of parabolic wavefronts for fitting
 type parabola
@@ -13,6 +13,14 @@ end
 
 paraby(M::Int64, t::Float64, offset::Float64) = 2pi*M*t + offset
 parabx(M::Int64, t::Float64, offset::Float64, k0::Float64) = -pi*M/k0 + pi*M*t^2 + offset
+
+# plotting extracted contour
+function plotcontours(c::ContourLevel, ax)
+    for line in c.lines # line is a Curve2, which is basically a wrapper around a Vector{Vector2}
+        xs, ys = coordinates(line)
+        ax[:plot](xs, ys, "y-")
+    end
+end
 
 # TODO: replace with upstream version
 # for extracting the vertices of contours
@@ -48,14 +56,14 @@ getidx(pos, len, Δ) = iround((len + pos)/Δ) + 1
 
 # deprecated
 # convert a Vector to a FloatRange
-#function vec2range(v::Vector{Float64})
-  #issorted(v) || error("Not sorted")
-  #a = (v[end] - v[1])/(length(v)-1)
-  #for i in 2:length(v)
-    #isapprox(a, v[i]-v[i-1]) || error("Differences are not constant")
-  #end
-  #colon(v[1], a, v[end])
-#end
+function vec2range(v::Vector{Float64})
+  issorted(v) || error("Not sorted")
+  a = (v[end] - v[1])/(length(v)-1)
+  for i in 2:length(v)
+    isapprox(a, v[i]-v[i-1]) || error("Differences are not constant")
+  end
+  colon(v[1], a, v[end])
+end
 
 function sider(;l=70., n=256)
 	Δ = 2l/(n-1)
@@ -63,6 +71,16 @@ function sider(;l=70., n=256)
 end
 
 sidek(;l=70., n=256) = 2pi*fftshift(fftfreq(n, (n-1)/2l))
+
+# reading data from full numerics
+function readdata(path::String, file::String, script::String)
+	filepath = path*file
+	scriptpath = path*script
+	run(`$scriptpath $filepath`)
+	data = readdlm("$filepath.copy", Float64)
+	run(`rm $filepath.copy`)
+	return data
+end
 
 # reading and rescaling experimental data
 function getexpfile(filename::ASCIIString)
