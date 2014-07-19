@@ -2,8 +2,10 @@ module Various
 
 import Contour: Curve2, ContourLevel
 import DSP: fftshift, fftfreq
+import PyCall: PyObject
+import Images: imfilter_gaussian
 
-export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours
+export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours, filtergauss
 
 # parametrization of parabolic wavefronts for fitting
 type parabola
@@ -14,8 +16,14 @@ end
 paraby(M::Int64, t::Float64, offset::Float64) = 2pi*M*t + offset
 parabx(M::Int64, t::Float64, offset::Float64, k0::Float64) = -pi*M/k0 + pi*M*t^2 + offset
 
+# gaussian filtering
+function filtergauss(data::Matrix{Float64}, sigma:Vector{Float64})
+    gaussdata = imfilter_gaussian(data, sigma)
+    gaussdata, data - gaussdata
+end
+
 # plotting extracted contour
-function plotcontours(c::ContourLevel, ax)
+function plotcontours(c::ContourLevel, ax::PyObject)
     for line in c.lines # line is a Curve2, which is basically a wrapper around a Vector{Vector2}
         xs, ys = coordinates(line)
         ax[:plot](xs, ys, "y-")
