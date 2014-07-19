@@ -2,7 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy import optimize
-import phcpy2c as phc
+from phcpy.phcpy2c import py2c_set_seed
+from phcpy.solver import solve
+from phcpy.solutions import strsol2dict
 import ConfigParser
 
 def read_parameters(filename):
@@ -254,35 +256,30 @@ def bog_coef_mats(mats, fds, n_kx, n_ky):
 
 def eqs(ip):
 
-    # x1 -> omega_s
-    # x2 -> ns
-    # x3 -> np
-
-    eq1 = "{0:+.16f}*x1{1:+.16f}*x2{2:+.16f}*x3{3:+.16f};"\
-          .format((-gi - gs) / (gi * xs ** 2), -alpha ** 2 + 1, -2 * alpha + 2, (-ei * gs + es * gi + 2 * gs * omega_p_chosen) / (gi * xs ** 2))
-    eq2 = "{0:.16f}*x1^2{1:+.16f}*x1*x2{2:+.16f}*x1*x3{3:+.16f}*x1{4:+.16f}*x2^2{5:+.16f}*x2*x3{6:+.16f}*x2{7:+.16f}*x3^2{8:+.16f}*x3{9:+.16f};"\
-          .format(xs ** (-4), (-4 * alpha - 2) / xs ** 2, -4 / xs ** 2, -2 * es / xs ** 4, 4 * alpha ** 2 + 4 * alpha + 1, 8 * alpha + 4, (4 * alpha * es + 2 * es) / xs ** 2, -alpha + 4, 4 * es / xs ** 2, (4 * es ** 2 + gs ** 2) / (4 * xs ** 4))
-    eq3 = "{0:.16f}*x1^2*x2^2{1:+.16f}*x1*x2^3{2:+.16f}*x1*x2^2*x3{3:+.16f}*x1*x2^2{4:+.16f}*x1*x2*x3^2{5:+.16f}*x1*x2*x3{6:+.16f}*x2^4{7:+.16f}*x2^3*x3{8:+.16f}*x2^3{9:+.16f}*x2^2*x3^2{10:+.16f}*x2^2*x3{11:+.16f}*x2^2{12:+.16f}*x2*x3^3{13:+.16f}*x2*x3^2{14:+.16f}*x2*x3{15:+.16f}*x3^4{16:+.16f}*x3^3{17:+.16f}*x3^2{18:+.16f}*x3;"\
-          .format(4.0 / xs ** 4, 1.0 * (-16.0 * alpha - 8.0) / xs ** 2, 1.0 * (8.0 * alpha - 8.0) / xs ** 2, -8.0 * es / xs ** 4, 4.0 / xs ** 2, 1.0 * (4.0 * ep - 4.0 * omega_p_chosen) / (xp ** 2 * xs ** 2), 16.0 * alpha ** 2 + 16.0 * alpha + 4.0, -16.0 * alpha ** 2 + 8.0 * alpha + 8.0, 1.0 * (16.0 * alpha * es + 8.0 * es) / xs ** 2, 4.0 * alpha ** 2 - 16.0 * alpha, 1.0 * (-8.0 * alpha * ep * xs ** 2 - 8.0 * alpha * es * xp ** 2 + 8.0 * alpha * omega_p_chosen * xs ** 2 - 4.0 * ep * xs ** 2 + 8.0 * es * xp ** 2 + 4.0 * omega_p_chosen * xs ** 2) / (xp ** 2 * xs ** 2), 1.0 * (4.0 * es ** 2 + 1.0 * gs ** 2) / xs ** 4, 4.0 * alpha - 4.0, 1.0 * (4.0 * alpha * ep * xs ** 2 - 4.0 * alpha * omega_p_chosen * xs ** 2 - 4.0 * ep * xs ** 2 - 4.0 * es * xp ** 2 + 4.0 * omega_p_chosen * xs ** 2) / (xp ** 2 * xs ** 2), 1.0 * (-4.0 * ep * es + 4.0 * es * omega_p_chosen + 1.0 * gs) / (xp ** 2 * xs ** 2), 1.00000000000000, 1.0 * (2.0 * ep - 2.0 * omega_p_chosen) / xp ** 2, 1.0 * (1.0 * ep ** 2 - 2.0 * ep * omega_p_chosen + 1.0 * omega_p_chosen ** 2 + 0.25) / xp ** 4, -1.0 * ip)
-
-    phc.py2c_syscon_clear_system()
-    phc.py2c_solcon_clear_solutions()
-    phc.py2c_syscon_initialize_number(3)
-
-    phc.py2c_syscon_store_polynomial(len(eq1), 3, 1, eq1)
-    phc.py2c_syscon_store_polynomial(len(eq2), 3, 2, eq2)
-    phc.py2c_syscon_store_polynomial(len(eq3), 3, 3, eq3)
-
-    phc.py2c_solve_system()
-    ns = phc.py2c_solcon_number_of_solutions()
+    #x1 -> omega_s
+    #x2 -> ns
+    #x3 -> np
+       
+    eq1 = "{0:+.16f}*x1{1:+.16f}*x2{2:+.16f}*x3{3:+.16f};"          .format((-gi - gs)/(gi*xs**2), -alpha**2 + 1, -2*alpha + 2, (-ei*gs + es*gi + 2*gs*omega_p_chosen)/(gi*xs**2))
+    eq2 = "{0:.16f}*x1^2{1:+.16f}*x1*x2{2:+.16f}*x1*x3{3:+.16f}*x1{4:+.16f}*x2^2{5:+.16f}*x2*x3{6:+.16f}*x2{7:+.16f}*x3^2{8:+.16f}*x3{9:+.16f};"          .format(xs**(-4), (-4*alpha - 2)/xs**2, -4/xs**2, -2*es/xs**4, 4*alpha**2 + 4*alpha + 1, 8*alpha + 4, (4*alpha*es + 2*es)/xs**2, -alpha + 4, 4*es/xs**2, (4*es**2 + gs**2)/(4*xs**4))
+    eq3 = "{0:.16f}*x1^2*x2^2{1:+.16f}*x1*x2^3{2:+.16f}*x1*x2^2*x3{3:+.16f}*x1*x2^2{4:+.16f}*x1*x2*x3^2{5:+.16f}*x1*x2*x3{6:+.16f}*x2^4{7:+.16f}*x2^3*x3{8:+.16f}*x2^3{9:+.16f}*x2^2*x3^2{10:+.16f}*x2^2*x3{11:+.16f}*x2^2{12:+.16f}*x2*x3^3{13:+.16f}*x2*x3^2{14:+.16f}*x2*x3{15:+.16f}*x3^4{16:+.16f}*x3^3{17:+.16f}*x3^2{18:+.16f}*x3;"          .format(4.0/xs**4, 1.0*(-16.0*alpha - 8.0)/xs**2, 1.0*(8.0*alpha - 8.0)/xs**2, -8.0*es/xs**4, 4.0/xs**2, 1.0*(4.0*ep - 4.0*omega_p_chosen)/(xp**2*xs**2), 16.0*alpha**2 + 16.0*alpha + 4.0, -16.0*alpha**2 + 8.0*alpha + 8.0, 1.0*(16.0*alpha*es + 8.0*es)/xs**2, 4.0*alpha**2 - 16.0*alpha, 1.0*(-8.0*alpha*ep*xs**2 - 8.0*alpha*es*xp**2 + 8.0*alpha*omega_p_chosen*xs**2 - 4.0*ep*xs**2 + 8.0*es*xp**2 + 4.0*omega_p_chosen*xs**2)/(xp**2*xs**2), 1.0*(4.0*es**2 + 1.0*gs**2)/xs**4, 4.0*alpha - 4.0, 1.0*(4.0*alpha*ep*xs**2 - 4.0*alpha*omega_p_chosen*xs**2 - 4.0*ep*xs**2 - 4.0*es*xp**2 + 4.0*omega_p_chosen*xs**2)/(xp**2*xs**2), 1.0*(-4.0*ep*es + 4.0*es*omega_p_chosen + 1.0*gs)/(xp**2*xs**2), 1.00000000000000, 1.0*(2.0*ep - 2.0*omega_p_chosen)/xp**2, 1.0*(1.0*ep**2 - 2.0*ep*omega_p_chosen + 1.0*omega_p_chosen**2 + 0.25)/xp**4, -1.0*ip)
+    f = [eq1, eq2, eq3]
+    
+    #seeding random number generator for reproducible results
+    py2c_set_seed(130683)
+    
+    s = solve(f,silent=True)
+    ns = len(s) #number of solutions
 
     R = []
-    for k in range(1, ns + 1):
-        out = []
-        out = phc.py2c_solcon_retrieve_solution(4, k)
-        sol = [elem for tple in out[:-1] for elem in tple]
-        imag = [np.fabs(elem) for elem in sol[1::2]]
-        real = np.array([elem for elem in sol[::2]])
+    for k in range(ns):
+        d = strsol2dict(s[k])
+        x123 = np.array([d['x1'], d['x2'], d['x3']])
+        real = np.real(x123)
+        imag = np.fabs(np.imag(x123))
+        sol = np.empty((real.size + imag.size,), dtype=real.dtype)
+        sol[0::2] = real
+        sol[1::2] = imag
         if np.allclose(imag, np.zeros(3)):
             if real[1] > 1e-7:
                 R.append((sol[0], sol[2], sol[4], ip))
