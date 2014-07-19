@@ -13,7 +13,7 @@ def read_parameters(filename):
         raise IOError('cannot find parameters.ini, exiting')
     return config
 
-param = read_parameters("/home/berceanu/Envs/env-ipython/notebooks/parameters.ini")
+param = read_parameters("parameters.ini")
 #param_set = "ks-0.4"
 param_set = "ks0.0"
 #param_set = "ks0.7"
