@@ -5,7 +5,7 @@ import DSP: fftshift, fftfreq
 import PyCall: PyObject
 import Images: imfilter_gaussian
 
-export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours, filtergauss
+export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours, filtergauss, sliceplot
 
 # parametrization of parabolic wavefronts for fitting
 type parabola
@@ -15,6 +15,18 @@ end
 
 paraby(M::Int64, t::Float64, offset::Float64) = 2pi*M*t + offset
 parabx(M::Int64, t::Float64, offset::Float64, k0::Float64) = -pi*M/k0 + pi*M*t^2 + offset
+
+# plotting a slice through a matrix
+function sliceplot(axes::Vector{PyObject}, data::Matrix{Float64}, x::FloatRange{Float64}, y::FloatRange{Float64},
+    title::String; y0=0., level=0.)
+    left, right, bottom, top = minimum(x), maximum(x), minimum(y), maximum(y)
+    idxy0 = getidx(y0, maximum(y), step(y))
+    axes[1][:imshow](data, ColorMap("gray"), origin="lower", extent=[left, right, bottom, top])
+    axes[1][:plot]((left, right), (y0, y0), "k-")
+    axes[1][:set_title](title)
+    axes[2][:plot](x, vec(data[idxy0, :])) 
+    axes[2][:plot]((left, right), (level, level), "k-")
+end
 
 # gaussian filtering
 function filtergauss(data::Matrix{Float64}, sigma::Vector{Float64})
