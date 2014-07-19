@@ -3,6 +3,7 @@ module Various
 import Contour: Curve2, ContourLevel
 import DSP: fftshift, fftfreq
 import PyCall: PyObject
+import PyPlot: ColorMap
 import Images: imfilter_gaussian
 
 export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours, filtergauss, sliceplot
