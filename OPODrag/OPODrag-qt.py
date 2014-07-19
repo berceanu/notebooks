@@ -15,7 +15,7 @@ def read_parameters(filename):
         raise IOError('cannot find parameters.ini, exiting')
     return config
 
-param = read_parameters("parameters.ini")
+param = read_parameters("/home/berceanu/notebooks/OPODrag/parameters.ini")
 #param_set = "ks-0.4"
 param_set = "ks0.0"
 #param_set = "ks0.7"
@@ -450,4 +450,5 @@ axes[0].set_xlabel(x_label_i)
 axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_I)
 
-np.savez(outfile, res_k=res_k, res_r=res_r)
+np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
+print "done!"
