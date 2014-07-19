@@ -17,7 +17,7 @@ paraby(M::Int64, t::Float64, offset::Float64) = 2pi*M*t + offset
 parabx(M::Int64, t::Float64, offset::Float64, k0::Float64) = -pi*M/k0 + pi*M*t^2 + offset
 
 # gaussian filtering
-function filtergauss(data::Matrix{Float64}, sigma:Vector{Float64})
+function filtergauss(data::Matrix{Float64}, sigma::Vector{Float64})
     gaussdata = imfilter_gaussian(data, sigma)
     gaussdata, data - gaussdata
 end
@@ -81,10 +81,10 @@ end
 sidek(;l=70., n=256) = 2pi*fftshift(fftfreq(n, (n-1)/2l))
 
 # reading data from full numerics
-function readdata(path::String, file::String, script::String)
+function readdata(path::String, file::String, script::String, ny::Int64)
 	filepath = path*file
 	scriptpath = path*script
-	run(`$scriptpath $filepath`)
+	run(`$scriptpath $filepath $ny`)
 	data = readdlm("$filepath.copy", Float64)
 	run(`rm $filepath.copy`)
 	return data
