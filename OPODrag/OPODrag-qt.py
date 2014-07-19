@@ -6,6 +6,7 @@ from phcpy.phcpy2c import py2c_set_seed
 from phcpy.solver import solve
 from phcpy.solutions import strsol2dict
 import ConfigParser
+import sys
 
 def read_parameters(filename):
     config = ConfigParser.RawConfigParser()
@@ -16,9 +17,7 @@ def read_parameters(filename):
     return config
 
 param = read_parameters("/home/berceanu/notebooks/OPODrag/parameters.ini")
-#param_set = "ks-0.4"
-param_set = "ks0.0"
-#param_set = "ks0.7"
+param_set = sys.argv[1]
 
 omega_X = param.getfloat(param_set, "omega_X")
 omega_C0 = param.getfloat(param_set, "omega_C0")
