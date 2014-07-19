@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from scipy import optimize
 from phcpy.phcpy2c import py2c_set_seed
 from phcpy.solver import solve
@@ -300,20 +298,6 @@ for idx in range(1, 4):
                   for lst in solutions_v2 for tple in lst]))
 
 
-fig_mf, ax = plt.subplots()
-ax.plot(ipx, n_hom_mf(ipx), linestyle='none',
-        marker='o', markerfacecolor='black')
-for idx in [0, 1]:
-    ax.plot(nsnpip[2], nsnpip[idx], linestyle='none',
-            marker='o', markerfacecolor=color_spi[idx])
-ax.plot(nsnpip[2], alpha * nsnpip[0], linestyle='none',
-        marker='o', markerfacecolor=color_spi[2])
-ax.axvline(x=ip_chosen, color='k', ls='dashed')
-ax.set_xlim(ipx[0], ipx[-1])
-ax.set_xlabel(r'$I_p [\gamma_p^3]$')
-ax.set_ylabel(r'$n_s, n_p [\gamma_p]$')
-plt.close(fig_mf)
-
 [(omega_s_chosen, ns_chosen, np_chosen, ip_chosen)] = eqs(ip_chosen)
 omega_i_chosen = 2 * omega_p_chosen - omega_s_chosen
 ni_chosen = alpha * ns_chosen
@@ -381,36 +365,6 @@ psi_k[nky / 2, nkx / 2, :] += np.sqrt(nkx * nky) * \
 res_k = np.log10(np.abs(psi_k) ** 2)  # logscale
 
 
-fig_mom_S, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 0],
-                 cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 0]) 
-axes[1].grid()
-axes[0].set_ylabel(y_label_k)
-axes[0].set_xlabel(x_label_k)
-axes[1].set_xlabel(x_label_k)
-plt.close(fig_mom_S)
-
-fig_mom_P, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 1],
-                 cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 1]) 
-axes[1].grid()
-axes[0].set_ylabel(y_label_k)
-axes[0].set_xlabel(x_label_k)
-axes[1].set_xlabel(x_label_k)
-plt.close(fig_mom_P)
-
-fig_mom_I, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_k[kyl:kyr, kxl:kxr, 2],
-                 cmap=cm.gray, origin=None, extent=[kx[kxl], kx[kxr], ky[kyl], ky[kyr]])
-axes[1].plot(kx[kxl:kxr], res_k[nky / 2, kxl:kxr, 2]) 
-axes[1].grid()
-axes[0].set_ylabel(y_label_k)
-axes[0].set_xlabel(x_label_k)
-axes[1].set_xlabel(x_label_k)
-plt.close(fig_mom_I)
-
 
 psi_r = np.fft.fftshift(
     np.fft.ifft2(np.sqrt(nkx * nky) * psi_k, axes=(0, 1)), axes=(0, 1))
@@ -419,35 +373,6 @@ res_r = np.abs(psi_r) ** 2 / \
 
 rango = 200 / (1024/nkx)
 
-fig_real_S, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
-                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 0])
-axes[1].grid()
-axes[0].set_ylabel(y_label_i)
-axes[0].set_xlabel(x_label_i)
-axes[1].set_xlabel(x_label_i)
-plt.close(fig_real_S)
-
-fig_real_P, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
-                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 1])
-axes[1].grid()
-axes[0].set_ylabel(y_label_i)
-axes[0].set_xlabel(x_label_i)
-axes[1].set_xlabel(x_label_i)
-plt.close(fig_real_P)
-
-fig_real_I, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
-                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
-axes[1].plot(x[rango:-rango], res_r[nky / 2, rango:-rango, 2])
-axes[1].grid()
-axes[0].set_ylabel(y_label_i)
-axes[0].set_xlabel(x_label_i)
-axes[1].set_xlabel(x_label_i)
-plt.close(fig_real_I)
 
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
 print "done!"

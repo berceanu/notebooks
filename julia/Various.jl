@@ -5,6 +5,7 @@ import DSP: fftshift, fftfreq
 import PyCall: PyObject
 import PyPlot: ColorMap
 import Images: imfilter_gaussian
+import NPZ: npzread
 
 export getidx, vec2range, cropmat, sysbox, gettrunccrop, sider, sidek, coordinates, torad, λtoε, εtoλ, readdata, plotcontours, filtergauss, sliceplot
 
@@ -100,6 +101,16 @@ function readdata(path::String, file::String, script::String, ny::Int64)
 	run(`$scriptpath $filepath $ny`)
 	data = readdlm("$filepath.copy", Float64)
 	run(`rm $filepath.copy`)
+	return data
+end
+
+# reading data from linear response
+function readdata(path::String, file::String, datafile::String, section::String)
+	filepath = path*file
+	datapath = path*datafile
+	run(`python2 $filepath $section`)
+	data = npzread(datapath)
+	run(`rm $datapath`)
 	return data
 end
 
