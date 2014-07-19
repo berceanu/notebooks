@@ -45,7 +45,7 @@ kyr = param.getfloat(param_set, "kyr")
 eigs_threshold = param.getfloat(param_set, "eigs_threshold")
 stride_r = param.getint(param_set, "stride_r")
 stride_c = param.getint(param_set, "stride_c")
-
+delta_k = param.getfloat(param_set, "delta_k")
 
 k_idlx = 2 * k_pmpx - k_sigx
 k_idly = 2 * k_pmpy - k_sigy
@@ -54,7 +54,7 @@ ks = ("{0:.3f}".format(k_sigx)).replace(".", "_")
 gp = gamma_C + (1 / np.sqrt(1 + (Omega_R / ((0.5 * ((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) + omega_X) - 0.5 * np.sqrt(((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) - omega_X) ** 2 + 4 * Omega_R ** 2)) - (omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)))) ** 2)) ** 2 * (gamma_X - gamma_C)
 omega_p_chosen = (omega_pmp - omega_X) / gp
 
-delta_k = 0.05
+#delta_k = 0.05
 
 side_k = nkx * delta_k / 2
 side_r = np.pi / delta_k
@@ -449,3 +449,5 @@ axes[0].set_ylabel(y_label_i)
 axes[0].set_xlabel(x_label_i)
 axes[1].set_xlabel(x_label_i)
 plt.close(fig_real_I)
+
+np.savez(outfile, res_k=res_k, res_r=res_r)
