@@ -46,12 +46,9 @@ delta_k = param.getfloat(param_set, "delta_k")
 
 k_idlx = 2 * k_pmpx - k_sigx
 k_idly = 2 * k_pmpy - k_sigy
-ks = ("{0:.3f}".format(k_sigx)).replace(".", "_")
 
 gp = gamma_C + (1 / np.sqrt(1 + (Omega_R / ((0.5 * ((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) + omega_X) - 0.5 * np.sqrt(((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) - omega_X) ** 2 + 4 * Omega_R ** 2)) - (omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)))) ** 2)) ** 2 * (gamma_X - gamma_C)
 omega_p_chosen = (omega_pmp - omega_X) / gp
-
-#delta_k = 0.05
 
 side_k = nkx * delta_k / 2
 side_r = np.pi / delta_k
@@ -64,23 +61,6 @@ KX, KY = np.meshgrid(kx, ky)
 X, Y = np.meshgrid(x, y)
 
 ipx = np.linspace(ipx_start, ipx_end, 30)
-
-x_label_k = r'$k_x[\mu m^{-1}]$'
-y_label_k = r'$k_y[\mu m^{-1}]$'
-x_label_i = r'$x[\mu m]$'
-y_label_i = r'$y[\mu m]$'
-
-letter_spi = ['s', 'p', 'i']
-title_k = []
-for idx in range(3):
-    title_k.append(r'$g \left|\tilde{\Psi}_{LP}^{' + letter_spi[idx] +
-                   r'}\left(k+k_{' + letter_spi[idx] +
-                   r'}\right)\right|^{2} [\gamma_p \mu m^4]$')
-title_i = []
-for idx in range(3):
-    title_i.append(r'$I^' + letter_spi[idx] + r'$')
-
-color_spi = ['blue', 'red', 'green']
 
 momentum_spi = np.array([[k_sigx, k_sigy],
                          [k_pmpx, k_pmpy],
@@ -330,6 +310,7 @@ N = null(matSI) * np.sqrt(norm)
 [sr, si, ir, ii] = N[:, 0]
 #s = sr + 1j * si
 #i = ir + 1j * ii
+# TODO: simultaneous and opposite phase shift of signal and idler
 s = (sr + 1j * si) * (1 + 1j) / np.sqrt(2)
 i = (ir + 1j * ii) * (1 - 1j) / np.sqrt(2)
 
@@ -362,16 +343,10 @@ psi_k[nky / 2, nkx / 2, :] += np.sqrt(nkx * nky) * \
     np.array([s / xs, p / xp, i / xi])
 
 
-res_k = np.log10(np.abs(psi_k) ** 2)  # logscale
-
-
-
 psi_r = np.fft.fftshift(
     np.fft.ifft2(np.sqrt(nkx * nky) * psi_k, axes=(0, 1)), axes=(0, 1))
 res_r = np.abs(psi_r) ** 2 / \
     np.array([ns_chosen / xs ** 2, np_chosen / xp ** 2, ni_chosen / xi ** 2])
-
-rango = 200 / (1024/nkx)
 
 
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
