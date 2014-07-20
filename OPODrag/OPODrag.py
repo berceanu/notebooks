@@ -308,11 +308,11 @@ norm = ns_chosen + ni_chosen
 N = null(matSI) * np.sqrt(norm)
 
 [sr, si, ir, ii] = N[:, 0]
-#s = sr + 1j * si
-#i = ir + 1j * ii
+s = sr + 1j * si
+i = ir + 1j * ii
 # TODO: simultaneous and opposite phase shift of signal and idler
-s = (sr + 1j * si) * (1 + 1j) / np.sqrt(2)
-i = (ir + 1j * ii) * (1 - 1j) / np.sqrt(2)
+#s = (sr + 1j * si) * (1 + 1j) / np.sqrt(2)
+#i = (ir + 1j * ii) * (1 - 1j) / np.sqrt(2)
 
 matsL = L_mats(KX, KY, nkx, nky)
 vectfd = fd_mats(KX, KY, nkx, nky)
