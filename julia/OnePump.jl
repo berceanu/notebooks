@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, fftfreq, gv, mlp, xp, χ, δρ, fdt
+export γp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, gv, mlp, xp, χ, δρ, fdt, drag, D
 
 # read system parameters from file into dict
 #energies in eV
@@ -90,18 +90,46 @@ function D(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	-(ω - λ1(qy, qx; ωp=ωp, np=np))*(ω - λ2(qy, qx; ωp=ωp, np=np))
 end
 
+χnum(qy::Float64, qx::Float64; ωp=-30., np=20., ω=0.) = xp * ((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω) * R(qy, qx) - Q(qy, qx; np=np) * conj(R(-qy, -qx)))
+
 # response function
-# TODO: express num2 as num1(-q)^*
 function χ(qy::Float64, qx::Float64; ωp=-30., np=20., V=[0., 0.])
 	q = [qy, qx]
-	ω = -dot(V, q) 
-	num1 = xp*((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω)*R(qy, qx) - Q(qy, qx; np=np)*conj(R(-qy, -qx)))
-	num2 = conj(xp)*((M(qy, qx; ωp=ωp, np=np)-ω)*conj(R(-qy, -qx)) - conj(Q(-qy, -qx; np=np))*R(qy, qx))
-	numerator = num1 + num2
-	- numerator / D(qy, qx; ωp=ωp, np=np, V=V)
+	freq = -dot(V, q) 
+	num = χnum(qy, qx; ωp=ωp, np=np, ω=freq)
+	numstar = conj(χnum(-qy, -qx; ωp=ωp, np=np, ω=-freq))
+	- (num + numstar)/ D(qy, qx; ωp=ωp, np=np, V=V)
 end
 
 # drag force
+function drag(box; ωp=-30., np=20., V=[0., 0.], gV=1., σ=1.)
+
+    δρmat = Array(Complex{Float64}, length(box.y), length(box.x)) 
+    fdtm = Array(Float64, length(box.y), length(box.x)) 
+    norm = sqrt(length(box.x)*length(box.y))
+    full = length(box.y)
+    half = div(full, 2)
+    for j=1:length(box.x), i=1:half
+	    # calculate density modulation in k-space
+	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
+	    # calculate r.V on grid
+	    fdtm[i,j] =  box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+	    # calculate the other half by symmetry
+	    δρmat[full - (i-1), j] = δρmat[i,j]
+	    fdtm[full - (i-1), j] = fdtm[i,j] 
+    end
+
+    # ifft to obtain density modulation in real-space
+    δρtmat = real(fftshift(ifft(fftshift(δρmat))))
+
+    s = 0.
+    for j=1:length(box.x), i=1:length(box.y)
+	    s += fdtm[i,j]*δρtmat[i,j]
+    end
+
+    return -s
+
+end
 
 # $$\left|X_{p}\right|^{4}n_{p}^{3}+2\left|X_{p}\right|^{2}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}-\left|X_{p}\right|^{4}I_{p}=0$$
 
