@@ -94,11 +94,21 @@ end
 
 sidek(;l=70., n=256) = 2pi*fftshift(fftfreq(n, (n-1)/2l))
 
-# reading data from full numerics
-function readdata(path::String, file::String, script::String, ny::Int64)
+# reading data from full numerics for integrated spectrum
+function readdata(path::String, file::String, script::String)
 	filepath = path*file
 	scriptpath = path*script
-	run(`$scriptpath $filepath $ny`)
+	run(`$scriptpath $filepath`)
+	data = readdlm("$filepath.copy", Float64)
+	run(`rm $filepath.copy`)
+	return vec(data)
+end
+
+# reading data from full numerics
+function readdata(path::String, file::String, script::String, ny::Int64, colno::Int)
+	filepath = path*file
+	scriptpath = path*script
+	run(`$scriptpath $filepath $ny $colno`)
 	data = readdlm("$filepath.copy", Float64)
 	run(`rm $filepath.copy`)
 	return data
