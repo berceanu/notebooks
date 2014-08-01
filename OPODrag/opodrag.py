@@ -1,4 +1,8 @@
 import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from mpl_toolkits.mplot3d import Axes3D
 from scipy import optimize
 from phcpy.phcpy2c import py2c_set_seed
 from phcpy.solver import solve
@@ -43,9 +47,14 @@ eigs_threshold = param.getfloat(param_set, "eigs_threshold")
 stride_r = param.getint(param_set, "stride_r")
 stride_c = param.getint(param_set, "stride_c")
 delta_k = param.getfloat(param_set, "delta_k")
+ipstabini = param.getfloat(param_set, "ipstabini")
+ipstabfin = param.getfloat(param_set, "ipstabfin")
+
 
 k_idlx = 2 * k_pmpx - k_sigx
 k_idly = 2 * k_pmpy - k_sigy
+
+ks = ("{0:.3f}".format(k_sigx)).replace(".", "_")
 
 gp = gamma_C + (1 / np.sqrt(1 + (Omega_R / ((0.5 * ((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) + omega_X) - 0.5 * np.sqrt(((omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)) - omega_X) ** 2 + 4 * Omega_R ** 2)) - (omega_C0 * np.sqrt(1 + (np.sqrt(k_pmpx ** 2 + k_pmpy ** 2) / kz) ** 2)))) ** 2)) ** 2 * (gamma_X - gamma_C)
 omega_p_chosen = (omega_pmp - omega_X) / gp
@@ -61,6 +70,28 @@ KX, KY = np.meshgrid(kx, ky)
 X, Y = np.meshgrid(x, y)
 
 ipx = np.linspace(ipx_start, ipx_end, 30)
+
+mpl.rcParams.update({'font.size': 22, 'font.family': 'serif'})
+
+x_label_k = r'$k_x - k_n[\mu m^{-1}]$'
+y_label_k = r'$k_y[\mu m^{-1}]$'
+x_label_i = r'$x[\mu m]$'
+y_label_i = r'$y[\mu m]$'
+
+letter_spi = ['s', 'p', 'i']
+
+title_k = []
+for idx in range(3):
+    title_k.append(r'$g \left|\tilde{\Psi}_{LP}^{' + letter_spi[idx] +
+                   r'}\left(k+k_{' + letter_spi[idx] +
+                   r'}\right)\right|^{2} [\gamma_p \mu m^4]$')
+
+title_i = []
+for idx in range(3):
+    title_i.append(r'$I^' + letter_spi[idx] + r'$')
+
+color_spi = ['blue', 'red', 'green']
+marker_spi = ['^', 'o', 'v']
 
 momentum_spi = np.array([[k_sigx, k_sigy],
                          [k_pmpx, k_pmpy],
@@ -102,8 +133,8 @@ def gamma(kx, ky):
     return (gamma_C + hopf_x(kx, ky) ** 2 * (gamma_X - gamma_C)) / gp
 
 
-kxl, kxr = index_mom(kxl), index_mom(kxr)
-kyl, kyr = index_mom(kyl), index_mom(kyr)
+kxL, kxR = index_mom(kxl), index_mom(kxr)
+kyL, kyR = index_mom(kyl), index_mom(kyr)
 
 es = enLP(k_sigx, k_sigy)
 ep = enLP(k_pmpx, k_pmpy)
@@ -277,6 +308,28 @@ for idx in range(1, 4):
     nsnpip.append(np.array([tple[idx]
                   for lst in solutions_v2 for tple in lst]))
 
+ipstart = nsnpip[2][0]
+print ipstart
+
+fig_mf, ax = plt.subplots()
+
+ax.plot(ipx[ipx < ipstart], n_hom_mf(ipx[ipx < ipstart]), color='black')
+ax.plot(ipx[ipx >= ipstart], n_hom_mf(ipx[ipx >= ipstart]), linestyle='dashed', color='black')
+
+for idx in [0, 1]:
+    ax.plot(nsnpip[2], nsnpip[idx], linestyle='none',
+            marker=marker_spi[idx], markerfacecolor=color_spi[idx])
+
+ax.plot(nsnpip[2], alpha * nsnpip[0], linestyle='none',
+        marker=marker_spi[2], markerfacecolor=color_spi[2])
+
+ax.axvline(x=ip_chosen, color='k', ls='dashed')
+ax.fill([ipstabini,ipstabfin,ipstabfin,ipstabini], [0,0,1.8,1.8], 'gray', alpha=0.5, edgecolor='k')
+
+ax.set_xlim(ipx[0], ipx[-1])
+ax.set_xlabel(r'$I_p [\gamma_p^3]$')
+ax.set_ylabel(r'$n_s, n_p [\gamma_p]$')
+fig_mf.savefig('fig_mf_ks_{0:s}'.format(ks), bbox_inches='tight')
 
 [(omega_s_chosen, ns_chosen, np_chosen, ip_chosen)] = eqs(ip_chosen)
 omega_i_chosen = 2 * omega_p_chosen - omega_s_chosen
@@ -311,8 +364,60 @@ N = null(matSI) * np.sqrt(norm)
 s = sr + 1j * si
 i = ir + 1j * ii
 
+LP = enLP(KX, KY)
+BLP = blue_enLP(KX, KY)
+G = gamma(KX, KY) / 2
+
+fig_lp, ax = plt.subplots()
+ax.plot(KX[nky / 2, kxL:kxR], BLP[nky / 2, kxL:kxR], 'k-.')
+ax.fill_between(
+    KX[nky / 2, kxL:kxR], BLP[nky / 2, kxL:kxR] - G[nky / 2, kxL:kxR] / 2,
+    BLP[nky / 2, kxL:kxR] + G[nky / 2, kxL:kxR] / 2, alpha=0.5)
+for idx in range(3):
+    ax.scatter(momentum_spi[idx, 0], energy_spi[idx], c=color_spi[idx], marker=marker_spi[idx])
+ax.axhline(y=ep + 0.5 * np.sqrt(3), color='r', ls='dashed')
+ax.set_title('blue-shifted LP dispersion')
+ax.set_xlim(kxl, kxr)
+ax.set_xlabel(x_label_k)
+ax.set_ylabel(r'$\epsilon-\omega_X[\gamma_p]$')
+fig_lp.savefig('fig_lp_ks_{0:s}'.format(ks), bbox_inches='tight')
 
 matsL = L_mats(KX, KY, nkx, nky)
+
+eigs = eigL_mats(matsL, nkx, nky)
+
+y_points, x_points, eig_indices = np.where(np.abs(eigs.real) <= eigs_threshold)
+
+fig_excitation, axes = plt.subplots(2, 1, figsize=(8, 6))
+for idx in range(3):
+    axes[0].plot(
+        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+                                   kxL:kxR, idx].imag, linestyle='none',
+        marker='o', markerfacecolor='black', markersize=4)
+    axes[1].plot(
+        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+                                   kxL:kxR, idx].real, linestyle='none',
+        marker='o', markerfacecolor='black', markersize=2)
+for idx in range(3, 6):
+    axes[0].plot(
+        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+                                   kxL:kxR, idx].imag, linestyle='none',
+        marker='o', markerfacecolor='black', markersize=4)
+    axes[1].plot(
+        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+                                   kxL:kxR, idx].real, linestyle='none',
+        marker='o', markerfacecolor='black', markersize=2)
+for ax in [0, 1]:
+    axes[ax].axhline(y=0, color='black', ls='dashed')
+    axes[ax].axvline(x=0, color='black', ls='dashed')
+axes[0].set_ylabel(r'$\Im{(\omega)}[\gamma_p]$')
+axes[1].set_xlabel(x_label_k)
+axes[0].set_xlim(-0.75, 0.75)
+axes[1].set_xlim(kxl, kxr)
+axes[1].set_ylim(-5, 5)
+axes[1].set_ylabel(r'$\Re{(\omega)}[\gamma_p]$')
+fig_excitation.savefig('fig_excitation_ks_{0:s}'.format(ks), bbox_inches='tight')
+
 vectfd = fd_mats(KX, KY, nkx, nky)
 bcoef = bog_coef_mats(matsL, vectfd, nkx, nky)
 
@@ -340,12 +445,92 @@ psi_k[imax - 1:imax + 2, jmax - 1:jmax + 2, :] = averages
 psi_k[nky / 2, nkx / 2, :] += np.sqrt(nkx * nky) * \
     np.array([s / xs, p / xp, i / xi])
 
+res_k = np.log10(np.abs(psi_k) ** 2)  # logscale
+
+fig_mom_S, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_k[kyL:kyR, kxL:kxR, 0],
+                 cmap=cm.gray, origin=None, extent=[kx[kxL], kx[kxR], ky[kyL], ky[kyR]])
+ax.set_ylabel(y_label_k)
+ax.yaxis.set_label_position("right")
+ax.yaxis.tick_right()
+ax.xaxis.set_ticks(np.arange(-7, 8, 3))
+ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+ax.set_xticklabels([])
+fig_mom_S.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[0]), bbox_inches='tight')
+
+fig_mom_P, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_k[kyL:kyR, kxL:kxR, 1],
+                 cmap=cm.gray, origin=None, extent=[kx[kxL], kx[kxR], ky[kyL], ky[kyR]])
+ax.set_ylabel(y_label_k)
+ax.yaxis.set_label_position("right")
+ax.yaxis.tick_right()
+ax.xaxis.set_ticks(np.arange(-7, 8, 3))
+ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+ax.set_xticklabels([])
+fig_mom_P.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[1]), bbox_inches='tight')
+
+fig_mom_I, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_k[kyL:kyR, kxL:kxR, 2],
+                 cmap=cm.gray, origin=None, extent=[kx[kxL], kx[kxR], ky[kyL], ky[kyR]])
+ax.set_ylabel(y_label_k)
+ax.set_xlabel(x_label_k)
+ax.yaxis.set_label_position("right")
+ax.yaxis.tick_right()
+ax.xaxis.set_ticks(np.arange(-7, 8, 3))
+ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+fig_mom_I.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
+
+kl3d, kr3d = -5, 5
+kxl3d, kxr3d = index_mom(kl3d), index_mom(kr3d)
+
+fig_3d = plt.figure(figsize=(10, 8))
+ax = fig_3d.add_subplot(1, 1, 1, projection='3d')
+ax.plot_surface(
+    KX[kxl3d:kxr3d, kxl3d:kxr3d], KY[kxl3d:kxr3d,
+                                     kxl3d:kxr3d], BLP[
+        kxl3d:kxr3d, kxl3d:kxr3d],
+    rstride=stride_r, cstride=stride_c, alpha=0.4)
+for idx in range(3):
+    ax.plot(
+        kx[x_points] + momentum_spi[idx, 0], ky[y_points] +
+        momentum_spi[idx, 1], energy_spi[idx],
+        linestyle='none', marker=marker_spi[idx], markerfacecolor=color_spi[idx],
+        markersize=5)
+ax.set_xlim(kl3d, kr3d)
+ax.set_ylim(kl3d, kr3d)
+ax.set_xlabel(r'$k_x[\mu m^{-1}]$')
+ax.set_ylabel(r'$k_y[\mu m^{-1}]$')
+ax.set_zlabel(r'$\epsilon-\omega_X[\gamma_p]$')
+fig_3d.savefig('fig_3d_ks_{0:s}'.format(ks), bbox_inches='tight')
 
 psi_r = np.fft.fftshift(
     np.fft.ifft2(np.sqrt(nkx * nky) * psi_k, axes=(0, 1)), axes=(0, 1))
 res_r = np.abs(psi_r) ** 2 / \
     np.array([ns_chosen / xs ** 2, np_chosen / xp ** 2, ni_chosen / xi ** 2])
 
+rango = 400 / (1024/nkx)
 
+fig_real_S, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+ax.set_ylabel(y_label_i)
+ax.set_xticklabels([])
+fig_real_S.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[0]), bbox_inches='tight')
+
+fig_real_P, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+ax.set_ylabel(y_label_i)
+ax.set_xticklabels([])
+fig_real_P.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[1]), bbox_inches='tight')
+
+fig_real_I, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+ax.set_ylabel(y_label_i)
+ax.set_xlabel(x_label_i)
+fig_real_I.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
+
+np.save("/home/berceanu/notebooks/OPODrag/psi_k", psi_k)
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
 print "done!"
