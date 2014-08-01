@@ -510,7 +510,7 @@ for idx in range(3):
         linestyle='none', marker=marker_spi[idx], markerfacecolor=color_spi[idx],
         markersize=5)
 
-fig.tight_layout()
+fig_3d.tight_layout()
 
 ax.set_xlim(kl3d, kr3d)
 ax.set_ylim(kl3d, kr3d)
