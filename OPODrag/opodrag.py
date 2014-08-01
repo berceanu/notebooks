@@ -483,8 +483,21 @@ fig_mom_I.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inche
 kl3d, kr3d = -5, 5
 kxl3d, kxr3d = index_mom(kl3d), index_mom(kr3d)
 
+######
+######
 fig_3d = plt.figure(figsize=(10, 8))
-ax = fig_3d.add_subplot(1, 1, 1, projection='3d')
+ax = fig_3d.add_subplot(111, projection='3d')
+
+tmp_planes = ax.zaxis._PLANES 
+ax.zaxis._PLANES = ( tmp_planes[2], tmp_planes[3], 
+                     tmp_planes[0], tmp_planes[1], 
+                     tmp_planes[4], tmp_planes[5])
+view_1 = (25, -135)
+view_2 = (25, -45)
+init_view = view_2
+ax.view_init(*init_view)
+
+
 ax.plot_surface(
     KX[kxl3d:kxr3d, kxl3d:kxr3d], KY[kxl3d:kxr3d,
                                      kxl3d:kxr3d], BLP[
@@ -496,12 +509,21 @@ for idx in range(3):
         momentum_spi[idx, 1], energy_spi[idx],
         linestyle='none', marker=marker_spi[idx], markerfacecolor=color_spi[idx],
         markersize=5)
+
+fig.tight_layout()
+
 ax.set_xlim(kl3d, kr3d)
 ax.set_ylim(kl3d, kr3d)
-ax.set_xlabel(r'$k_x[\mu m^{-1}]$')
-ax.set_ylabel(r'$k_y[\mu m^{-1}]$')
-ax.set_zlabel(r'$\epsilon-\omega_X[\gamma_p]$')
+
+ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=4)
+ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=4)
+
+ax.zaxis.set_rotate_label(False)  # disable automatic rotation
+ax.set_zlabel(r'$\epsilon-\omega_X[\gamma_p]$', rotation=90)
+
 fig_3d.savefig('fig_3d_ks_{0:s}'.format(ks), bbox_inches='tight')
+#####
+#####
 
 psi_r = np.fft.fftshift(
     np.fft.ifft2(np.sqrt(nkx * nky) * psi_k, axes=(0, 1)), axes=(0, 1))
