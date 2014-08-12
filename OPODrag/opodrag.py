@@ -329,6 +329,9 @@ ax.fill([ipstabini,ipstabfin,ipstabfin,ipstabini], [0,0,1.8,1.8], 'gray', alpha=
 ax.set_xlim(ipx[0], ipx[-1])
 ax.set_xlabel(r'$I_p [\gamma_p^3]$')
 ax.set_ylabel(r'$n_s, n_p [\gamma_p]$')
+if param_set == "ks0.0":
+    ax.xaxis.set_ticks([0, 4, 8, 12, 16])
+ax.yaxis.set_ticks([0.4, 0.8, 1.2, 1.6])
 fig_mf.savefig('fig_mf_ks_{0:s}'.format(ks), bbox_inches='tight')
 
 [(omega_s_chosen, ns_chosen, np_chosen, ip_chosen)] = eqs(ip_chosen)
@@ -453,8 +456,8 @@ ax.imshow(res_k[kyL:kyR, kxL:kxR, 0],
 ax.set_ylabel(y_label_k)
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 3))
-ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+ax.xaxis.set_ticks([-6, -3, 0, 3, 6])
+ax.yaxis.set_ticks([-6, -3, 0, 3, 6])
 ax.set_xticklabels([])
 fig_mom_S.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[0]), bbox_inches='tight')
 
@@ -464,8 +467,8 @@ ax.imshow(res_k[kyL:kyR, kxL:kxR, 1],
 ax.set_ylabel(y_label_k)
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 3))
-ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+ax.xaxis.set_ticks([-6, -3, 0, 3, 6])
+ax.yaxis.set_ticks([-6, -3, 0, 3, 6])
 ax.set_xticklabels([])
 fig_mom_P.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[1]), bbox_inches='tight')
 
@@ -476,8 +479,8 @@ ax.set_ylabel(y_label_k)
 ax.set_xlabel(x_label_k)
 ax.yaxis.set_label_position("right")
 ax.yaxis.tick_right()
-ax.xaxis.set_ticks(np.arange(-7, 8, 3))
-ax.yaxis.set_ticks(np.arange(-7, 8, 3))
+ax.xaxis.set_ticks([-6, -3, 0, 3, 6])
+ax.yaxis.set_ticks([-6, -3, 0, 3, 6])
 fig_mom_I.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
 
 kl3d, kr3d = -5, 5
@@ -515,11 +518,15 @@ fig_3d.tight_layout()
 ax.set_xlim(kl3d, kr3d)
 ax.set_ylim(kl3d, kr3d)
 
-ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=4)
-ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=4)
+ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=2)
+ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=2)
 
 ax.zaxis.set_rotate_label(False)  # disable automatic rotation
 ax.set_zlabel(r'$\epsilon-\omega_X[\gamma_p]$', rotation=90)
+if param_set == "ks0.0":
+    ax.zaxis.set_ticks([-20, -10, 0])
+else:
+    ax.zaxis.set_ticks([-40, -20, 0])
 
 fig_3d.savefig('fig_3d_ks_{0:s}'.format(ks), bbox_inches='tight')
 #####

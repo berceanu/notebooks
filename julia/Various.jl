@@ -104,6 +104,16 @@ function readdata(path::String, file::String, script::String)
 	return vec(data)
 end
 
+# reading data from full numerics(old)
+function readdata(path::String, file::String, script::String, ny::Int64)
+	filepath = path*file
+	scriptpath = path*script
+	run(`$scriptpath $filepath $ny`)
+	data = readdlm("$filepath.copy", Float64)
+	run(`rm $filepath.copy`)
+	return data
+end
+
 # reading data from full numerics
 function readdata(path::String, file::String, script::String, ny::Int64, colno::Int)
 	filepath = path*file
