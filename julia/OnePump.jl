@@ -19,9 +19,10 @@ const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+�
 
 const ωpev = 1.39875
 const ωpγ = (ωpev-ωx)/γp
+const ρp = 0.72714167 # density from pump state in OPO
 
 
-const sigma = 0.01 #width of gaussian defect
+const sigma = 1 #width of gaussian defect
 
 # effective photon mass
 const mc = kz^2/(ωc/γp)
@@ -46,7 +47,7 @@ bsenlp(ky::Float64, kx::Float64, np::Float64) = enlp(ky, kx) + 2np*abs2(hopfx(ky
 # $$n_{p}^{3}+\frac{2}{\left|X_{p}\right|^{2}}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\frac{1}{\left|X_{p}\right|^{4}}\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}=I_{p}$$
 
 
-function findpump(kpy::Float64, kpx::Float64; ωp=ωpγ, np=20.)
+function findpump(kpy::Float64, kpx::Float64; ωp=ωpγ, np=ρp)
     xp = hopfx(kpy, kpx)
     ep = enlp(kpy, kpx)
     b = 2/abs2(xp)*(ep-ωp)
@@ -58,8 +59,8 @@ end
 # $$Q(k)=n_{p}X^{*}(k_{p}+k)X^{*}(k_{p}-k)$$
 # $$R(k) = \frac{C(k_p)}{X(k_p)}C(k+k_p)$$
 
-M(ky::Float64, kx::Float64; ωp=ωpγ, np=20.) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kpy+ky, kpx+kx)/2 + 2np*abs2(hopfx(kpy+ky, kpx+kx))
-Q(ky::Float64, kx::Float64; np=20.) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
+M(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp) = enlp(kpy+ky, kpx+kx) - ωp - im*γ(kpy+ky, kpx+kx)/2 + 2np*abs2(hopfx(kpy+ky, kpx+kx))
+Q(ky::Float64, kx::Float64; np=ρp) = np*conj(hopfx(kpy+ky, kpx+kx))*conj(hopfx(kpy-ky, kpx-kx))
 R(ky::Float64, kx::Float64) = cp/xp*hopfc(kpy+ky, kpx+kx)
 
 # gaussian potential in real space
@@ -70,22 +71,22 @@ fd(qy::Float64, qx::Float64; σ=sigma, gV=gv) = gV*exp(-σ^2/2*(qx^2 + qy^2))
 vdt(ky::Float64, kx::Float64; σ=sigma, gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = gV*exp(-im*(kx*x0+ky*y0))*exp(-σ^2/4*(a^2+b^2)*(kx^2+ky^2))*exp(-σ^2/4*(a^2-b^2)*(2sin(2α)*kx*ky+cos(2α)*(kx^2 - ky^2)))
 
 # momentum space density perturbation
-δρ(qy::Float64, qx::Float64; ωp=ωpγ, np=20., V=[0., 0.], gV=gv, σ=sigma) = χ(qy, qx; ωp=ωp, np=np, V=V)*fd(qy, qx; σ=σ, gV=gV)
+δρ(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.], gV=gv, σ=sigma) = χ(qy, qx; ωp=ωp, np=np, V=V)*fd(qy, qx; σ=σ, gV=gV)
 
 
-ψtmom(ky::Float64, kx::Float64; ωp=ωpγ, np=20., σ=sigma, gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = (Q(ky, kx; np=np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α)) - conj(M(-ky, -kx; ωp=ωp, np=np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α))/(M(ky, kx; ωp=ωp, np=np)*conj(M(-ky, -kx; ωp=ωp, np=np)) - Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))) 
+ψtmom(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp, σ=sigma, gV=gv, y0=0., x0=0., a=1., b=1., α=0.) = (Q(ky, kx; np=np)*conj(R(-ky, -kx))*conj(vdt(-ky, -kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α)) - conj(M(-ky, -kx; ωp=ωp, np=np))*R(ky, kx)*vdt(ky, kx; σ=σ, gV=gV, y0=y0, x0=x0, a=a, b=b, α=α))/(M(ky, kx; ωp=ωp, np=np)*conj(M(-ky, -kx; ωp=ωp, np=np)) - Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))) 
 
 # $$w(k)=M\left(k\right)-M^{*}\left(-k\right)$$
 # $$z(k)=\left[M\left(k\right)+M^{*}\left(-k\right)\right]^{2}-4Q\left(k\right)Q^{*}\left(-k\right)$$
 
-w(ky::Float64, kx::Float64; ωp=ωpγ, np=20.) = M(ky, kx; ωp=ωp, np=np) - conj(M(-ky, -kx; ωp=ωp, np=np))
-z(ky::Float64, kx::Float64; ωp=ωpγ, np=20.) = (M(ky, kx; ωp=ωp, np=np) + conj(M(-ky, -kx; ωp=ωp, np=np)))^2 - 4Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))
+w(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp) = M(ky, kx; ωp=ωp, np=np) - conj(M(-ky, -kx; ωp=ωp, np=np))
+z(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp) = (M(ky, kx; ωp=ωp, np=np) + conj(M(-ky, -kx; ωp=ωp, np=np)))^2 - 4Q(ky, kx; np=np)*conj(Q(-ky, -kx; np=np))
 
 
 # $$\lambda\left(k\right)_{1,2}=\frac{1}{2}w\pm\frac{1}{2}\sqrt{z}$$
 
-λ1(ky::Float64, kx::Float64; ωp=ωpγ, np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) + 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
-λ2(ky::Float64, kx::Float64; ωp=ωpγ, np=20.) = 1/2*w(ky, kx; ωp=ωp, np=np) - 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
+λ1(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp) = 1/2*w(ky, kx; ωp=ωp, np=np) + 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
+λ2(ky::Float64, kx::Float64; ωp=ωpγ, np=ρp) = 1/2*w(ky, kx; ωp=ωp, np=np) - 1/2*sqrt(z(ky, kx; ωp=ωp, np=np))
 
 function mfroots(kpy::Float64, kpx::Float64; ωp=ωpγ, ip=100.)
     xp = hopfx(kpy, kpx)
@@ -112,19 +113,20 @@ function mfroots(kpy::Float64, kpx::Float64; ωp=ωpγ, ip=100.)
     fill!(ips, ip)
     return (ips, rr, shade)
 end
-const ρp = mfroots(kpy, kpx; ip=6.5)[2][1] # pump density in units of γp
+
+#const ρp = mfroots(kpy, kpx; ip=6.5)[2][1] # pump density in units of γp
 
 # determinant of L(q,ω)
-function D(qy::Float64, qx::Float64; ωp=ωpγ, np=20., V=[0., 0.])
+function D(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.])
 	q = [qy, qx]
 	ω = -dot(V, q)
 	-(ω - λ1(qy, qx; ωp=ωp, np=np))*(ω - λ2(qy, qx; ωp=ωp, np=np))
 end
 
-χnum(qy::Float64, qx::Float64; ωp=ωpγ, np=20., ω=0.) = xp * ((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω) * R(qy, qx) - Q(qy, qx; np=np) * conj(R(-qy, -qx)))
+χnum(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, ω=0.) = xp * ((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω) * R(qy, qx) - Q(qy, qx; np=np) * conj(R(-qy, -qx)))
 
 # response function
-function χ(qy::Float64, qx::Float64; ωp=ωpγ, np=20., V=[0., 0.])
+function χ(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.])
 	q = [qy, qx]
 	freq = -dot(V, q) 
 	num = χnum(qy, qx; ωp=ωp, np=np, ω=freq)
@@ -133,21 +135,21 @@ function χ(qy::Float64, qx::Float64; ωp=ωpγ, np=20., V=[0., 0.])
 end
 
 # drag force
-function drag(box; ωp=ωpγ, np=20., V=[0., 0.], gV=1., σ=sigma)
+function drag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
 
     δρmat = Array(Complex{Float64}, length(box.y), length(box.x)) 
     fdtm = Array(Float64, length(box.y), length(box.x)) 
     norm = sqrt(length(box.x)*length(box.y))
-    full = length(box.y)
+    full = length(box.x)
     half = div(full, 2)
-    for j=1:length(box.x), i=1:half
+    for j=1:half, i=1:length(box.y)
 	    # calculate density modulation in k-space
 	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
 	    # calculate r.V on grid
-	    fdtm[i,j] =  box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+	    fdtm[i,j] = box.y[i]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
 	    # calculate the other half by symmetry
-	    δρmat[full - (i-1), j] = δρmat[i,j]
-	    fdtm[full - (i-1), j] = fdtm[i,j] 
+	    δρmat[i, full+1-j] = δρmat[i,j]
+	    fdtm[i, full+1-j] = fdtm[i,j] 
     end
 
     # ifft to obtain density modulation in real-space
@@ -163,7 +165,5 @@ function drag(box; ωp=ωpγ, np=20., V=[0., 0.], gV=1., σ=sigma)
 end
 
 # $$\left|X_{p}\right|^{4}n_{p}^{3}+2\left|X_{p}\right|^{2}\left(\epsilon_{p}-\omega_{p}\right)n_{p}^{2}+\left[\frac{1}{4}+\left(\epsilon_{p}-\omega_{p}\right)^{2}\right]n_{p}-\left|X_{p}\right|^{4}I_{p}=0$$
-
-
 
 end
