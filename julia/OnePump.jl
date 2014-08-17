@@ -140,16 +140,16 @@ function drag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
     δρmat = Array(Complex{Float64}, length(box.y), length(box.x)) 
     fdtm = Array(Float64, length(box.y), length(box.x)) 
     norm = sqrt(length(box.x)*length(box.y))
-    full = length(box.x)
+    full = length(box.y)
     half = div(full, 2)
-    for j=1:half, i=1:length(box.y)
+    for j=1:length(box.x), i=1:half
 	    # calculate density modulation in k-space
 	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
 	    # calculate r.V on grid
-	    fdtm[i,j] = box.y[i]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+	    fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
 	    # calculate the other half by symmetry
-	    δρmat[i, full+1-j] = δρmat[i,j]
-	    fdtm[i, full+1-j] = fdtm[i,j] 
+	    δρmat[full+1-i, j] = δρmat[i,j]
+	    fdtm[full+1-i, j] = fdtm[i,j] 
     end
 
     # ifft to obtain density modulation in real-space
