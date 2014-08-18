@@ -3,7 +3,7 @@ module OnePump
 using JSON
 using Polynomial
 
-export γp, ωpγ, ρp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, gv, mlp, xp, χ, δρ, fdt, drag, D
+export γp, ωpγ, ρp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, gv, mlp, xp, χ, δρ, fdt, drag, D, olddrag
 
 # read system parameters from file into dict
 #energies in eV
@@ -17,12 +17,12 @@ end
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
 
-const ωpev = 1.39875
-const ωpγ = (ωpev-ωx)/γp
+#const ωpev = 1.39875
+#const ωpγ = (ωpev-ωx)/γp
 const ρp = 0.72714167 # density from pump state in OPO
 
 
-const sigma = 1 #width of gaussian defect
+const sigma = 0.1 #width of gaussian defect
 
 # effective photon mass
 const mc = kz^2/(ωc/γp)
@@ -40,6 +40,9 @@ hopfc(ky::Float64, kx::Float64) = -1/sqrt(1+((enlp(ky, kx) - enc(ky, kx)) /(Ωr/
 const xp = hopfx(kpy, kpx)
 const cp = hopfc(kpy, kpx)
 
+const δ = -1.1007151313383403 # -1.10...
+const ωpγ = enlp(kpy, kpx) + δ
+#const ρp = δ/abs2(xp)
 
 # The blue-shifted LP dispersion is given by $\epsilon\left(k\right)+2n_{p}\left|X(k)\right|^{2}$.
 bsenlp(ky::Float64, kx::Float64, np::Float64) = enlp(ky, kx) + 2np*abs2(hopfx(ky, kx))
@@ -102,7 +105,7 @@ function mfroots(kpy::Float64, kpx::Float64; ωp=ωpγ, ip=100.)
     fill!(shade, "blue")
     for idx = 1:length(rr)
         np = rr[idx]
-        for momx = -5:0.05:5
+        for momx = -0.75:0.05:0.75
             if imag(λ1(0., momx; ωp=ωp, np=np)) > 0 || imag(λ2(0., momx; ωp=ωp, np=np)) > 0
                 shade[idx] = "red"
                 break
@@ -134,6 +137,25 @@ function χ(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.])
 	- (num + numstar)/ D(qy, qx; ωp=ωp, np=np, V=V)
 end
 
+function olddrag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
+
+    δρmat = Array(Complex{Float64}, length(box.y), length(box.x)) 
+    fdtm = Array(Float64, length(box.y), length(box.x)) 
+    norm = sqrt(length(box.x)*length(box.y))
+    for j=1:length(box.x), i=1:length(box.y)
+	    # calculate density modulation in k-space
+	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
+	    # calculate r.V on grid
+	    fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+    end
+
+    # ifft to obtain density modulation in real-space
+    δρtmat = real(fftshift(ifft(fftshift(δρmat))))
+
+    return -sum(fdtm.*δρtmat)
+
+end
+
 # drag force
 function drag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
 
@@ -155,12 +177,7 @@ function drag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
     # ifft to obtain density modulation in real-space
     δρtmat = real(fftshift(ifft(fftshift(δρmat))))
 
-    s = 0.
-    for j=1:length(box.x), i=1:length(box.y)
-	    s += fdtm[i,j]*δρtmat[i,j]
-    end
-
-    return -s
+    return -sum(fdtm.*δρtmat)
 
 end
 
