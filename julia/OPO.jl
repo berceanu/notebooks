@@ -1,4 +1,4 @@
-module OnePump
+module OPO
 
 using JSON
 using Polynomial
