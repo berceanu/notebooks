@@ -17,8 +17,7 @@ end
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
 
-#const ωpev = 1.39875
-#const ωpγ = (ωpev-ωx)/γp
+const ωpγ = (ωpev-ωx)/γp
 const ρp = 0.72714167 # density from pump state in OPO
 
 
@@ -35,13 +34,7 @@ hopfc(ky::Float64, kx::Float64) = -1/sqrt(1+((enlp(ky, kx) - enc(ky, kx)) /(Ωr/
 const xp = hopfx(kpy, kpx)
 const cp = hopfc(kpy, kpx)
 
-const δ = -1.1007151313383403 # -1.10...
-const ωpγ = enlp(kpy, kpx) + δ
-#const ρp = δ/abs2(xp)
-
 bsenlp(ky::Float64, kx::Float64, np::Float64) = enlp(ky, kx) + 2np*abs2(hopfx(ky, kx))
-
-
 
 function findpump(kpy::Float64, kpx::Float64; ωp=ωpγ, np=ρp)
     xp = hopfx(kpy, kpx)
