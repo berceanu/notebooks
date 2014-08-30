@@ -3,7 +3,7 @@ module OPO
 using JSON
 using Polynomial
 
-export γp, ωpγ, ρp, hopfx, kpx, kpy, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, gv, xp, χ, δρ, fdt, drag, D, olddrag
+export γp, ωpγ, ρp, hopfx, ksy, ksx, kpy, kpx, kiy, kix, enlp, γ, ωx, λ1, λ2, findpump, mfroots, vdt, ψtmom, gv, xp, χ, δρ, fdt, drag, D, olddrag
 
 # read system parameters from file into dict
 #energies in eV
@@ -13,6 +13,9 @@ pm = JSON.parsefile("/home/berceanu/notebooks/julia/opoparams.json")
 for (k, v) in pm
     include_string("const " * k * " = $v")
 end
+
+const kiy = 2kpy - ksy
+const kix = 2kpx - ksx
 
 const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+ωx)-1/2*sqrt(((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))-ωx)^2+4Ωr^2))
                 - (ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))))^2))^2*(γx-γc)
