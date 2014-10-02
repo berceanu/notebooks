@@ -71,12 +71,12 @@ X, Y = np.meshgrid(x, y)
 
 ipx = np.linspace(ipx_start, ipx_end, 30)
 
-mpl.rcParams.update({'font.size': 22, 'font.family': 'serif'})
+mpl.rcParams.update({'font.size': 28, 'font.family': 'serif'})
 
-x_label_k = r'$k_x - k_n[\mu m^{-1}]$'
-y_label_k = r'$k_y[\mu m^{-1}]$'
-x_label_i = r'$x[\mu m]$'
-y_label_i = r'$y[\mu m]$'
+x_label_k = r'$k_x - k_n\,[\mu m^{-1}]$'
+y_label_k = r'$k_y\,[\mu m^{-1}]$'
+x_label_i = r'$x\,[\mu m]$'
+y_label_i = r'$y\,[\mu m]$'
 
 letter_spi = ['s', 'p', 'i']
 
@@ -328,7 +328,7 @@ ax.fill([ipstabini,ipstabfin,ipstabfin,ipstabini], [0,0,1.8,1.8], 'gray', alpha=
 
 ax.set_xlim(ipx[0], ipx[-1])
 ax.set_xlabel(r'$I_p [\gamma_p^3]$')
-ax.set_ylabel(r'$n_s, n_p [\gamma_p]$')
+ax.set_ylabel(r'$n_s, n_p, n_i [\gamma_p]$')
 if param_set == "ks0.0":
     ax.xaxis.set_ticks([0, 4, 8, 12, 16])
 ax.yaxis.set_ticks([0.4, 0.8, 1.2, 1.6])
@@ -522,7 +522,7 @@ ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=2)
 ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=2)
 
 ax.zaxis.set_rotate_label(False)  # disable automatic rotation
-ax.set_zlabel(r'$\epsilon-\omega_X[\gamma_p]$', rotation=90)
+ax.set_zlabel(r'$\omega-\omega_0^X[\gamma_p]$', rotation=90)
 if param_set == "ks0.0":
     ax.zaxis.set_ticks([-20, -10, 0])
 else:

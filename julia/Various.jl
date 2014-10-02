@@ -26,7 +26,7 @@ function sliceplot(axes::Vector{PyObject}, data::Matrix{Float64}, x::FloatRange{
     axes[1][:imshow](data, ColorMap("gray"), origin="lower", extent=[left, right, bottom, top])
     axes[1][:plot]((left, right), (y0, y0), "k-")
     axes[1][:set_title](title)
-    axes[2][:plot](x, vec(data[idxy0, :])) 
+    axes[2][:plot](x, vec(data[idxy0, :]))
     axes[2][:plot]((left, right), (level, level), "k-")
 end
 
@@ -49,7 +49,7 @@ end
 function coordinates(c::Curve2)
     N = length(c.vertices)
     xlist = Array(Float64,N)
-    ylist = Array(Float64,N) 
+    ylist = Array(Float64,N)
 
     for (i,v) in enumerate(c.vertices)
         xlist[i] = v[1]
@@ -142,7 +142,7 @@ function getexpfile(filename::ASCIIString)
     m[m .< 0.] = 0.
     m *= 255.0/(mmax - mmin)
     m[m .> 255.] = 255.
-    return m    
+    return m
 end
 
 # truncating experimental data

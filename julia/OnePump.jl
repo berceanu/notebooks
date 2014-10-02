@@ -20,6 +20,7 @@ const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+�
 #const ωpev = 1.39875
 #const ωpγ = (ωpev-ωx)/γp
 const ρp = 0.72714167 # density from pump state in OPO
+#const ρp = 28. # density for SB-SP threshold
 
 
 const sigma = 0.1 #width of gaussian defect
