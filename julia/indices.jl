@@ -76,16 +76,62 @@ function genmat(N)
     return mat
 end
 
+
+function genspmat(N)
+    if iseven(N)
+	    error("even N not allowed")
+    end
+    I = Int64[]
+    #J = Array(Int64, N^2)
+    J = Int64[]
+    V = Int64[]
+    for i in 1:N^2
+        m = getm(i,N)
+        n = getn(i,N)
+	list=Int64[]
+	push!(list,i)
+	push!(V, m*m+n*n)
+        if i > N
+	    push!(list,i-N)
+	    push!(V, 1)
+	    push!(list,i-1)
+	    push!(V, m)
+        elseif i > 1
+	    push!(list,i-1)
+	    push!(V, m)
+        end
+	if i <= (N-1)*N
+            push!(list,i+1)
+	    push!(V, m)
+	    push!(list,i+N)
+	    push!(V, 1)
+        elseif i <= (N-1)*(N+1)
+            push!(list,i+1)
+	    push!(V, m)
+	end
+	append!(J,list)
+	append!(I,ones(Int64,length(list))*i)
+    end
+    return sparse(I,J,V)
+end
+
 using Base.Test
-@test genmat(3) == [ 2 -1  0  1 0 0 0 0 0;
-                    -1  1 -1  0 1 0 0 0 0;
-		     0 -1  2 -1 0 1 0 0 0;
-		     1  0  0  1 0 0 1 0 0;
-		     0  1  0  0 0 0 0 1 0;
-		     0  0  1  0 0 1 0 0 1;
-		     0  0  0  1 0 1 2 1 0;
-		     0  0  0  0 1 0 1 1 1;
-		     0  0  0  0 0 1 0 1 2]
+testmat = [ 2 -1  0  1 0 0 0 0 0;
+           -1  1 -1  0 1 0 0 0 0;
+	    0 -1  2 -1 0 1 0 0 0;
+	    1  0  0  1 0 0 1 0 0;
+	    0  1  0  0 0 0 0 1 0;
+	    0  0  1  0 0 1 0 0 1;
+	    0  0  0  1 0 1 2 1 0;
+	    0  0  0  0 1 0 1 1 1;
+	    0  0  0  0 0 1 0 1 2]
+
+@test genmat(3) == testmat
+@test full(genspmat(3)) == testmat
+@test genmat(101) == full(genspmat(101))
 
 @time genmat(101);
 #elapsed time: 0.212919415 seconds (832483344 bytes allocated)
+@time genspmat(101);
+#elapsed time: 0.005341752 seconds (8746272 bytes allocated)
+
