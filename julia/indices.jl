@@ -52,6 +52,9 @@ end
 getm(i,N)=div(i-1,N)-div(N-1,2)
 getn(i,N)=div(N-1,2)-rem(i-1,N)
 function genmat(N)
+    if iseven(N)
+	    error("even N not allowed")
+    end
     mat = zeros(Int64, N^2, N^2)
     for j in 1:N^2
         m = getm(j,N)
@@ -72,3 +75,17 @@ function genmat(N)
     end
     return mat
 end
+
+using Base.Test
+@test genmat(3) == [ 2 -1  0  1 0 0 0 0 0;
+                    -1  1 -1  0 1 0 0 0 0;
+		     0 -1  2 -1 0 1 0 0 0;
+		     1  0  0  1 0 0 1 0 0;
+		     0  1  0  0 0 0 0 1 0;
+		     0  0  1  0 0 1 0 0 1;
+		     0  0  0  1 0 1 2 1 0;
+		     0  0  0  0 1 0 1 1 1;
+		     0  0  0  0 0 1 0 1 2]
+
+@time genmat(101);
+#elapsed time: 0.212919415 seconds (832483344 bytes allocated)
