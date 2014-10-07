@@ -147,7 +147,6 @@ function genspmat2(N)
         end
     end
 
-    println(k)
     # Preallocate
     I = Array(Int64,k)
     J = Array(Int64,k)
