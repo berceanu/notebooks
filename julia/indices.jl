@@ -76,41 +76,107 @@ function genmat(N)
     return mat
 end
 
+#$$a_{i-N}+e^{-i2\pi\alpha m}a_{i-1}+\left[\omega_{0}+i\gamma-\frac{1}{2}\kappa(m^{2}+n^{2})\right]a_{i}+e^{i2\pi\alpha m}a_{i+1}+a_{i+N}=fe^{i\phi_{i}}$$
 
-function genspmat(N)
+function genspmat(N,α,ω0,γ,κ)
     if iseven(N)
 	    error("even N not allowed")
     end
     I = Int64[]
-    #J = Array(Int64, N^2)
     J = Int64[]
-    V = Int64[]
+    V = Complex{Float64}[]
     for i in 1:N^2
         m = getm(i,N)
         n = getn(i,N)
 	list=Int64[]
 	push!(list,i)
-	push!(V, m*m+n*n)
+	push!(V, ω0 + im*γ - 1/2*κ*(m^2+n^2))
         if i > N
 	    push!(list,i-N)
 	    push!(V, 1)
 	    push!(list,i-1)
-	    push!(V, m)
+	    push!(V, exp(-im*2π*α*m))
         elseif i > 1
 	    push!(list,i-1)
-	    push!(V, m)
+	    push!(V, exp(-im*2π*α*m))
         end
 	if i <= (N-1)*N
             push!(list,i+1)
-	    push!(V, m)
+	    push!(V, exp(im*2π*α*m))
 	    push!(list,i+N)
 	    push!(V, 1)
         elseif i <= (N-1)*(N+1)
             push!(list,i+1)
-	    push!(V, m)
+	    push!(V, exp(im*2π*α*m))
 	end
 	append!(J,list)
-	append!(I,ones(Int64,length(list))*i)
+	append!(I, i .* ones(Int64,length(list)))
+    end
+    return sparse(I,J,V)
+end
+
+
+function setpump(f, N)
+	# generate matrix of random phases in interval [0,2π)
+	ϕ = 2π .* rand(N, N)
+	f .* exp(im .* ϕ)
+end
+
+
+function getas(S, fmat)
+	N = size(fmat)[1]
+	fvec = reshape(fmat, N^2)
+	reshape(S\fvec, N, N)
+end
+
+function genspmat2(N)
+    iseven(N) && error("even N not allowed")
+    
+    # Determine memory usage
+    k = N^2
+    for i in 1:N^2
+        if i > N
+            k += 2
+        elseif i > 1
+            k += 1
+        end
+        if i <= (N-1)*N
+            k += 2
+        elseif i <= (N-1)*(N+1)
+            k += 1
+        end
+    end
+
+    println(k)
+    # Preallocate
+    I = Array(Int64,k)
+    J = Array(Int64,k)
+    V = Array(Int64,k)
+
+    k = 0
+    for i in 1:N^2
+        m = getm(i,N)
+        n = getn(i,N)
+        k += 1
+        J[k] = i; I[k] = i; V[k] = m*m+n*n
+        if i > N
+            k += 1
+            J[k] = i-N; I[k] = i; V[k] = 1
+            k += 1
+            J[k] = i-1; I[k] = i; V[k] = m
+        elseif i > 1
+            k += 1
+            J[k] = i-1; I[k] = i; V[k] = m
+        end
+        if i <= (N-1)*N
+            k += 1
+            J[k] = i+1; I[k] = i; V[k] = m
+            k += 1
+            J[k] = i+N; I[k] = i; V[k] = 1
+        elseif i <= (N-1)*(N+1)
+            k += 1
+            J[k] = i+1; I[k] = i; V[k] = m
+        end
     end
     return sparse(I,J,V)
 end
