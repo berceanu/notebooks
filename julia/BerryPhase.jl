@@ -2,13 +2,13 @@ module BerryPhase
 
 using JSON, PyPlot
 #turn off interactive plotting
-pygui(false)
+#pygui(false)
 
-export genspmat, getass
+export pm, cω0, genspmat, getass, plotintensity, plotreal
 
 pm = JSON.parsefile("/home/berceanu/notebooks/julia/berry.json")
 
-const ω0 = -2.95 
+const cω0 = -2.95 
 
 #various plotting parameters#
 #golden ratio
@@ -90,40 +90,50 @@ function getass(S::SparseMatrixCSC, fmat::Matrix)
 	reshape(S\fvec, N, N)
 end
 
-function calcintensity(ω0::Float64)
+function calcintensity(freq::Range)
 	P = setpump()
-	S = genspmat(ω0)
-	X = getass(S,P)
-	return sum(abs2(X))
+ 	Float64[sum(abs2(getass(genspmat(ω0), P))) for ω0 in freq]
 end
 
-function plotintensity(x, y)
+
+function plotintensity(;start = -4., stp = 0.1, stop = -2.)
+	x = start:stp:stop
+	y = calcintensity(x)
+	mx = maximum(y)
 	fig, ax = plt.subplots(1, 1, figsize=(4ϕgold, 4))
 
-	ax[:plot](x, y, "black")
+	ax[:plot](x, y, "k")
+
+	ax[:axvline](x = cω0, color="red", ls="dashed")
 
 	ax[:set_xlim](x[1], x[end])
-	ax[:set_ylim](0, maximum(y))
-	ax[:yaxis][:set_ticks]([0, div(maximum(y),2), maximum(y)])
-	#ax[:xaxis][:set_ticks]([,])
+	ax[:set_ylim](0, mx)
+	tks = int(linspace(0, mx, 5))
+	ax[:yaxis][:set_ticks](tks)
 	ax[:set_ylabel](L"$\sum_{m,n} |a_{m,n}|^2$ [a.u.]")
 	ax[:set_xlabel](L"$\omega_0 [J]$")
 	fig[:savefig]("fig_berry_int", bbox_inches="tight")
 end
 
-function plotreal(data; N=pm["N"])
+function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2))
+	sz = div(N-1,2) - lim
+	st = 1+sz
+	en = N-sz
+	P = setpump()
+	data = abs2(getass(genspmat(ω0), P))
 	fig, ax = plt.subplots(figsize=(4, 4))
 
-	img = ax[:imshow](data, origin="upper",
-				extent=[-div(N-1,2), div(N-1,2), -div(N-1,2), div(N-1,2)])
+	img = ax[:imshow](data[st:en,st:en], origin="upper", ColorMap("hot"), interpolation="none",
+				extent=[-lim, lim, -lim, lim])
 
-	ax[:set_ylim](-div(N-1,2), div(N-1,2))
-	ax[:set_xlim](-div(N-1,2), div(N-1,2))
+	ax[:set_ylim](-lim, lim)
+	ax[:set_xlim](-lim, lim)
 	ax[:set_xlabel](L"$m$")
 	ax[:set_ylabel](L"$n$")
 
-	ax[:xaxis][:set_ticks]([-60, -30, 0, 30, 60])
-	ax[:yaxis][:set_ticks]([-60, -30, 0, 30, 60])
+	tks = int(linspace(-lim,lim,5)) 
+	ax[:xaxis][:set_ticks](tks)
+	ax[:yaxis][:set_ticks](tks)
 
 	cbar = fig[:colorbar](img, shrink=0.8, aspect=20, fraction=.12,pad=.02)
 	cbar[:ax][:tick_params](labelsize=7)
