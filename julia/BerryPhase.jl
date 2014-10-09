@@ -1,7 +1,8 @@
 module BerryPhase
 
-using JSON, PyPlot
-#turn off interactive plotting
+using JSON, PyPlot, DSP
+
+#turn off interactive plotting#
 #pygui(false)
 
 export pm, cω0, genspmat, getass, plotintensity, plotreal
@@ -88,7 +89,7 @@ function genspmat(ω0::Float64; N=pm["N"], α=pm["α"], γ=pm["γ"], κ=pm["κ"]
 end
 
 function getass(S::SparseMatrixCSC, fmat::Matrix)
-	N = size(fmat)[1]
+	N = pm["N"]
 	fvec = reshape(fmat, N^2)
 	reshape(S\fvec, N, N)
 end
@@ -99,9 +100,9 @@ function calcintensity(freq::Range; seed = 1234)
 end
 
 
-function plotintensity(;start = -4., stp = 0.1, stop = -2., seed = 1234)
+function plotintensity(; N=pm["N"], start = -4., stp = 0.1, stop = -2., seed = 1234)
 	x = start:stp:stop
-	y = calcintensity(x; seed = seed)
+	y = calcintensity(x; seed = seed)./(N^2)
 	mx = maximum(y)
 	fig, ax = plt.subplots(1, 1, figsize=(4ϕgold, 4))
 
@@ -123,10 +124,10 @@ function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234)
 	st = 1+sz
 	en = N-sz
 	P = setpump(; seed = seed)
-	data = abs2(getass(genspmat(ω0), P))
+	data = abs2(getass(genspmat(ω0), P))[st:en,st:en]./(N^2)
 	fig, ax = plt.subplots(figsize=(4, 4))
 
-	img = ax[:imshow](data[st:en,st:en], origin="upper", ColorMap("hot"), interpolation="none",
+	img = ax[:imshow](data, origin="upper", ColorMap("hot"), interpolation="none",
 				extent=[-lim, lim, -lim, lim])
 
 	ax[:set_ylim](-lim, lim)
@@ -140,8 +141,34 @@ function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234)
 
 	cbar = fig[:colorbar](img, shrink=0.8, aspect=20, fraction=.12,pad=.02)
 	cbar[:ax][:tick_params](labelsize=7)
+	cbar[:set_label](L"$|a_{m,n}|^2$")
 
 	fig[:savefig]("fig_berry_real", bbox_inches="tight")
+end
+
+function plotbz(ω0::Float64; N=pm["N"], seed = 1234)
+	P = setpump(; seed = seed)
+	data = getass(genspmat(ω0), P)
+	x = 2π*DSP.fftshift(DSP.fftfreq(N)) 
+	databz = abs2(fftshift(fft(data./(N^2))))
+	fig, ax = plt.subplots(figsize=(4, 4))
+
+	img = ax[:imshow](databz, origin="upper", ColorMap("hot"), interpolation="none",
+	                                       extent=[x[1], x[end], x[1], x[end]])
+
+        ax[:set_ylim](x[1], x[end])
+        ax[:set_xlim](x[1], x[end])
+	ax[:set_xlabel](L"$p_x$")
+	ax[:set_ylabel](L"$p_y$")
+
+	tks = [-3., -1.5, 0, 1.5, 3.]
+	ax[:xaxis][:set_ticks](tks)
+	ax[:yaxis][:set_ticks](tks)
+
+	cbar = fig[:colorbar](img, shrink=0.8, aspect=20, fraction=.12,pad=.02)
+	cbar[:ax][:tick_params](labelsize=7)
+
+	fig[:savefig]("fig_berry_bz", bbox_inches="tight")
 end
 
 end
