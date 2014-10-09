@@ -16,9 +16,12 @@ const cω0 = -2.95
 #bigger fonts
 matplotlib["rcParams"][:update](["font.size" => 18, "font.family" => "serif"])
 
+
 #function definitions#
 
-function setpump(;f=pm["f"], N=pm["N"])
+function setpump(;f=pm["f"], N=pm["N"], seed=1234)
+	# seed the RNG #
+	srand(seed)
 	# generate matrix of random phases in interval [0,2π)
 	ϕ = 2π .* rand(N, N)
 	f .* exp(im .* ϕ)
@@ -90,15 +93,15 @@ function getass(S::SparseMatrixCSC, fmat::Matrix)
 	reshape(S\fvec, N, N)
 end
 
-function calcintensity(freq::Range)
-	P = setpump()
+function calcintensity(freq::Range; seed = 1234)
+	P = setpump(;seed = seed)
  	Float64[sum(abs2(getass(genspmat(ω0), P))) for ω0 in freq]
 end
 
 
-function plotintensity(;start = -4., stp = 0.1, stop = -2.)
+function plotintensity(;start = -4., stp = 0.1, stop = -2., seed = 1234)
 	x = start:stp:stop
-	y = calcintensity(x)
+	y = calcintensity(x; seed = seed)
 	mx = maximum(y)
 	fig, ax = plt.subplots(1, 1, figsize=(4ϕgold, 4))
 
@@ -115,11 +118,11 @@ function plotintensity(;start = -4., stp = 0.1, stop = -2.)
 	fig[:savefig]("fig_berry_int", bbox_inches="tight")
 end
 
-function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2))
+function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234)
 	sz = div(N-1,2) - lim
 	st = 1+sz
 	en = N-sz
-	P = setpump()
+	P = setpump(; seed = seed)
 	data = abs2(getass(genspmat(ω0), P))
 	fig, ax = plt.subplots(figsize=(4, 4))
 
