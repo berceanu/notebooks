@@ -20,11 +20,11 @@ matplotlib["rcParams"][:update](["font.size" => 18, "font.family" => "serif"])
 
 #function definitions#
 
-function setpump(;f=pm["f"], N=pm["N"], seed=1234)
+function setpump( ;f=pm["f"], N=pm["N"], seed=1234, random = 1)
 	# seed the RNG #
 	srand(seed)
 	# generate matrix of random phases in interval [0,2π)
-	ϕ = 2π .* rand(N, N)
+	ϕ = 2π .* rand(N, N) .* random
 	f .* exp(im .* ϕ)
 end
 
@@ -94,15 +94,15 @@ function getass(S::SparseMatrixCSC, fmat::Matrix)
 	reshape(S\fvec, N, N)
 end
 
-function calcintensity(freq::Range; seed = 1234)
-	P = setpump(;seed = seed)
+function calcintensity(freq::Range; seed = 1234, random = 1)
+	P = setpump(;seed = seed, random = random)
  	Float64[sum(abs2(getass(genspmat(ω0), P))) for ω0 in freq]
 end
 
 
-function plotintensity(; N=pm["N"], start = -4., stp = 0.1, stop = -2., seed = 1234)
+function plotintensity(; N=pm["N"], start = -4., stp = 0.1, stop = -2., seed = 1234, random = 1)
 	x = start:stp:stop
-	y = calcintensity(x; seed = seed)./(N^2)
+	y = calcintensity(x; seed = seed, random = random)./(N^2)
 	mx = maximum(y)
 	fig, ax = plt.subplots(1, 1, figsize=(4ϕgold, 4))
 
@@ -119,11 +119,11 @@ function plotintensity(; N=pm["N"], start = -4., stp = 0.1, stop = -2., seed = 1
 	fig[:savefig]("fig_berry_int", bbox_inches="tight")
 end
 
-function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234)
+function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234, random = 1)
 	sz = div(N-1,2) - lim
 	st = 1+sz
 	en = N-sz
-	P = setpump(; seed = seed)
+	P = setpump(; seed = seed, random = random)
 	data = abs2(getass(genspmat(ω0), P))[st:en,st:en]./(N^2)
 	fig, ax = plt.subplots(figsize=(4, 4))
 
@@ -146,8 +146,8 @@ function plotreal(ω0::Float64; N=pm["N"], lim=div(pm["N"]-1,2), seed = 1234)
 	fig[:savefig]("fig_berry_real", bbox_inches="tight")
 end
 
-function plotbz(ω0::Float64; N=pm["N"], seed = 1234)
-	P = setpump(; seed = seed)
+function plotbz(ω0::Float64; N=pm["N"], seed = 1234, random = 1)
+	P = setpump(; seed = seed, random = random)
 	data = getass(genspmat(ω0), P)
 	x = 2π*DSP.fftshift(DSP.fftfreq(N)) 
 	databz = abs2(fftshift(fft(data./(N^2))))
