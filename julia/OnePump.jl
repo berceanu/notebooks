@@ -22,7 +22,6 @@ const γp = γc + (1/sqrt(1+(Ωr/((1/2*((ωc*sqrt(1+(sqrt(kpx^2+kpy^2)/kz)^2))+�
 const ρp = 0.72714167 # density from pump state in OPO
 #const ρp = 28. # density for SB-SP threshold
 
-
 const sigma = 0.1 #width of gaussian defect
 
 # effective photon mass
@@ -58,6 +57,7 @@ function findpump(kpy::Float64, kpx::Float64; ωp=ωpγ, np=ρp)
     c = 1/abs2(xp)^2*(1/4 + (ep-ωp)^2)
     np^3 + b*np^2 + c*np
 end
+
 
 # $$M(k)=\epsilon(k_{p}+k)-\omega_{p}-\frac{i}{2}\gamma(k_{p}+k)+2n_{p}\left|X(k_{p}+k)\right|^{2}$$
 # $$Q(k)=n_{p}X^{*}(k_{p}+k)X^{*}(k_{p}-k)$$
