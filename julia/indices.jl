@@ -53,25 +53,25 @@ getm(i,N)=div(i-1,N)-div(N-1,2)
 getn(i,N)=div(N-1,2)-rem(i-1,N)
 function genmat(N)
     if iseven(N)
-	    error("even N not allowed")
+        error("even N not allowed")
     end
     mat = zeros(Int64, N^2, N^2)
     for j in 1:N^2
         m = getm(j,N)
         n = getn(j,N)
         if j > N
-	    mat[j,j-N] = 1
-	    mat[j,j-1] = m
+        mat[j,j-N] = 1
+        mat[j,j-1] = m
         elseif j > 1
             mat[j,j-1] = m
         end
-	mat[j,j] = m*m+n*n
-	if j <= (N-1)*N #N^2-N
+    mat[j,j] = m*m+n*n
+    if j <= (N-1)*N #N^2-N
             mat[j,j+1]=m
-	    mat[j,j+N]=1
+        mat[j,j+N]=1
         elseif j <= (N-1)*(N+1) #N^2-1
-	    mat[j,j+1]=m
-	end
+        mat[j,j+1]=m
+    end
     end
     return mat
 end
@@ -80,7 +80,7 @@ end
 
 function genspmat(N,α,ω0,γ,κ)
     if iseven(N)
-	    error("even N not allowed")
+        error("even N not allowed")
     end
     I = Int64[]
     J = Int64[]
@@ -88,45 +88,45 @@ function genspmat(N,α,ω0,γ,κ)
     for i in 1:N^2
         m = getm(i,N)
         n = getn(i,N)
-	list=Int64[]
-	push!(list,i)
-	push!(V, ω0 + im*γ - 1/2*κ*(m^2+n^2))
+    list=Int64[]
+    push!(list,i)
+    push!(V, ω0 + im*γ - 1/2*κ*(m^2+n^2))
         if i > N
-	    push!(list,i-N)
-	    push!(V, 1)
-	    push!(list,i-1)
-	    push!(V, exp(-im*2π*α*m))
+        push!(list,i-N)
+        push!(V, 1)
+        push!(list,i-1)
+        push!(V, exp(-im*2π*α*m))
         elseif i > 1
-	    push!(list,i-1)
-	    push!(V, exp(-im*2π*α*m))
+        push!(list,i-1)
+        push!(V, exp(-im*2π*α*m))
         end
-	if i <= (N-1)*N
+    if i <= (N-1)*N
             push!(list,i+1)
-	    push!(V, exp(im*2π*α*m))
-	    push!(list,i+N)
-	    push!(V, 1)
+        push!(V, exp(im*2π*α*m))
+        push!(list,i+N)
+        push!(V, 1)
         elseif i <= (N-1)*(N+1)
             push!(list,i+1)
-	    push!(V, exp(im*2π*α*m))
-	end
-	append!(J,list)
-	append!(I, i .* ones(Int64,length(list)))
+        push!(V, exp(im*2π*α*m))
+    end
+    append!(J,list)
+    append!(I, i .* ones(Int64,length(list)))
     end
     return sparse(I,J,V)
 end
 
 
 function setpump(f, N)
-	# generate matrix of random phases in interval [0,2π)
-	ϕ = 2π .* rand(N, N)
-	f .* exp(im .* ϕ)
+    # generate matrix of random phases in interval [0,2π)
+    ϕ = 2π .* rand(N, N)
+    f .* exp(im .* ϕ)
 end
 
 
 function getas(S, fmat)
-	N = size(fmat)[1]
-	fvec = reshape(fmat, N^2)
-	reshape(S\fvec, N, N)
+    N = size(fmat)[1]
+    fvec = reshape(fmat, N^2)
+    reshape(S\fvec, N, N)
 end
 
 function genspmat2(N)
@@ -183,13 +183,13 @@ end
 using Base.Test
 testmat = [ 2 -1  0  1 0 0 0 0 0;
            -1  1 -1  0 1 0 0 0 0;
-	    0 -1  2 -1 0 1 0 0 0;
-	    1  0  0  1 0 0 1 0 0;
-	    0  1  0  0 0 0 0 1 0;
-	    0  0  1  0 0 1 0 0 1;
-	    0  0  0  1 0 1 2 1 0;
-	    0  0  0  0 1 0 1 1 1;
-	    0  0  0  0 0 1 0 1 2]
+        0 -1  2 -1 0 1 0 0 0;
+        1  0  0  1 0 0 1 0 0;
+        0  1  0  0 0 0 0 1 0;
+        0  0  1  0 0 1 0 0 1;
+        0  0  0  1 0 1 2 1 0;
+        0  0  0  0 1 0 1 1 1;
+        0  0  0  0 0 1 0 1 2]
 
 @test genmat(3) == testmat
 @test full(genspmat(3)) == testmat

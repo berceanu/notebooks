@@ -88,50 +88,50 @@ function vec2range(v::Vector{Float64})
 end
 
 function sider(;l=70., n=256)
-	Δ = 2l/(n-1)
-	-l:Δ:l
+    Δ = 2l/(n-1)
+    -l:Δ:l
 end
 
 sidek(;l=70., n=256) = 2pi*fftshift(fftfreq(n, (n-1)/2l))
 
 # reading data from full numerics for integrated spectrum
 function readdata(path::String, file::String, script::String)
-	filepath = path*file
-	scriptpath = path*script
-	run(`$scriptpath $filepath`)
-	data = readdlm("$filepath.copy", Float64)
-	run(`rm $filepath.copy`)
-	return vec(data)
+    filepath = path*file
+    scriptpath = path*script
+    run(`$scriptpath $filepath`)
+    data = readdlm("$filepath.copy", Float64)
+    run(`rm $filepath.copy`)
+    return vec(data)
 end
 
 # reading data from full numerics(old)
 function readdata(path::String, file::String, script::String, ny::Int64)
-	filepath = path*file
-	scriptpath = path*script
-	run(`$scriptpath $filepath $ny`)
-	data = readdlm("$filepath.copy", Float64)
-	run(`rm $filepath.copy`)
-	return data
+    filepath = path*file
+    scriptpath = path*script
+    run(`$scriptpath $filepath $ny`)
+    data = readdlm("$filepath.copy", Float64)
+    run(`rm $filepath.copy`)
+    return data
 end
 
 # reading data from full numerics
 function readdata(path::String, file::String, script::String, ny::Int64, colno::Int)
-	filepath = path*file
-	scriptpath = path*script
-	run(`$scriptpath $filepath $ny $colno`)
-	data = readdlm("$filepath.copy", Float64)
-	run(`rm $filepath.copy`)
-	return data
+    filepath = path*file
+    scriptpath = path*script
+    run(`$scriptpath $filepath $ny $colno`)
+    data = readdlm("$filepath.copy", Float64)
+    run(`rm $filepath.copy`)
+    return data
 end
 
 # reading data from linear response
 function readdata(path::String, file::String, datafile::String, section::String)
-	filepath = path*file
-	datapath = path*datafile
-	run(`python2 $filepath $section`)
-	data = npzread(datapath)
-	run(`rm $datapath`)
-	return data
+    filepath = path*file
+    datapath = path*datafile
+    run(`python2 $filepath $section`)
+    data = npzread(datapath)
+    run(`rm $datapath`)
+    return data
 end
 
 # reading and rescaling experimental data

@@ -104,20 +104,20 @@ end
 
 # determinant of L(q,ω)
 function D(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.])
-	q = [qy, qx]
-	ω = -dot(V, q)
-	-(ω - λ1(qy, qx; ωp=ωp, np=np))*(ω - λ2(qy, qx; ωp=ωp, np=np))
+    q = [qy, qx]
+    ω = -dot(V, q)
+    -(ω - λ1(qy, qx; ωp=ωp, np=np))*(ω - λ2(qy, qx; ωp=ωp, np=np))
 end
 
 χnum(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, ω=0.) = xp * ((conj(M(-qy, -qx; ωp=ωp, np=np)) + ω) * R(qy, qx) - Q(qy, qx; np=np) * conj(R(-qy, -qx)))
 
 # response function
 function χ(qy::Float64, qx::Float64; ωp=ωpγ, np=ρp, V=[0., 0.])
-	q = [qy, qx]
-	freq = -dot(V, q) 
-	num = χnum(qy, qx; ωp=ωp, np=np, ω=freq)
-	numstar = conj(χnum(-qy, -qx; ωp=ωp, np=np, ω=-freq))
-	- (num + numstar)/ D(qy, qx; ωp=ωp, np=np, V=V)
+    q = [qy, qx]
+    freq = -dot(V, q) 
+    num = χnum(qy, qx; ωp=ωp, np=np, ω=freq)
+    numstar = conj(χnum(-qy, -qx; ωp=ωp, np=np, ω=-freq))
+    - (num + numstar)/ D(qy, qx; ωp=ωp, np=np, V=V)
 end
 
 function olddrag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
@@ -126,10 +126,10 @@ function olddrag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
     fdtm = Array(Float64, length(box.y), length(box.x)) 
     norm = sqrt(length(box.x)*length(box.y))
     for j=1:length(box.x), i=1:length(box.y)
-	    # calculate density modulation in k-space
-	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
-	    # calculate r.V on grid
-	    fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+        # calculate density modulation in k-space
+        δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
+        # calculate r.V on grid
+        fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
     end
 
     # ifft to obtain density modulation in real-space
@@ -148,13 +148,13 @@ function drag(box; ωp=ωpγ, np=ρp, V=[0., 0.], gV=1., σ=sigma)
     full = length(box.y)
     half = div(full, 2)
     for j=1:length(box.x), i=1:half
-	    # calculate density modulation in k-space
-	    δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
-	    # calculate r.V on grid
-	    fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
-	    # calculate the other half by symmetry
-	    δρmat[full+1-i, j] = δρmat[i,j]
-	    fdtm[full+1-i, j] = fdtm[i,j] 
+        # calculate density modulation in k-space
+        δρmat[i,j] = norm*δρ(box.ky[i], box.kx[j]; ωp=ωp, np=np, V=V, gV=gV, σ=σ)
+        # calculate r.V on grid
+        fdtm[i,j] = box.x[j]*fdt(box.y[i], box.x[j]; σ=σ, gV=gV)
+        # calculate the other half by symmetry
+        δρmat[full+1-i, j] = δρmat[i,j]
+        fdtm[full+1-i, j] = fdtm[i,j] 
     end
 
     # ifft to obtain density modulation in real-space
