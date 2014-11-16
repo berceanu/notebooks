@@ -560,6 +560,10 @@ ax.set_ylabel(y_label_i)
 ax.set_xlabel(x_label_i)
 fig_real_I.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
 
+# ranges of the above plots
+for idx in range(3):
+    print np.amin(res_r[:,:,idx]), np.amax(res_r[:,:,idx])
+
 np.save("/home/berceanu/notebooks/OPODrag/psi_k", psi_k)
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
 print "done!"
