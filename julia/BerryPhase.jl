@@ -31,59 +31,181 @@ end
 getm(i::Int64; N=pm["N"]) = div(i-1,N)-div(N-1,2)
 getn(i::Int64; N=pm["N"]) = div(N-1,2)-rem(i-1,N)
 
+function neighbours(i; N=3)
+    m = div(i-1,N)-div(N-1,2)
+    n = div(N-1,2)-rem(i-1,N)
+    maxm = div(N-1,2)
+    #corners
+    #top left
+    if n==maxm && m==-maxm
+        println("right")
+        println("down")
+    #top right
+    elseif n==maxm && m==maxm
+        println("left")
+        println("down")
+    #bottom right
+    elseif n==-maxm && m==maxm 
+        println("left")
+        println("up")
+    #bottom left
+    elseif n==-maxm && m==-maxm 
+        println("right")
+        println("up")
+    #edges
+    #top
+    elseif n == maxm
+        println("left")
+        println("right")
+        println("down")
+    #right
+    elseif m == maxm
+        println("left")
+        println("up")
+        println("down")
+    #bottom
+    elseif n == -maxm
+        println("left")
+        println("right")
+        println("up")
+    #left
+    elseif m == -maxm
+        println("up")
+        println("right")
+        println("down")
+    else
+        println("up")
+        println("right")
+        println("down")
+        println("left")
+    end
+end
+
+
+
 
 function countnonzeros(; N=pm["N"])
     k = N^2
+
+    # maximum value of m or n indices
+    maxm = div(N-1,2)
+
     for i in 1:N^2
-        if i > N
+        m = getm(i; N=N)
+        n = getn(i; N=N)
+        if n == maxm && m == -maxm
+            k+=2
+        elseif n==maxm && m==maxm
+            k+=2
+        elseif n==-maxm && m==maxm 
+            k+=2
+        elseif n==-maxm && m==-maxm 
             k += 2
-        elseif i > 1
-            k += 1
-        end
-        if i <= (N-1)*N
-            k += 2
-        elseif i <= (N-1)*(N+1)
-            k += 1
+        elseif n == maxm
+            k+=3
+        elseif m == maxm
+            k+=3
+        elseif n == -maxm
+            k+=3
+        elseif m == -maxm
+            k+=3
+        else
+            k+=4
         end
     end
     return k
 end
+
+## for i in 1:3^2
+##     n = getn(i; N=3)
+##     m = getm(i; N=3)
+##     println("i=",i,"; ","(n,m)= ","(",n,",", m,")")
+## end
+
 
 function genspmat(ω0::Float64; N=pm["N"], α=pm["α"], γ=pm["γ"], κ=pm["κ"])
     iseven(N) && error("N must be odd")
 
     # Determine memory usage
     nz = countnonzeros(; N=N)
-    
+
     # Preallocate
     I = Array(Int64,nz)
     J = Array(Int64,nz)
     V = Array(Complex{Float64},nz)
 
+    function setnzelem(i,n,m; pos="self")
+        if pos=="left"
+            k += 1
+            J[k] = i-N; I[k] = i; V[k] = 1
+        elseif pos=="right"
+            k += 1
+            J[k] = i+N; I[k] = i; V[k] = 1
+        elseif pos=="up"
+            k += 1
+            J[k] = i-1; I[k] = i; V[k] = exp(-im*2π*α*m)
+        elseif pos=="down"
+            k += 1
+            J[k] = i+1; I[k] = i; V[k] = exp(im*2π*α*m)
+        else #self
+            k += 1
+            J[k] = i; I[k] = i; V[k] = ω0 + im*γ - 1/2*κ*(m^2+n^2)
+        end
+    end
+            
+    # maximum value of m or n indices
+    maxm = div(N-1,2)
+
     k = 0
     for i in 1:N^2
         m = getm(i; N=N)
         n = getn(i; N=N)
-        k += 1
-        J[k] = i; I[k] = i; V[k] = ω0 + im*γ - 1/2*κ*(m^2+n^2)
-        if i > N
-        k += 1
-            J[k] = i-N; I[k] = i; V[k] = 1
-        k += 1
-            J[k] = i-1; I[k] = i; V[k] = exp(-im*2π*α*m)
-        elseif i > 1
-        k += 1
-            J[k] = i-1; I[k] = i; V[k] = exp(-im*2π*α*m)
+        #self interaction is always present
+        setnzelem(i,n,m)
+        #corners
+        #top left
+        if n==maxm && m==-maxm
+            setnzelem(i,n,m; pos="right")
+            setnzelem(i,n,m; pos="down")
+        #top right
+        elseif n==maxm && m==maxm
+            setnzelem(i,n,m; pos="left")
+            setnzelem(i,n,m; pos="down")
+        #bottom right
+        elseif n==-maxm && m==maxm 
+            setnzelem(i,n,m; pos="left")
+            setnzelem(i,n,m; pos="up")
+        #bottom left
+        elseif n==-maxm && m==-maxm 
+            setnzelem(i,n,m; pos="right")
+            setnzelem(i,n,m; pos="up")
+        #edges
+        #top
+        elseif n == maxm
+            setnzelem(i,n,m; pos="right")
+            setnzelem(i,n,m; pos="left")
+            setnzelem(i,n,m; pos="down")
+        #right
+        elseif m == maxm
+            setnzelem(i,n,m; pos="left")
+            setnzelem(i,n,m; pos="up")
+            setnzelem(i,n,m; pos="down")
+        #bottom
+        elseif n == -maxm
+            setnzelem(i,n,m; pos="left")
+            setnzelem(i,n,m; pos="up")
+            setnzelem(i,n,m; pos="right")
+        #left
+        elseif m == -maxm
+            setnzelem(i,n,m; pos="down")
+            setnzelem(i,n,m; pos="up")
+            setnzelem(i,n,m; pos="right")
+        else
+            setnzelem(i,n,m; pos="down")
+            setnzelem(i,n,m; pos="up")
+            setnzelem(i,n,m; pos="right")
+            setnzelem(i,n,m; pos="left")
         end
-    if i <= (N-1)*N
-        k += 1
-            J[k] = i+1; I[k] = i; V[k] = exp(im*2π*α*m)
-        k += 1
-            J[k] = i+N; I[k] = i; V[k] = 1
-        elseif i <= (N-1)*(N+1)
-        k += 1
-            J[k] = i+1; I[k] = i; V[k] = exp(im*2π*α*m)
-    end
     end
     return sparse(I,J,V)
 end
