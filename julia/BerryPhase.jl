@@ -31,6 +31,12 @@ end
 getm(i::Int64; N=pm["N"]) = div(i-1,N)-div(N-1,2)
 getn(i::Int64; N=pm["N"]) = div(N-1,2)-rem(i-1,N)
 
+function geti(n,m; N=pm["N"])
+    d = m+div(N-1,2) #div(i-1,N)
+    r = div(N-1,2)-n #rem(i-1,N)
+    return d*N+r+1
+end
+
 
 function countnonzeros(; N=pm["N"])
     k = N^2
