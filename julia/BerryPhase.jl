@@ -5,7 +5,7 @@ using JSON, PyPlot, DSP
 #turn off interactive plotting#
 #pygui(false)
 
-export pm, cω0, genspmat, getass, plotintensity, plotreal
+export pm, cω0, genspmat, getass, plotintensity, plotreal, calcintensity
 
 pm = JSON.parsefile("/home/berceanu/notebooks/julia/berry.json")
 
@@ -205,20 +205,20 @@ function plotintensity(; N=pm["N"], start = -4., stp = 0.1, stop = -2., seed = 1
     fig[:savefig]("fig_berry_int", bbox_inches="tight")
 end
 
-function plotintensity(n,m; N=pm["N"], start = -4., stp = 0.1, stop = -2.)
+function plotintensity(n,m; N=pm["N"], start = 0., stp = 0.001, stop = 2., vert=1.)
     x = start:stp:stop
     y = calcintensity(x,n,m)./(N^2)
-    mx = maximum(y)
+#    mx = maximum(y)
     fig, ax = plt.subplots(1, 1, figsize=(4ϕgold, 4))
 
     ax[:plot](x, y, "k")
 
-    ax[:axvline](x = cω0, color="red", ls="dashed")
+    ax[:axvline](x = vert, color="red", ls="dashed")
 
     ax[:set_xlim](x[1], x[end])
-    ax[:set_ylim](0, mx)
-    tks = int(linspace(0, mx, 5))
-    ax[:yaxis][:set_ticks](tks)
+#    ax[:set_ylim](0, mx)
+#    tks = int(linspace(0, mx, 5))
+#    ax[:yaxis][:set_ticks](tks)
     ax[:set_ylabel](L"$\sum_{m,n} |a_{m,n}|^2$ [a.u.]")
     ax[:set_xlabel](L"$\omega_0 [J]$")
     fig[:savefig]("fig_berry_int", bbox_inches="tight")
