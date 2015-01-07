@@ -31,58 +31,6 @@ end
 getm(i::Int64; N=pm["N"]) = div(i-1,N)-div(N-1,2)
 getn(i::Int64; N=pm["N"]) = div(N-1,2)-rem(i-1,N)
 
-function neighbours(i; N=3)
-    m = div(i-1,N)-div(N-1,2)
-    n = div(N-1,2)-rem(i-1,N)
-    maxm = div(N-1,2)
-    #corners
-    #top left
-    if n==maxm && m==-maxm
-        println("right")
-        println("down")
-    #top right
-    elseif n==maxm && m==maxm
-        println("left")
-        println("down")
-    #bottom right
-    elseif n==-maxm && m==maxm 
-        println("left")
-        println("up")
-    #bottom left
-    elseif n==-maxm && m==-maxm 
-        println("right")
-        println("up")
-    #edges
-    #top
-    elseif n == maxm
-        println("left")
-        println("right")
-        println("down")
-    #right
-    elseif m == maxm
-        println("left")
-        println("up")
-        println("down")
-    #bottom
-    elseif n == -maxm
-        println("left")
-        println("right")
-        println("up")
-    #left
-    elseif m == -maxm
-        println("up")
-        println("right")
-        println("down")
-    else
-        println("up")
-        println("right")
-        println("down")
-        println("left")
-    end
-end
-
-
-
 
 function countnonzeros(; N=pm["N"])
     k = N^2
@@ -93,21 +41,21 @@ function countnonzeros(; N=pm["N"])
     for i in 1:N^2
         m = getm(i; N=N)
         n = getn(i; N=N)
-        if n == maxm && m == -maxm
+        if n==maxm && m==-maxm
             k+=2
         elseif n==maxm && m==maxm
             k+=2
         elseif n==-maxm && m==maxm 
             k+=2
         elseif n==-maxm && m==-maxm 
-            k += 2
-        elseif n == maxm
+            k+=2
+        elseif n==maxm
             k+=3
-        elseif m == maxm
+        elseif m==maxm
             k+=3
-        elseif n == -maxm
+        elseif n==-maxm
             k+=3
-        elseif m == -maxm
+        elseif m==-maxm
             k+=3
         else
             k+=4
@@ -116,12 +64,13 @@ function countnonzeros(; N=pm["N"])
     return k
 end
 
-## for i in 1:3^2
-##     n = getn(i; N=3)
-##     m = getm(i; N=3)
-##     println("i=",i,"; ","(n,m)= ","(",n,",", m,")")
-## end
-
+function mapping(; N=pm["N"])
+    for i in 1:N^2
+        n = getn(i; N=N)
+        m = getm(i; N=N)
+        println("i=",i,"; ","(n,m)= ","(",n,",", m,")")
+    end
+end
 
 function genspmat(ω0::Float64; N=pm["N"], α=pm["α"], γ=pm["γ"], κ=pm["κ"])
     iseven(N) && error("N must be odd")
@@ -210,8 +159,7 @@ function genspmat(ω0::Float64; N=pm["N"], α=pm["α"], γ=pm["γ"], κ=pm["κ"]
     return sparse(I,J,V)
 end
 
-function getass(S::SparseMatrixCSC, fmat::Matrix)
-    N = pm["N"]
+function getass(S::SparseMatrixCSC, fmat::Matrix; N=pm["N"])
     fvec = reshape(fmat, N^2)
     reshape(S\fvec, N, N)
 end
