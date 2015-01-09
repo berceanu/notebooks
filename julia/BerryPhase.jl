@@ -9,7 +9,7 @@ export pm, cω0, genspmat, getass, plotintensity, plotreal, calcintensity
 
 pm = JSON.parsefile("/home/berceanu/notebooks/julia/berry.json")
 
-const cω0 = -2.95 
+const cω0 = -2.961
 
 #various plotting parameters#
 #golden ratio
