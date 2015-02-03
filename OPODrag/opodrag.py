@@ -3,6 +3,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from mpl_toolkits.mplot3d import Axes3D
+# for colorbar stuff
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib import ticker
+
 from scipy import optimize
 from phcpy.phcpy2c import py2c_set_seed
 from phcpy.solver import solve
@@ -385,50 +389,79 @@ ax.set_xlabel(x_label_k)
 ax.set_ylabel(r'$\epsilon-\omega_X[\gamma_p]$')
 fig_lp.savefig('fig_lp_ks_{0:s}'.format(ks), bbox_inches='tight')
 
-matsL = L_mats(KX, KY, nkx, nky)
+indices_si_rows = [0, 0, 2, 2, 3, 3, 5, 5]
+indices_si_cols = [2, 5, 0, 3, 2, 5, 0, 3]
+indices_ps_rows = [0, 0, 1, 1, 3, 3, 4, 4]
+indices_ps_cols = [1, 4, 0, 3, 1, 4, 0, 3]
+indices_pi_rows = [1, 1, 2, 2, 4, 4, 5, 5]
+indices_pi_cols = [2, 5, 1, 4, 2, 5, 1, 4]
 
+
+matsL = L_mats(KX, KY, nkx, nky)
 eigs = eigL_mats(matsL, nkx, nky)
 
-y_points, x_points, eig_indices = np.where(np.abs(eigs.real) <= eigs_threshold)
+matsL_diag = np.copy(matsL)
+matsL_diag[:, indices_si_rows, indices_si_cols] = complex(0, 0)
+matsL_diag[:, indices_ps_rows, indices_ps_cols] = complex(0, 0)
+matsL_diag[:, indices_pi_rows, indices_pi_cols] = complex(0, 0)
+eigs_diag = eigL_mats(matsL_diag, nkx, nky)
 
-fig_excitation, axes = plt.subplots(2, 1, figsize=(8, 6))
+
+y_points, x_points, eig_indices = np.where(np.abs(eigs.real) <= eigs_threshold)
+y_points_diag, x_points_diag, eig_indices_diag = np.where(
+    np.abs(eigs_diag.real) <= 0.05)
+
+phi_gold = 1.618
+
+fig_excitation, ax = plt.subplots(1, 1, figsize=(6*phi_gold, 6))
 for idx in range(3):
-    axes[0].plot(
-        KX[nky / 2, kxL:kxR], eigs[nky / 2,
-                                   kxL:kxR, idx].imag, linestyle='none',
-        marker='o', markerfacecolor='black', markersize=4)
-    axes[1].plot(
+#    axes[0].plot(
+#        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+#                                   kxL:kxR, idx].imag, linestyle='none',
+#        marker='o', markerfacecolor='black', markersize=4)
+    ax.plot(
         KX[nky / 2, kxL:kxR], eigs[nky / 2,
                                    kxL:kxR, idx].real, linestyle='none',
         marker='o', markerfacecolor='black', markersize=2)
 for idx in range(3, 6):
-    axes[0].plot(
-        KX[nky / 2, kxL:kxR], eigs[nky / 2,
-                                   kxL:kxR, idx].imag, linestyle='none',
-        marker='o', markerfacecolor='black', markersize=4)
-    axes[1].plot(
+#    axes[0].plot(
+#        KX[nky / 2, kxL:kxR], eigs[nky / 2,
+#                                   kxL:kxR, idx].imag, linestyle='none',
+#        marker='o', markerfacecolor='black', markersize=4)
+    ax.plot(
         KX[nky / 2, kxL:kxR], eigs[nky / 2,
                                    kxL:kxR, idx].real, linestyle='none',
         marker='o', markerfacecolor='black', markersize=2)
-for ax in [0, 1]:
-    axes[ax].axhline(y=0, color='black', ls='dashed')
-    axes[ax].axvline(x=0, color='black', ls='dashed')
-axes[0].set_ylabel(r'$\Im{(\omega)}[\gamma_p]$')
-axes[1].set_xlabel(x_label_k)
-axes[0].set_xlim(-0.75, 0.75)
-axes[1].set_xlim(kxl, kxr)
-axes[1].set_ylim(-5, 5)
-axes[1].set_ylabel(r'$\Re{(\omega)}[\gamma_p]$')
+#for ax in [0, 1]:
+#    axes[ax].axhline(y=0, color='black', ls='dashed')
+    #axes[ax].axvline(x=0, color='black', ls='dashed')
+ax.axhline(y=0, color='black', ls='dashed')
+#axes[0].set_ylabel(r'$\Im{(\omega)}[\gamma_p]$')
+ax.set_xlabel(x_label_k)
+#axes[0].set_xticklabels([])
+#axes[0].set_xlim(kx[kxL], kx[kxR])
+ax.set_xlim(kx[kxL], kx[kxR])
+#axes[0].xaxis.set_ticks([-6, -3, 0, 3, 6])
+#axes[0].yaxis.set_ticks([-1.2, -0.8, -0.4, 0])
+ax.xaxis.set_ticks([-6, -3, 0, 3, 6])
+ax.set_ylim(-5, 5)
+ax.set_ylabel(r'$\Re{(\omega)}[\gamma_p]$')
 fig_excitation.savefig('fig_excitation_ks_{0:s}'.format(ks), bbox_inches='tight')
 
 vectfd = fd_mats(KX, KY, nkx, nky)
 bcoef = bog_coef_mats(matsL, vectfd, nkx, nky)
+bcoef_diag = bog_coef_mats(matsL_diag, vectfd, nkx, nky)
 
 matsL_min = -np.fft.fftshift(matsL, axes=(1, 2))
 vectfd_min = -np.fft.fftshift(vectfd, axes=(1,))
 bcoef_conj_mink = bog_coef_mats(matsL_min, vectfd_min, nkx, nky)
 
+matsL_min_diag = -np.fft.fftshift(matsL_diag, axes=(1, 2))
+bcoef_conj_mink_diag = bog_coef_mats(matsL_min_diag, vectfd_min, nkx, nky)
+
+
 psi_k = gv / 2 * (bcoef[:, :, 0:3] + bcoef_conj_mink[:, :, 3:6])
+psi_k_diag = gv / 2 * (bcoef_diag[:, :, 0:3] + bcoef_conj_mink_diag[:, :, 3:6])
 
 
 [imax, jmax] = np.unravel_index(
@@ -447,6 +480,8 @@ psi_k[imax - 1:imax + 2, jmax - 1:jmax + 2, :] = averages
 
 psi_k[nky / 2, nkx / 2, :] += np.sqrt(nkx * nky) * \
     np.array([s / xs, p / xp, i / xi])
+psi_k_diag[nky / 2, nkx / 2, :
+           ] += np.sqrt(nkx * nky) * np.array([s / xs, p / xp, i / xi])
 
 res_k = np.log10(np.abs(psi_k) ** 2)  # logscale
 
@@ -482,6 +517,9 @@ ax.yaxis.tick_right()
 ax.xaxis.set_ticks([-6, -3, 0, 3, 6])
 ax.yaxis.set_ticks([-6, -3, 0, 3, 6])
 fig_mom_I.savefig('fig_mom_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
+
+res_k_diag = np.log10(np.abs(psi_k_diag) ** 2)  # logscale
+
 
 kl3d, kr3d = -5, 5
 kxl3d, kxr3d = index_mom(kl3d), index_mom(kr3d)
@@ -539,31 +577,163 @@ res_r = np.abs(psi_r) ** 2 / \
 
 rango = 400 / (1024/nkx)
 
+
+#use np.clip for truncating the Z range
 fig_real_S, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
+im = ax.imshow(res_r[rango:-rango, rango:-rango, 0], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
 ax.set_ylabel(y_label_i)
 ax.set_xticklabels([])
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r[rango:-rango, rango:-rango, 0]),
+                       np.amax(res_r[rango:-rango, rango:-rango, 0]), 5) 
+cb = fig_real_S.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
 fig_real_S.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[0]), bbox_inches='tight')
 
+
+ls = ['--','-',':']
+col = ['blue', 'red', 'green']
+leg = ['signal', 'pump', 'idler']
+mrk = ['^', 'o', 'v']
+fig_ranges, ax = plt.subplots(1, 1, figsize=(6*phi_gold, 6))
+for idx in range(3):
+    ax.plot(x[rango:-rango], res_r[nky/2, rango:-rango, idx], linestyle=ls[idx], color=col[idx],
+            linewidth=3.0, label=leg[idx])
+ax.axhline(y=1, color='black', ls='dashed')
+#ax.axvline(x=0, color='black', ls='dashed')
+ax.set_ylabel(r'$|\psi_C(x,y=0,\omega_n)|^2$')
+
+if (ks=='-0_400') or (ks=='0_000'):
+    ax.set_xticklabels([])
+else:
+    plt.legend(prop={'size':18})
+    ax.set_xlabel(x_label_i)
+
+yloc = plt.MaxNLocator(6)
+ax.yaxis.set_major_locator(yloc)
+ax.set_xlim(x[rango], x[-rango])
+ax.set_ylim(0.7,1.2)
+
+
+fig_ranges.savefig('fig_ranges_ks_{0:s}'.format(ks), bbox_inches='tight')
+
+
+
 fig_real_P, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
+im = ax.imshow(res_r[rango:-rango, rango:-rango, 1], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
 ax.set_ylabel(y_label_i)
 ax.set_xticklabels([])
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r[rango:-rango, rango:-rango, 1]),
+                       np.amax(res_r[rango:-rango, rango:-rango, 1]), 5) 
+cb = fig_real_P.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
 fig_real_P.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[1]), bbox_inches='tight')
 
+
 fig_real_I, ax = plt.subplots(1, 1, figsize=(5, 5))
-ax.imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
+im = ax.imshow(res_r[rango:-rango, rango:-rango, 2], cmap=cm.gray,
                  origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
 ax.set_ylabel(y_label_i)
 ax.set_xlabel(x_label_i)
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r[rango:-rango, rango:-rango, 2]),
+                       np.amax(res_r[rango:-rango, rango:-rango, 2]), 5) 
+cb = fig_real_I.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
 fig_real_I.savefig('fig_real_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
+
+
 
 # ranges of the above plots
 for idx in range(3):
     print np.amin(res_r[:,:,idx]), np.amax(res_r[:,:,idx])
 
+psi_r_diag = np.fft.fftshift(
+    np.fft.ifft2(np.sqrt(nkx * nky) * psi_k_diag, axes=(0, 1)), axes=(0, 1))
+res_r_diag = np.abs(psi_r_diag) ** 2 / \
+    np.array(
+        [ns_chosen / xs ** 2, np_chosen / xp ** 2, ni_chosen / xi ** 2])
+
+
+fig_real_diag_S, ax = plt.subplots(1, 1, figsize=(5, 5))
+im = ax.imshow(res_r_diag[rango:-rango, rango:-rango, 0], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+
+ax.set_ylabel(y_label_i)
+#ax.set_yticklabels([])
+if ks=='0_700':
+    ax.set_xlabel(x_label_i)
+else:
+    ax.set_xticklabels([])
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r_diag[rango:-rango, rango:-rango, 0]),
+                       np.amax(res_r_diag[rango:-rango, rango:-rango, 0]), 5) 
+cb = fig_real_diag_S.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
+fig_real_diag_S.savefig('fig_real_diag_ks_{0:s}_{1:s}'.format(ks, letter_spi[0]), bbox_inches='tight')
+
+fig_real_diag_P, ax = plt.subplots(1, 1, figsize=(5, 5))
+im = ax.imshow(res_r_diag[rango:-rango, rango:-rango, 1], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+
+#ax.set_ylabel(y_label_i)
+ax.set_yticklabels([])
+if ks=='0_700':
+    ax.set_xlabel(x_label_i)
+else:
+    ax.set_xticklabels([])
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r_diag[rango:-rango, rango:-rango, 1]),
+                       np.amax(res_r_diag[rango:-rango, rango:-rango, 1]), 5) 
+cb = fig_real_diag_P.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
+fig_real_diag_P.savefig('fig_real_diag_ks_{0:s}_{1:s}'.format(ks, letter_spi[1]), bbox_inches='tight')
+
+
+fig_real_diag_I, ax = plt.subplots(1, 1, figsize=(5, 5))
+im = ax.imshow(res_r_diag[rango:-rango, rango:-rango, 2], cmap=cm.gray,
+                 origin=None, extent=[x[rango], x[-rango], y[rango], y[-rango]])
+
+#ax.set_ylabel(y_label_i)
+ax.set_yticklabels([])
+if ks=='0_700':
+    ax.set_xlabel(x_label_i)
+else:
+    ax.set_xticklabels([])
+
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.05)
+ticks_at = np.linspace(np.amin(res_r_diag[rango:-rango, rango:-rango, 2]),
+                       np.amax(res_r_diag[rango:-rango, rango:-rango, 2]), 5) 
+cb = fig_real_diag_I.colorbar(im, cax=cax, ticks=ticks_at, format='%1.2f')
+cb.ax.tick_params(labelsize=20)
+
+fig_real_diag_I.savefig('fig_real_diag_ks_{0:s}_{1:s}'.format(ks, letter_spi[2]), bbox_inches='tight')
+
+print 'diagonal ranges'
+for idx in range(3):
+    print np.amin(res_r_diag[:, :, idx]), np.amax(res_r_diag[:, :, idx])
+
+
 np.save("/home/berceanu/notebooks/OPODrag/psi_k", psi_k)
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
 print "done!"
+
