@@ -332,7 +332,7 @@ ax.fill([ipstabini,ipstabfin,ipstabfin,ipstabini], [0,0,1.8,1.8], 'gray', alpha=
 
 ax.set_xlim(ipx[0], ipx[-1])
 ax.set_xlabel(r'$I_p [\gamma_p^3]$')
-ax.set_ylabel(r'$n_s, n_p, n_i [\gamma_p]$')
+ax.set_ylabel(r'$\epsilon_s, \epsilon_p, \epsilon_i [\gamma_p]$')
 if param_set == "ks0.0":
     ax.xaxis.set_ticks([0, 4, 8, 12, 16])
 ax.yaxis.set_ticks([0.4, 0.8, 1.2, 1.6])
@@ -605,7 +605,7 @@ for idx in range(3):
             linewidth=3.0, label=leg[idx])
 ax.axhline(y=1, color='black', ls='dashed')
 #ax.axvline(x=0, color='black', ls='dashed')
-ax.set_ylabel(r'$|\psi_C(x,y=0,\omega_n)|^2$')
+ax.set_ylabel(r'$I_C(x,y=0,\omega_n)$')
 
 if (ks=='-0_400') or (ks=='0_000'):
     ax.set_xticklabels([])
@@ -735,5 +735,7 @@ for idx in range(3):
 
 np.save("/home/berceanu/notebooks/OPODrag/psi_k", psi_k)
 np.save("/home/berceanu/notebooks/OPODrag/res_r", res_r)
+
+
 print "done!"
 
