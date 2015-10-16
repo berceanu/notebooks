@@ -605,7 +605,7 @@ for idx in range(3):
             linewidth=3.0, label=leg[idx])
 ax.axhline(y=1, color='black', ls='dashed')
 #ax.axvline(x=0, color='black', ls='dashed')
-ax.set_ylabel(r'$I_C(x,y=0,\omega_n)$')
+ax.set_ylabel(r'$I(x,y=0,\omega_n)$')
 
 if (ks=='-0_400') or (ks=='0_000'):
     ax.set_xticklabels([])
