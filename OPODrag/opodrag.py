@@ -39,8 +39,8 @@ omega_pmp = param.getfloat(param_set, "omega_pmp")
 ip_chosen = param.getfloat(param_set, "ip_chosen")
 gv = param.getfloat(param_set, "gv")
 
-nkx = param.getfloat(param_set, "nkx")
-nky = param.getfloat(param_set, "nky")
+nkx = param.getint(param_set, "nkx")
+nky = param.getint(param_set, "nky")
 ipx_start = param.getfloat(param_set, "ipx_start")
 ipx_end = param.getfloat(param_set, "ipx_end")
 kxl = param.getfloat(param_set, "kxl")
@@ -560,7 +560,7 @@ ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=2)
 ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=2)
 
 ax.zaxis.set_rotate_label(False)  # disable automatic rotation
-ax.set_zlabel(r'$\omega-\omega_0^X[\gamma_p]$', rotation=90)
+ax.set_zlabel(r'$\omega-\omega_X(0)[\gamma_p]$', rotation=90)
 if param_set == "ks0.0":
     ax.zaxis.set_ticks([-20, -10, 0])
 else:
@@ -605,13 +605,14 @@ for idx in range(3):
             linewidth=3.0, label=leg[idx])
 ax.axhline(y=1, color='black', ls='dashed')
 #ax.axvline(x=0, color='black', ls='dashed')
-ax.set_ylabel(r'$I(x,y=0,\omega_n)$')
 
-if (ks=='-0_400') or (ks=='0_000'):
-    ax.set_xticklabels([])
+ax.set_xlabel(x_label_i)
+
+if (ks=='0_000') or (ks=='0_700'):
+    ax.set_yticklabels([])
 else:
     plt.legend(prop={'size':18})
-    ax.set_xlabel(x_label_i)
+    ax.set_ylabel(r'$I(x,y=0,\omega_n)$')
 
 yloc = plt.MaxNLocator(6)
 ax.yaxis.set_major_locator(yloc)
