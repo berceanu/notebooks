@@ -1,3 +1,5 @@
+# Mean-field: pump only
+
 import numpy as np
 from scipy import optimize
 from phcpy.phcpy2c import py2c_set_seed

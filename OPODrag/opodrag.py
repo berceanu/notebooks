@@ -560,7 +560,7 @@ ax.set_xlabel('\n' + r'$k_x[\mu m^{-1}]$', linespacing=2)
 ax.set_ylabel('\n' + r'$k_y[\mu m^{-1}]$', linespacing=2)
 
 ax.zaxis.set_rotate_label(False)  # disable automatic rotation
-ax.set_zlabel(r'$\omega-\omega_X(0)[\gamma_p]$', rotation=90)
+ax.set_zlabel(r'$\omega-\omega_X(0)[\gamma_p]$', rotation=90, labelpad=10)
 if param_set == "ks0.0":
     ax.zaxis.set_ticks([-20, -10, 0])
 else:
