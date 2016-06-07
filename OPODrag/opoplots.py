@@ -43,8 +43,8 @@ omega_pmp = param.getfloat(param_set, "omega_pmp")
 ip_chosen = param.getfloat(param_set, "ip_chosen")
 gv = param.getfloat(param_set, "gv")
 
-nkx = 512
-nky = 512
+nkx = 1024
+nky = 1024
 ipx_start = param.getfloat(param_set, "ipx_start")
 ipx_end = param.getfloat(param_set, "ipx_end")
 kxl = param.getfloat(param_set, "kxl")
@@ -54,7 +54,7 @@ kyr = param.getfloat(param_set, "kyr")
 eigs_threshold = param.getfloat(param_set, "eigs_threshold")
 stride_r = param.getint(param_set, "stride_r")
 stride_c = param.getint(param_set, "stride_c")
-delta_k = 0.005
+delta_k = 0.05
 ipstabini = param.getfloat(param_set, "ipstabini")
 ipstabfin = param.getfloat(param_set, "ipstabfin")
 
@@ -372,8 +372,8 @@ C_band = enC(KX, KY)
 LP = enLP(KX, KY)
 UP = enUP(KX, KY)
 
-#kxL, kxR = index_mom(-3.5), index_mom(3.5)
-kxL, kxR = index_mom(-0.6), index_mom(0.6)
+kxL, kxR = index_mom(-3.5), index_mom(3.5)
+
 
 fig_lp, ax = plt.subplots(1, 1, figsize=(10, 6))
 
@@ -488,3 +488,8 @@ axes[1].set_ylabel(r'$\Im{(\omega)}\,[\gamma_p]$')
 
 fig_excitation.savefig('fig_response_ev_ks_{0:s}.pdf'.format(ks),
                bbox_inches='tight', pad_inches=0.0, transparent=True)
+
+# plot optical limiter and bistable regimes
+
+fig_bistable, axes = plt.subplots(1, 2, figsize=(20, 6))
+fig_bistable.savefig('fig_bistable', bbox_inches='tight') #, pad_inches=0.0, transparent=True)
