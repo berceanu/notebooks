@@ -138,7 +138,7 @@ alpha = (xi**2 / xs**2) * (gs / gi)
 
 def n_hom_mf(ips):
     return np.array([optimize.brentq(
-        lambda n: ((ep - omega_p_chosen + xp**2 * n)**2 + 1 / 4) * n - xp**4 * ip,
+        lambda n: ((ep - omega_p_chosen + xp**2 * n)**2 + 1./4.) * n - xp**4 * ip,
         0, 3) for ip in ips])
 
 
@@ -490,6 +490,8 @@ fig_excitation.savefig('fig_response_ev_ks_{0:s}.pdf'.format(ks),
                bbox_inches='tight', pad_inches=0.0, transparent=True)
 
 # plot optical limiter and bistable regimes
+((ep - omega_p_chosen + xp**2 * n)**2 + 1./4.) * n  = xp**4*ip
+
 
 fig_bistable, axes = plt.subplots(1, 2, figsize=(20, 6))
 fig_bistable.savefig('fig_bistable', bbox_inches='tight') #, pad_inches=0.0, transparent=True)

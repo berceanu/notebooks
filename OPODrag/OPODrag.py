@@ -124,7 +124,7 @@ alpha = (xi ** 2 / xs ** 2) * (gs / gi)
 
 def n_hom_mf(ips):
     return np.array([optimize.brentq(lambda n: ((ep - omega_p_chosen
-                                                 + xp ** 2 * n) ** 2 + 1 / 4) * n - xp ** 4 * ip, 0, 3)
+                                                 + xp ** 2 * n) ** 2 + 1./4.) * n - xp ** 4 * ip, 0, 3)
                      for ip in ips])
 
 
