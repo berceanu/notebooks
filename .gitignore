@@ -1,4 +1,5 @@
 *.npy
+data
 *.npz
 *.swp
 .ipynb_checkpoints
