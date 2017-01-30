@@ -1,0 +1,1978 @@
+Romanian Reports in Physics, Vol. 68, Supplement, P. S233–S274, 2016
+
+COMBINED LASER GAMMA EXPERIMENTS AT ELI-NP
+K. HOMMA1,2, O. TESILEANU3,*, L. D’ALESSI3, T. HASEBE1, A. ILDERTON4, T. MORITAKA5,
+Y. NAKAMIYA6, K. SETO3, H. UTSUNOMIYA7, Y. XU3
+
+1Graduate
+
+School of Science, Hiroshima University, Higashihiroshima, Hiroshima, Japan
+
+2International
+3ELI-NP,
+
+Center for Zetta-Exawatt Science and Technology, École Polytechnique
+
+“Horia Hulubei” National Institute for Physics and Nuclear Engineering, 30 Reactorului
+Street, RO-077125, Bucharest-Magurele, Romania
+
+4Department
+
+5Department
+
+6Institute
+7Department
+
+of Applied Physics, Chalmers University of Technology, Maskingrand 2, 412 58
+Gothenberg, SE-41296, Sweden
+
+of Physics, National Central University, No.300, Jhongda Rd., Jhongli District, Taoyuan
+city 32001, Taiwan
+of Chemical Research, Kyoto University, Gokasho, Uji-city, Kyoto, 611-001, Japan
+of Physics, Konan University, 8-9-1, Okamoto, Higashi-nada, Kobe, Hyogo, 658-8501,
+Japan
+*Corresponding
+
+author E-mail: ovidiu.tesileanu@eli-np.ro
+
+Abstract. We propose experiments in the E7 and E4 experimental areas at
+ELI-NP to tackle problems of fundamental physics, taking advantage of the unique
+configuration and characteristics of the new research infrastructure to be constructed
+in Magurele, Romania. The experimental setups proposed follow a gradual approach
+from the point of view of complexity, from the “Day 1” experiments to experiments
+for which the prerequisites include results from the previously performed ones. In
+addition, there are two generic Research and Development tasks proposed in this
+Technical Design Report (TDR), related to the development of a detection system,
+Gamma Polari-Calorimeter (GPC), commonly applicable to energy measurements for
+electrons, positrons and gamma-rays above the 0.1 GeV energy scale and the
+preparatory tests for laser plasma acceleration of electrons up to necessary energies
+210 MeV, 2.5 GeV and 5 GeV for the later stage experiments, respectively. In this
+paper we particularly focus on possible “Day-1” topics and briefly mention the future
+extensions foreseen.
+Key words: High-intensity laser, LINAC based gamma-ray source, isomers,
+photoexcitation, dark matter survey, 4-wave mixing, gamma polari-calorimeter, nonlinear QED, radiation reaction, pair production, gamma-gamma collider, vacuum
+birefringence
+
+S234
+
+K. Homma et al.
+
+2
+
+1. INTRODUCTION
+This TDR is the result of the collaboration between the authors and the ELINP employees and scientists from universities and research institutes from Japan
+and Korea.
+The contributors from ELI-NP, in alphabetical order are: Sohichiroh Aogaki,
+Bertrand Boisdeffre, Mihail Cernaianu, Ioan Dancus, Dan Filipescu, Cristian Petcu,
+Mihai Risca and Zafar Yasin.
+The external contributors are: Yasuo Arai (KEK, Japan), Masaki Hashida
+(Kyoto University, Japan), Yoshihisa Iwashita (Kyoto University, Japan), Masaki
+Kando (JAEA, Japan), James Koga (JAEA, Japan), Tetsuro Kumita (Tokyo
+Metropolitan University), Kayo Matsuura (Hiroshima University, Japan), Kazuhisa
+Nakajima (Institute for Basic Science, Korea), Shuji Sakabe (Kyoto University,
+Japan).
+
+Figure 1 - The Physics cases in RA5-TDR (early half plan).
+
+3
+
+Combined laser gamma experiments at ELI-NP
+
+S235
+
+Figure 2 - The work space for the proposals in RA5-TDR.
+
+This proposal includes two main topics in physics with staged developments
+to gradually tackle them. The first is nuclear reactions, linked to the possibility to
+reach, at ELI-NP, conditions encountered in the interior of stars – the production
+and photoexcitation of isomers is proposed. The second topic is probing the
+photon-photon interactions below the MeV energy scale in general which have not
+been explored thoroughly to date by utilizing the laser-laser, laser-gamma and
+gamma-gamma collision systems. By these various combinations of photon beams,
+we can test sub-eV Dark Matter scenarios as well as nonlinear Quantum
+Electrodynamics (QED) effects both in perturbative and non-perturbative regimes.
+It also includes the laser-electron scattering for the fundamental tests on the
+radiation mechanisms and pair production via the tunneling process in extremely
+high-intensity laser fields. The laser-electron experiment also aims at the
+generation of polarized gamma-rays from sub-GeV to GeV as probes for the later
+stage experiments to explore the vacuum birefringence under high-intensity laser
+fields. Considering all of the above, we define several sections for the experiments
+performed at E7 and E4 experimental areas (Figure 1 and Figure 28 in Chapter 4).
+We define experimental stages and the flow charts depending on the
+experimental areas, Research and Development subjects, and combinations of
+beam sources necessary for individual experimental proposals is shown in Figure 1,
+where abbreviations L, e, γ and A correspond to laser, electron, gamma-ray beams
+and nucleus targets, respectively.
+“Stage 1” experiments correspond to technically less difficult proposals based
+on available beam sources within the current ELI-NP design.
+At E7 the production of isomers by using MeV electrons produced with one
+1 PW/10 PW laser line and the excitation with gamma radiations from the Gamma
+
+S236
+
+K. Homma et al.
+
+4
+
+Beam System (GBS) will be measured via the observation of neutron emission.
+There are two irradiation modes in the production and photoexcitation of isomers:
+synchronized and non-synchronized irradiations of laser photons and gamma
+photons. These experiments are referred as “Production and Photoexcitation of
+isomers experiments” or RA5-PPEx.
+At E4 the search for weakly coupling sub-eV Dark Matter (RA5-DM) with
+two 0.1 PW lasers and then two 1 PW lasers, will be performed. This is the
+simplest experiment that utilizes only the laser beams in vacuum chambers.
+The prime Research and Development topic necessary for the following stages 1.5,
+3 and 4 is the development of the common detector, Gamma Polari-Calorimeter
+(GPC), to measure momenta of e+ and e-, energies of gamma-rays above 0.1 GeV
+and the degree of linear polarization of gamma-rays via the conversion process to
+e+e−. We refer to this Research and Development topic as RA5-GPC.
+The second Research and Development subject is the generation of 210 MeV,
+2.5 GeV and 5.0 GeV electron beams based on Laser Plasma Acceleration (LPA)
+with gas cells for experimental proposals for the future upgrades.
+Though we will perform proof-of-principle experiments at existing
+infrastructures prior to the operational phase of ELI-NP, we do not include specific
+proposals for this subject in our TDR, because other ELI-NP TDR teams also plan
+this kind of experiments and we will share the relevant technical information by the
+time of commissioning in 2018.
+“Stage 1.5” proposals are fundamental tests on radiation reaction (RA5-RR),
+on pair production (RA5-Pair) and on degrees of linear polarization (RA5-Pol) via
+the extremely non-linear process in extremely high-intensity laser fields by
+combining 600 MeV electrons from the LINAC (ELI-NP Gamma Beam System)
+and a 10 PW laser at E7. All proposed measurements are possible with the GPC.
+These experiments can be an alternative proposal to the E7 stage-1
+experiment (RA5-PPEx) which shares the common interaction chamber at E7.
+Depending on the advances of the preparatory experiments relevant to RA5-PPEx
+and on the decision to construct the electron transport line to E7, the staging order
+between L(e) + + A (RA5-PPEx) and e (0.6 GeV) + L (RA5-RR, -Pair, -Pol) may
+be swapped. The stage 1.5 proposals require an additional electron transport line to
+the E7 area in order to get the accurately controlled stable electron bunches from
+the LINAC (of the Gamma Beam System). Also an additional Compton-scatteringbased calibration system to synchronize one electron bunch with a 10 PW laser
+pulse must be in place. The electron bunches will arrive to E7 from the LINAC
+with a lower repetition rate of 1 Hz instead of 100 Hz, to reduce the electron
+current for the beam dump in E7. Therefore, it is foreseen to guide 1 PW laser
+pulses operated at 1 Hz into the E7 area (through the existing 10 PW beamlines)
+which is synchronized with 10 PW with a fixed time difference in advance.
+However, these additional implementations do not pose difficulties from the
+technical point of view.
+
+5
+
+Combined laser gamma experiments at ELI-NP
+
+S237
+
+Based on the following basic parameters for 0.1 PW, 1 PW and 10 PW lasers
+and for electrons from GBS LINAC, we briefly introduce in the following subsections the physics cases listed above.
+Table 1
+Parameters of the available laser output.
+
+Power
+
+0.1 PW
+
+1 PW
+
+10 PW
+
+Pulse energy
+
+2.2 J
+
+22 J
+
+220 J
+
+Pulse duration
+
+22 fs
+
+22 fs
+
+22 fs
+
+Wave length
+
+820 nm
+
+820 nm
+
+820 nm
+
+Table 2
+Parameters of the electron beam from GBS LINAC as used in the proposals.
+
+Parameter
+
+Value
+
+Energy
+
+600MeV
+
+Bunch charge
+
+4.5-100pC
+
+Number of electrons (avg)
+
+109
+
+Energy spread FWHM
+
+0.1%
+
+Spot size
+
+15 μm
+
+Bunch length
+
+100
+
+Rep. rate of M27 kicking
+
+1 Hz
+
+Divergence
+
+0.5 mm mrad
+
+2. STAGE 1
+2.1.
+
+Production and Photoexcitation of Isomers (RA5-PPEX)
+2.1.1. Physics case
+
+In nuclear astrophysics [1, 2], the reaction rate (  n ), that is the number of
+reactions taking place per unit time, for a photoreaction induced on a ground-state
+nucleus leading to the emission of a neutron is given by
+
+S238
+
+K. Homma et al.
+
+6
+
+
+
+ n   cn ( E )  n ( E )dE ,
+
+(2.1.1)
+
+0
+
+where c is the speed of light,   n the photoneutron cross sections, and n ( E ) the
+number of photons per unit volume at energy E . In a stellar interior at a
+temperature T , n ( E ) is remarkably close to a black-body or Planck distribution:
+1 1
+E2
+n ( E , T )dE  2
+dE .
+(2.1.2)
+ ( c )3 exp( E / kT )  1
+When Eq. (2.1.2) is substituted for n ( E ) in Eq. (2.1.1), the rate becomes a
+function of parameter T . It is then possible to define the photon energy range
+which is the most relevant for determining  n (T ) at the temperature of
+astrophysical interest. This results from the properties of the integrand of Eq.
+(2.1.1), the product of the photoneutron cross section   n ( E ) and the Planck
+distribution n ( E ) . The integrand differs significantly from zero only in a
+relatively small energy range defined immediately above neutron threshold. We
+call this range the Gamow window for photoneutron reactions. Figure 3 illustrates
+this Gamow window.
+In stellar environments, nuclear excited states are thermally populated. Figure
+4 depicts photoexcitation on a thermally populated excited state. At high
+temperatures, thermalization may enhance the photoreaction rates by several orders
+of magnitudes.
+
+Figure 3 - The Gamow window for photoneutron reactions defined immediately above neutron
+threshold Sn. A narrow energy window is defined as the product of the photoneutron cross section and
+the Planck distribution.
+
+7
+
+Combined laser gamma experiments at ELI-NP
+
+S239
+
+Figure 4 - Photoexcitation on the excited state.
+
+The right-hand side of Eq. (2.1.1), which corresponds to photodisintegration
+from the ground state only, must be replaced by a sum of the rates n (T ) for
+photodisintegration from all (ground and excited) states  , each term being
+weighted by the appropriate Boltzmann factor. Thus, the astrophysical reaction rate
+ * is defined by
+1
+2J   1 
+(2.1.3)
+*n (T ) 
+ n (T )exp(   / kT )
+
+G (T )  2 J 0  1
+
+where
+2J   1
+(2.1.4)
+exp(   / kT )
+0
+ 2J  1
+is the temperature-dependent partition function of the target nucleus. Note that in
+n (T ) ,   n ( E ) is replaced by the cross section  n ( E ) for photodisintegration
+
+( E ) is determined by the
+from state  . Photoexcitation strength function f XL
+
+photoabsorption cross section  XL ( E ) summed over all possible spins of the final
+states [3]:
+
+E 2 L 1  XL
+(E)
+
+f XL
+( E ) 
+(2.1.5)
+2
+( c ) 2 L  1
+Here, X represents the electric (E) or magnetic (M) excitation mode and L the
+multipolarity.
+Although nuclear reactions naturally take place not only on the ground state
+but also on excited states thermally populated in the interior of stars, closed nuclear
+systems at high temperatures and densities formed by the gravitational force, they
+are induced only on the ground state in experimental laboratories on Earth. As a
+
+result, there is no experimental information on  n ( E ) ,  XL
+( E ) , and f XL ( E ) for
+G (T )  
+
+S240
+
+K. Homma et al.
+
+8
+
+total
+
+any excited state  . Note that  n ( E )   XL TXL,n TXL
+  XL
+( E ) , where TXL,n is the
+total
+neutron transmission coefficient and TXL the sum of all particle and radiative
+transmission coefficients. Above neutron threshold (E > Sn: neutron separation
+total
+energy), TXL
+is generally dominated by TXL,n which becomes zero at Sn. Due to a
+lack of the experimental information, the Hauser-Feshbach statistical model is used
+
+total
+to calculate  XL
+, and  n ( E ) , assuming that the gamma-ray
+( E ) , TXL,n , TXL
+
+
+strength function f XL ( E ) is the same as the one for the ground state (Brink
+hypothesis [4]). Thus, it is indispensable to experimentally investigate stellar
+photoreactions in the laboratory.
+The ELI-NP may become the first research laboratory where stellar
+photoreactions are induced and detected. We propose an experiment to induce
+stellar photoreactions at E7 by producing isomers with the high power lasers and
+photo-exciting isomers with the intense gamma-ray beam.
+The experiments of producing the isomers may be performed either by
+multiple laser shots (Type I) or a single laser shot (Type II) of the 10 PW lasers. An
+isomer is produced in the inelastic electron scattering or in a photoabsorption
+reaction, leaving a nucleus in either bound states or unbound states; the bound
+states decay to the isomeric state via γ-transition [5], while the unbound states
+undergo neutron emission followed by γ-transition to the isomeric state [6]. Laseraccelerated electrons with kinetic energies of the order of MeV followed by the
+subsequent production of Bremsstrahlung radiation most effectively produce
+isomers. Therefore, a key technology is to produce a vast number of MeV electrons
+by laser acceleration suited to the production of isomers, by optimizing the
+operation condition of the laser with the pulse width of femtosecond.
+The Type I experiment is applicable to long-lived isomers with half-lives
+sufficiently longer than the frequency (1/60 Hz) of the 10 PW laser. The production
+of a large number of long-lived isomers is required in the first step followed by
+subsequent irradiations with a gamma-ray beam in the second step to photo-excite
+the isomers. In contrast, the Type II experiment is applicable to all isomers
+irrespective of their half-lives because isomers are produced by a single laser shot
+and simultaneously irradiated with a gamma-ray beam that is synchronized to the
+laser shot. Since the laser shot and the gamma-ray irradiation are synchronized in a
+time interval of the order of ps, the Type II experiment is also applicable to excited
+state with half-lives comparable to the synchronization time. The signal-to-noise
+ratio, limited by the fact that a relatively small number of isomers are produced by
+a single laser shot is greatly improved by applying a short time gate for the
+synchronized irradiation of laser and gamma-ray beams. A Type II experiment for
+an isomer 155Gdm with a half-life of 32 ms is depicted in Figure 5. Table 3 lists
+isomers of research interest.
+
+9
+
+Combined laser gamma experiments at ELI-NP
+
+S241
+
+Figure 5 - Schematic image of the 4π neutron detector structure, proposed in the ELI-NP TDR
+“Gamma Above Neutron Threshold”.
+
+Table 3
+Isomers of research interest
+
+Isomers
+189
+Osm
+180
+Tam
+176
+Lum
+155
+Gdm
+152
+Eum
+115 m
+In
+113
+Cdm
+85
+Krm
+
+J
+9/2−
+9−
+1−
+11/2−
+0−
+1/2−
+11/2−
+1/2−
+
+Ex
+30.8 keV
+75.3 keV
+123 keV
+121 keV
+45.6 keV
+336 keV
+263 keV
+305 keV
+
+Half-life
+5.81 h
+> 1.2 x 1015 y
+3.66 h
+31.97 ms
+9.27 y
+4.49 h
+14.1 y
+4.48 h
+
+Photoexcitation of isomers is verified by detecting photoneutrons. The
+Gdm isomers with the spin-parity of 11/2− and the excitation energy 121 keV are
+photo-excited just above the neutron threshold at 6635 keV by a highly
+monochromatic gamma-ray beam with an energy spread 0.5% (33keV) in FWHM
+at energies between 6514 and 6635 keV. Thus, photoneutron emission occurs on
+155
+Gd not in the ground state but in the isomeric state. The neutron detection is
+carried out in collaboration with the research group “Gamma above Neutron
+Threshold”.
+155
+
+2.1.2. Technical proposal
+
+The proposed experiment of the production and photoexcitation of isomers
+requires the following preparatory Research and Development:
+
+S242
+
+K. Homma et al.
+
+10
+
+1) A preparatory investigation of laser acceleration of electrons with the 1 PW laser
+at the CETAL facility in Magurele. The peak power (1 PW) and pulse width of
+the laser need to be modified and optimized to accelerate electrons in the MeV
+region at high fluxes. A gas or solid target will be employed for this purpose (this
+will be defined in a common ELI-NP – CETAL research project).
+2) Test for the production of isomers with the 1 PW laser at the CETAL facility.
+Production reactions of the inelastic electron scattering, (e, e’) and (e, e’ n), as
+well as photoabsorption of the Bremsstrahlung photons, need to be investigated
+with emphasis on the production efficiency of isomers.
+The fundamental technology developed by the preparatory investigation will
+be applied to the proposed experiment with the 10 PW laser and the gamma beam
+at the ELI-NP facility. In the E7 experimental area it will be possible to use also
+the 1 PW laser beam at 1 Hz repetition rate, transported through the 10 PW
+beamline(s). A long focal-length parabolic focusing mirror, housed in a turning box
+located in the E1/E6 experimental area, will allow for the use of the long focus
+(9.5 m) at 1 PW and 10 PW. This is beneficial for electron acceleration in a gas
+target, and specifically for this experiment we do not need very tight focus, a long
+focal being desirable (Figure 6).
+
+Figure 6 - Experimental setup of E7-Stage 1
+
+11
+
+Combined laser gamma experiments at ELI-NP
+
+S243
+
+Figure 7 - Schematic image of the 4π neutron detector structure, proposed in the ELI-NP TDR
+“Gamma Above Neutron Threshold”.
+
+The electrons accelerated with the help of the high-power laser will hit a first
+target, of tungsten (W), to produce Bremsstrahlung radiation in the gamma domain.
+Then, at a distance that depending on the isomer to be studied and on the geometry
+of the electron acceleration and Bremsstrahlung setup may vary from a few mm to
+a few cm, there is the second target, containing the nucleus of interest. By
+irradiation with the Bremsstrahlung gamma-rays, part of the nuclei in this target
+will reach (by direct and more preferably indirect feedings) the isomeric state to be
+investigated.
+At a next moment (after a delay depending on the lifetime of the isomeric
+state), the target is irradiated with the gamma beam from GBS with an energy
+tuned in such a way as to be slightly above the neutron threshold from the isomeric
+state (but not also from the ground state) and the photoneutrons are detected.
+At ELI-NP foreseen is the presence of a 4π array for neutron detection,
+which is described in the “Gamma above Neutron Threshold” TDR (Figure 7). The
+procedure for the purchase of the 3He detectors for this array already started.
+Depending on the results of the preparatory experiments, the detectors will be
+placed around the secondary (isomer) target, or a fast transport system will be
+installed to transport the target to the 4π array after the irradiation with the
+Bremsstrahlung gamma photons. In either case, the neutron detectors array will be
+placed on the gamma radiation beam from GBS (and the photoexcitation of the
+isomers created in the target shall occur when the target is in the 4π array).
+2.1.3. Estimation Feasibility
+
+There are several considerations that support the idea of performing this
+experiment at ELI-NP. One of them is the availability of an intense, narrowbandwidth gamma radiation beam. Another one is the possibility to use high power
+lasers for accelerating electrons and put the nuclei in the isomeric states of interest.
+
+S244
+
+K. Homma et al.
+
+12
+
+The signal to noise ratio for neutron detection is greatly enhanced by the fact
+that only a small fraction of the time is covered by the gamma radiation pulses, the
+macrobunches occupying only approximately 50 μs each second.
+Due to the fact that the production of isomeric states is expected to be more
+efficient with the help of gamma photons with respect to electron scattering,
+envisaged is the use of a Bremsstrahlung target placed immediately after the
+electron acceleration site (laser beam focus). In the lower panel of Figure 8,
+displayed are the results of the GEANT4 simulation of the Bremsstrahlung spectra
+originating from a W target on which 106 laser-accelerated electrons arrive with an
+energy of 40 MeV and an energy spread of 1%.
+
+Figure 8 - Energy spectrum (left panel) and angular-energy distribution (right panel) of
+Bremsstrahlung gamma radiation photons exiting the primary W target.
+
+Figure 9 - Left panel: Total cross-section for the production of the isomers as computed with TALYS
+code. Right panel: population of the isomer state for three target thicknesses due to the irradiation
+with the Bremsstrahlung radiation with the characteristics in Figure 8.
+
+13
+
+Combined laser gamma experiments at ELI-NP
+
+S245
+
+The number of electrons accelerated with the help of 1 PW or 10 PW lasers
+can be estimated/extrapolated from previous experiments with existing, lower
+power lasers [7]. The number of electrons accelerated by a 1 PW laser pulse in the
+50 MeV range can be 1010, while for 10 PW this figure may be one order of
+magnitude higher.
+Isomers are populated through photoexcitation of mediating states at higher
+excitation energies followed by gamma-transitions to the isomer. Considering only
+the photons exiting the W target at small angles (within 10o) in the direction of the
+incident electrons, one can estimate the number of isomers produced per laser shot.
+In Figure 9 the population of the isomer state is presented for targets of widths of
+10 μm, 100 μm and 1 mm and for 106 laser-accelerated electrons creating the
+Bremsstrahlung distribution in Figure 8.
+Taking as an example the 176Lum case, due to the quite large lifetime of the
+isomeric state, several 1 PW laser shots can be used in order to excite the target.
+For a 1-hour laser functioning, meaning a delivery of 3600 shots at 1 PW on target,
+and assuming a secondary 176Lu target of 1 mm diameter on which consequently
+the 8×108 ph/s (within the bandwidth) gamma beam hits, a count rate of about 0.3
+neutron/second is expected in the 4π detector. By using a gate of equal duration
+with the time (ms) needed for neutron moderation in the polyethylene for each
+gamma macro-bunch, the signal to noise ratio is improved by a factor of 10.
+For the short-lived isomers, such as 155Gdm (32 ms), they can be produced by
+one shot of the 10 PW laser, then photo-excited by synchronized irradiations with a
+single-shot of gamma micro-bunch followed by neutron detection with fast Li glass
+scintillation detectors with a time gate 100 ns.
+The preparatory experiments of laser acceleration of electrons aim to improve
+these numbers by increasing the electron yield and optimizing the geometry of the
+setup.
+2.2. Search for sub-eV Dark Matter candidates at E4 (RA5-DM)
+In this proposal we search for frequency up-shifted photons via four-wave
+mixing in the vacuum caused by stimulated decay of resonantly produced DM
+when two color lasers are combined and focused into the vacuum as illustrated in
+Figure 10. Figure 11 shows the experimental setup we propose at E4.
+A large fraction of dark components in the universe motivates us to search for
+yet undiscovered ﬁelds to naturally interpret the relevant observations. Because we
+know examples of resonance states coupling to two photons at 126 GeV (scalar
+ﬁeld, Higgs) and 135 MeV (pseudoscalar ﬁeld, neutral pion) within only three
+orders of magnitude on the mass scale, we may expect that there might be yet
+undiscovered similar types of resonance states over much wider energy ranges in
+
+S246
+
+K. Homma et al.
+
+14
+
+nature, in particular, in the lower energy side if the coupling to two photons is so
+weak that these dark ﬁelds are not discovered by conventional methods to date.
+This encourages us to further search for resonance states at energy ranges below
+1 MeV to which conventional charged particle colliders will never be able to
+access.
+There are actually theoretical rationales to expect sub-eV particles such as the
+axion (pseudoscalar boson) [8] and the dilaton (scalar boson) [9] associated with
+breaking of fundamental symmetries in the context of particle physics and
+cosmology. Therefore, we are led to probe such ﬁelds via their coupling to twophotons in the sub-eV mass range. Furthermore, the advent of high-intensity laser
+systems and the rapid intensity growth encourage the approach to probe weakly
+coupling dark ﬁelds with optical photons by the enhanced luminosity factor [10,
+11].
+We therefore propose searches for resonantly produced dark ﬁelds with
+quasi-parallel two-color laser-laser collider at E4 where two 100 TW lasers are
+available and two 1 PW lasers will also be available if the beam transport at the
+upstream is slightly reconfigured.
+
+Figure 10 - Schematic view of quasi-parallel colliding system (QPS) between two incident photons
+among a focused laser beam with the focal length f, the beam diameter d, and the upper range of
+incident angles Δθ determined by geometric optics. The signature (2−u) ω is produced via the fourwave mixing process, 1ω + 1ω → (2−u) ω + u ω with 0 < u < 1 by mixing two-color waves with
+diﬀerent frequencies 1ω and u ω in advance at the incidence.
+
+15
+
+Combined laser gamma experiments at ELI-NP
+
+S247
+
+Figure 11 - Arrangement of the basic components for the setup and the CAD drawing at E4 to
+search for sub-eV Dark Matter via four-wave mixing in the vacuum.
+
+S248
+
+K. Homma et al.
+
+16
+
+Figure 12 - Upper limits on the coupling g/m- mass m relation for the scalar field exchange. As
+references in Figure 12, we put existing upper limits by our pilot search (Search at Hiroshima) based
+on this method [12] and also by the other types of scalar field searches by vertically shaded areas: the
+ALPS experiment [13] (the sine function part of the sensitivity curve is simplified by unity for the
+drawing purpose) which is one of the ”Light Shining through a Wall” (LSW) experiments, searching
+for non-Newtonian forces based on the torsion balance techniques (Etö-wash [14], Stanford1 [15],
+Stanford2 [16]) and the Casimir force measurement (Lamoreaux [17]). The domains below the
+vertically shaded areas are all excluded. We note that if we require the proper polarization
+combinations between initial and final states for pseudoscalar fields [10], we will be able to test the
+QCD axion models in the near future. As a reference, we show the expected mass-coupling relation
+based on the QCD axion scenario for E/N = 0 [18] (KSVZ model [19]) which is indicated by the
+inclining dotted line. The pink horizontal line indicates the gravitational coupling limit.
+
+Goal of this research: Even if no statistically significant four-wave mixing
+signal is observed, it is possible to constrain fundamentally important theoretical
+models for Dark Matter such as Quantum Chromodynamics (QCD) axion scenarios
+based on the mass-coupling relation of the exchanged fields as shown in Figure 12.
+The accessible domains by the searches at ELI-NP are indicated by the two red
+lines from the top to the bottom for cases where 0.1 PW with an OPA-based
+inducing laser and 1 PW with an OPA-based inducing laser are assumed,
+respectively. The assumed data taking periods are commonly about 10 days. The
+red lines indicate that ELI-NP has the potential to test QCD axion scenarios in the
+
+17
+
+Combined laser gamma experiments at ELI-NP
+
+S249
+
+mass range 1−100 meV, corresponding to a sensitivity beyond the present world
+record.
+
+2.3. R&D for Gamma-Polari-Calorimeter (RA5-GPC)
+Gamma Polari-Calorimeter (GPC) is the common detector system that will be
+employed in Stage 1.5 and 3 at E7 as illustrated in conceptual drawing (Figure 13)
+and CAD drawing (Figure 14).
+GPC is designed to measure incident gamma-ray energies via the conversion
+process to e+e− pairs and simultaneously measures the degree of linear polarization.
+The energy and polarization of gamma-rays are determined by the pairwise
+reconstruction on the basis of one-by-one tracking of electrons and positrons.
+Therefore, a part of GPC is also applicable to a spectrometer of e+ and e−
+individually without the gamma-conversion target.
+GPC has capabilities of measuring ten pairs per shot and covering the energy
+range of 0.1−5.0 GeV. The inclusive momentum resolution of GPC for e+ and eabove 0.2 GeV is 6.5% (Figure 15), assuming incident gamma-ray energy is 1.0
+GeV.
+
+Figure 13 - Conceptual drawing for Gamma Polari-Calorimeter (GPC). Note that the typical e+eopening angle is around sub-mrad. The angle at the top-view is exaggerated.
+
+S250
+
+K. Homma et al.
+
+18
+
+Figure 14 - A CAD drawing for GPC.
+
+Figure 15 - Inclusive momentum resolution of produced e+ (closed circle) and e- (open circle) above
+0.2 GeV.
+
+3. STAGE 1.5
+In this setup, we will investigate radiation reaction (RA5-RR), e-e+ pair
+production (RA5-Pair) and polarization (RA5-Pol) at E7. We can carry out these 3
+experiments simultaneously, therefore the considered experimental setup in this
+stage is only one configuration (Table 4 and Figure 16).
+
+19
+
+Combined laser gamma experiments at ELI-NP
+
+S251
+
+Table 4
+Parameters for experiments
+
+Electron energy bunch size Laser energy Intensity duration spot size
+source
+[MeV]
+[μm]
+[J]
+[W/cm2]
+[fs]
+[μm]
+22
+accelerator
+600
+15
+220
+(1-2)×10
+22
+5.6
+
+Figure 16 - Experimental setup of E7-Stage 1.5.
+
+S252
+
+K. Homma et al.
+
+20
+
+3.1. Radiation Reaction
+3.1.1. Introduction/Physics Case
+
+The following descriptions of the physics case are partially based on the
+recent publication [20] by the author of this section. That paper was intended to
+propose very briefly an experiment for ELI-NP including the theoretical
+explanations. And also we extracted the proposal of RA5-RR from Technical
+Design Report for Research Activity 5 – Combined Laser and Gamma Experiments
+(RA5-TDR) after adding new information for this present paper.
+Ultrahigh intense lasers are being planned and constructed [21] including
+ELI-NP [22]. What kind of physical processes can we observe in the regime of
+these laser intensities? We often discuss QED effects like pair creation/annihilation
+by extreme intensities of 1024 W/cm2 [22]. It has been predicted that these lasers
+will produce new high-field physics. Before reaching this physical process, we
+need to pass through the region of 1021 − 1022 W/cm2. In this regime, it is predicted
+that an electron will emit significant energy as light. Therefore, the motion of the
+electron needs to be corrected by the radiation feedback [23, 24]. This is a basic
+physical process, named “radiation reaction (RR)”. This effect will be appear in the
+regime of this laser intensities. All materials have electrons in atoms, and the part
+of these will be freed from the potential of atoms, then they emit strong light via
+the interaction with the high-intensity fields. Therefore, the RR process becomes
+very important for all experiments with ultra-intense lasers at intensities over
+1022 W/cm2.
+These intensities are enough reasonable to aim by using ELI-NP two
+10 PW lasers. In our group RA5-TDR considers to use E7 experimental area in
+ELI-NP, we can use the two 10 PW lasers and the electron LINAC (max 720 MeV)
+for gamma-ray sources here. By combining these large devices, we intend to carry
+out to examine radiation reaction (RA5-RR), pair creation (RA5-Pair), observing
+polarization of radiation (RA5-Pol) and vacuum birefringence (RA5-VBir) under
+the high-intensity laser fields. In this chapter, we present the detail of our proposal
+for the RA5-RR experiment in RA5-TDR (HPLS-TDR3) group.
+Although many readers may indeed argue that this is very obvious and basic
+physics, however the RR remains one of the difficult problems in the basic
+equation of a radiating electron motion, namely “run-away” as an instability of its
+self-acceleration. The standard theory of it was formulated by Lorentz [25],
+Abraham [26] and Dirac [27]. Therefore, the equation of a radiating electron
+motion is named the “Lorentz-Abraham-Dirac” (LAD) equation. The easiest way
+to derive this equation is, from the radiation energy loss formula (Larmor’s formula
+[28]) in the non-relativistic regime [29, 30].
+
+21
+
+Combined laser gamma experiments at ELI-NP
+
+S253
+
+2
+
+dE
+ dv 
+(3.1.1)
+ m0 0  
+dt non-relativistic
+ dt 
+Where, m0 is the electron rest mass, v  E 3 is the velocity of the electron
+3
+( E is a 3-dimensional Euclidian space). c is denoted as the speed of light,
+ 0  e2 6 0m0c3   (1024 ) . Therefore, the energy change of an electron is as
+follows ( Fex  E 3 is an external field.):
+
+d  m0 v 2 
+ dv 
+(3.1.2)
+
+  Fex  v  m0 0   .
+dt  2 
+ dt 
+From this equation, we can obtain the equation of motion named the LorentzAbraham (LA) equation.
+dv
+(3.1.3)
+m0
+ Fex  FLA
+dt
+d 2v
+FLA  m0 0 2 .
+(3.1.4)
+dt
+Here, our dynamics is in t  [tinitial , tfinal ]  R with the periodic conditions in
+which
+dv
+dv
+(3.1.5)
+v(tinitial )  v(tfinal ),
+(tinitial )  (tfinal )
+dt
+dt
+are required. Equation (3.1.4) is the effect of RR, named “the RR force”. Equation
+(3.1.3) with (3.1.4) was converted to the relativistic regime by Dirac without any
+mathematical condition like Eq. (3.1.5). This is the LAD equation.
+d 
+(3.1.6)
+m0
+w  eFex w  f LAD 
+d
+m   d 2 w   d 2 w  
+f LAD   02 0 
+w 
+w  w
+(3.1.7)
+c  d 2
+d 2
+
+2
+
+where all of vectors in this equation belong to the 4-dimensional linear vector
+space VM 4 joining in Minkowski spacetime ( A4 , g ) which is the mathematical set
+of the 4-dimensional affine space A 4 and the Lorentz metric g with the signature
+of (, , , ) . The force of f LAD  VM 4 is the effect of the radiation feedback,
+denoted the RR force.
+At first, the LAD theory is developed as the electron’s model in classical
+dynamics instead of the Dirac equation for avoiding the infinity in QED. After that
+it was solved via renormalization [31-33], but he had tried to apply the Lorentz
+model (1906) [25] for that. A part of an electron with the spherical charge
+distribution interacts with other parts of itself. But, the field at the center of this
+charge becomes a singular point (since | E | r 2 , r  0 | E |  ). We need to
+keep in mind that the electron is treated as a point charge in classical physics. This
+dependence is taken over the electromagnetic mass,
+
+S254
+
+K. Homma et al.
+
+22
+
+r 0
+3  0c
+(3.1.8)
+m0   .
+4 r
+In the Lorentz’s theory, RR is derived from only the retarded field [34, 35].
+The equation of electron’s motion (Eq. (3.1.3) with Eq.(3.1.4)) becomes
+dv
+d 2v
+(3.1.9)
+ m0  mEM   e  E + v  B   m0 0 2 .
+dt
+dt
+Dirac considered that the infinity of QED is equivalent to the infinity of the
+electromagnetic mass [36]. In Dirac’s method, he treated not only the retarded field,
+but also the advanced field [27]. Then, the equation which he obtained is the LAD
+equation (3.1.6) with Eq. (3.1.7). However, these equations have a mathematical
+difficulty which is named “run-away”. For instance, we consider the case without
+any external fields. In this case,
+dv
+d 2v
+ m0  mEM   m0 0 2
+dt
+dt
+ m  mEM t 
+dv
+dv
+
+(t )  (0)  exp  0
+(3.1.10)
+.
+dt
+dt
+0 
+ m0
+
+mEM 
+
+Here,  0 is a very small value with the order of 10-24 sec, the solution grows
+up rapidly since t /  0 is significant due to the second order derivative
+m0 0 d 2 v dt 2 , namely the Schott term. This self-accelerating effect is the run-away
+solution which we need to avoid. The same problem is in the LAD equation, too.
+RR has involved the history of the single electron model on how to avoid the runaway and the concrete problem how to estimate this effect under the interactions
+between ultrahigh-intensity lasers and highly energetic electrons in many ELI-NP
+experiments.
+As we discussed above, we need to investigate the method of the solution for
+the run-away problem for the estimation of the count-rates for the PW class laser
+experiments like ELI-NP. In this small section, we pick up some useful method for
+RR researches.
+For the avoidance of run-away solution, many methods have been proposed
+and used for simulations like PIC. The standard method for the avoidance of runaway was suggested by Eliezer, Ford-O’Connel and Landau-Lifshitz. They
+considered the term of the RR force as the higher order corrections. Therefore, the
+RR force term is treated by the first order of perturbations. By replacing the Schott
+term m0d 2 w d 2 with d ( eFex w ) / d in the radiation reaction force,
+d 
+ e  d ( Fex w )  d ( Fex w )  
+m0
+w  eFex w  02 
+w 
+w  w (3.1.11)
+d
+c 
+d
+d
+
+derived by Eliezer [37] and Ford-O’Connel [38]. For PIC simulations, the external
+fields is the function of spacetime, Fex  Fex ( x ( ) )  VM 4  VM 4 . Using the chain
+
+23
+
+Combined laser gamma experiments at ELI-NP
+
+S255
+
+rule of derivative in Eq. (3.1.11), we can obtain the force of Landau-Lifshitz
+equation [39]:
+m0
+
+d 
+e
+ e2
+w  eFex w  02 w w   Fex  40  c 2 Fex Fex  w  Fex Fex  w w w   .
+d
+c
+c m0
+(3.1.12)
+
+Of course, f ex  VM 4 is an external force defined by f ex  eFex w . Since
+this method doesn’t have a run-away due to the absence of the Schott term, it is
+useful for the reference of simulations. A scheme similar to this was obtained by
+Rohrlich [40].
+Another method is to use the Sokolov equation. This is similar to LandauLifshitz equation (3.1.12), but it can be installed the radiation spectrum. For
+example, we can obtain the following equations when we choose the classical
+radiation spectrum.
+dp 
+dx
+I
+(3.1.13)
+ eFex   2cl 2 p 
+d
+d m0 c
+dx  p   0 f ex
+.
+(3.1.14)
+
+
+d
+m0
+m0
+Here, I cl   0 m0  g  f ex f ex means the classical radiation (the Larmor’s
+formula) [41]. Then, we consider QED-based radiation formula I QED  q(  )  I cl
+with
+
+9 3  1
+q(  ) 
+dr r   dr  K 5 3 ( r )   2 rr K 2 3 ( r )  ,
+(3.1.15)
+
+
+
+0
+r
+8
+ 
+C  m0c ,   3 2  C m0c2  (  g f ex  f ex )1 2 and r  r (1   r ) . This result
+was derived from QED calculation [42, 43]. By using this QED-based radiation
+formula, He proposed the upgraded equations [44]:
+I
+dp 
+(3.1.16)
+ eFex w  QED
+p
+d
+m02 c 2
+dx  p  I QED  0 f ex
+(3.1.17)
+
+
+d
+m0
+I cl m0
+Characteristics of this model are, (1) it can realize the main behavior of a
+radiating electron by QED-based radiation and (2) the fact that the equations satisfy
+the relation p p   (m0c)2 but don’t satisfy w w  c 2 . The latter point should be
+discussed on the mathematical point of view.
+One of the authors in this paper, Seto has also suggested a series of new
+models, based on the propagation of fields in the QED vacuum fluctuation
+proposed by Heisenberg and Euler, in another word as the correction of vacuum
+
+S256
+
+K. Homma et al.
+
+24
+
+permittivity  0 . By correcting radiation from electron via the QED vacuum
+fluctuation (the modified propagation of photons), we can derive the equation,
+namely the Seto-Zhang-Koga (SZK) equation,
+d 
+e
+(3.1.18)
+w 
+ Fex  FLAD   w
+d
+m0 [1   f ( FLAD )]
+FLAD
+
+x  x  
+
+
+
+m0 0  d 2 w
+d 2w 
+
+w
+
+w
+
+
+
+ec 2  d 2
+d 2 
+
+(3.1.19)
+
+(   4 2 3 0 / 45m04c3 and f ( F )   F | F  defined by  A | B  A B ) [20, 45].
+Then, this equation was upgraded to the “Seto I” model as follows [46]:
+dw 
+dm
+  dE  F w
+(3.1.20)
+d
+  
+dE 
+e
+  
+
+g
+g
+
+
+g
+(
+F
+)
+
+.
+(3.1.21)
+dm
+m0 [1   f (F )] 
+2! 
+Here, g ( F )  7 4   F | F  and F  VM 4  VM 4 means the dual tensor of
+F . We should note that dE  and dm are the measure for the charge and the
+mass on the Minkowski spacetime ( A4 , g ) , satisfying dE   dE  dm  dm .
+F  Fex  FLAD and it includes radiation-external field interactions via  FLAD | Fex 
+and  FLAD | *Fex  . In addition, it proceeded the more general model including
+QED-based synchrotron formula characterized by Eq. (3.1.15) (Seto II model
+[47]):
+dw 
+dm
+  dE   F hom w
+(3.1.22)
+d
+dE
+dm
+
+
+
+
+
+e
+m0
+
+[1   f (F hom )]  g  g   g (F hom ) 
+[1   f (F hom )]2  [ g (F hom )]2
+
+ 
+2!
+
+(3.1.23)
+
+m0 0  d 2 (w)
+d 2 ( w) 
+
+w
+
+w
+
+w
+(3.1.24)
+x  x  
+ec 2  d 2
+d 2
+
+F hom  Fex  FMod-LAD is the homogeneous field. When   I QED I cl  q(  ) ,
+this set of equations behaves dynamically similar to Eqs. (3.1.16)- (3.1.17) [47].
+These models demonstrated the stability of their solutions, and became good
+references.
+ELI-NP has the potential for carrying out relevant experiments of RR, with
+the help of the two 10 PW - over 1022 W/cm2 class lasers and the Gamma-ray
+Source - LINAC (GS-LINAC) for highly energetic electron bunches. Moreover,
+RR has to be taken into account in all high intensity laser experiments. The recent
+models using QED modification show us the running coupling between an electron
+and radiation field in high-intensity fields. Therefore, this proposal is not only for
+FMod-LAD
+
+
+
+25
+
+Combined laser gamma experiments at ELI-NP
+
+S257
+
+the investigation of the energy loss of a radiating electron, but we may also observe
+the running coupling of an electron dE by high-fields via the function q(  ) [see
+Eq. (3.1.15)]. The experiments of RR will give us a chance to consider the problem
+of laser-electron interactions and the physics of an electron model like the Dirac’s
+original prospect.
+We propose the experimental geometries of the head-on collision between a
+10 PW laser beam and 600 MeV / 2.5 GeV / 5.0 GeV electrons for the RR
+experiments in ELI-NP. Figure 17 is one of the setups for RA5-RR, combining the
+electrons from the GBS LINAC (on a new transport line to E7) and 10 PW laser
+beam, in Stage 1.5. We will discuss the technical details in Sect. 3.1.2. This
+experiment is based on the observation of two parameters: the minimum energy of
+scattered electron/shot and the maximum value of the photon energy. By the
+correlation of these two values, one can understand the dynamics of RR.
+
+Figure 17 - Conceptual layout of RA5-RR in Stage 1.5. It will be carried out by the combination of
+the 10 PW laser and the GS-LINAC.
+
+Figure 18 - 3D layout of RA5-RR/Pair/Pol experiments in Stage 1.5.
+
+S258
+
+K. Homma et al.
+
+26
+
+3.1.2. Technical Proposal
+
+Before exceeding the numerical results, we provide the experimental setup
+as the conclusion of them. From the simulation results, we will classify the models
+of radiation reaction (RR) by using a head-on laser-electron interaction. We also
+use this setup as the common configuration for RA5-Pair and RA5-Pol
+experiments. We need to observe the minimum energy of the scattered electrons
+and the maximum energy of the emitted photons from the electrons. The sketch of
+this E7 area is Figure 18 and Figure 19. For this setup, a basic requirement is the
+synchronization between the 600 MeV electron bunches from the GS-LINAC and
+the 10 PW laser pulses, at the sub-ps level. These are also important in the
+alignment stage of the setup. In the development contracts for the two 10 PW laser
+system and the Gamma Beam System at ELI-NP, there is already foreseen the
+possibility of synchronization at the 100 fs level. In addition, we propose these
+experiments in E7-Stage 3 employing Laser WakeField Acceleration (LWFA) for
+2.5 / 5.0 GeV electron beams, to enter another regime of highly intense field
+physics.
+In the following we present the elements that form a functional experimental
+setup for this physics case (also for the LWFA case). These elements are also
+common equipment for other physics cases proposed in the TDR.
+The setup is illustrated in Figure 19. We consider to use the electron bunches
+from GS-LINAC at M27A magnet in this figure. By using the GS-LINAC, it is
+expected a very good beam profile of the electron bunches. Since we consider to
+pick up it at the front end of LINAC, the expected electron energy will go up 600720 MeV. Here, we choose 600 MeV for an electron energy.
+
+Figure 19 - Combined 10PW-Laser and GS-LINAC system.
+
+27
+
+Combined laser gamma experiments at ELI-NP
+
+S259
+
+We consider the following setup as the minimum requirement for the
+investigations of RR in ELI-NP. By following the paper of [23, 24], we aim the
+laser intensity of 1022 W/cm2 by the focusing of a single arm of 10 PW. The
+purpose of this experiment is the confirmation of the theoretical model which
+described in the previous section. Especially, the QED modification of Eqs.
+(3.1.15)- (3.1.17) and (3.1.22) - (3.1.24) follow the analysis based on the Volkov
+solution [48]. This solution assumes that the external field should be the planewave, the strong focusing may violate these models. We select the f-number of
+10 PW laser as f #  7 with the focal length of 3 m due to this. With this focusing,
+the spot size is equal to 5.6 μm and the estimated range of the laser intensity is
+(1-2) × 1022 W/cm2 depending on its peak power of 5-10 PW. The other parameters
+of the 10 PW laser are basically the standard ones for ELI-NP. The pulse energy,
+pulse duration and laser wavelength are 220 J, 22 fs and 820 nm respectively. This
+PW-class laser beam enters from E6 area to E7 and is reflected and focused by the
+final mirror. Then the beam direction becomes the one of the electron bunches
+extracted from the GBS-LINAC line.
+For the experiments for the study of RR, the electron energy of 600 MeV is
+required, at a repetition rate at M27A magnet of 1 Hz (in case of using the 1 PW at
+1 Hz laser beam, 0.016 Hz for the 10 PW beam). This repetition rate makes
+radiation safety issues much easier to solve. The charge in the bunch is estimated
+the range of 4.5 – 100 pC with 109 − 1010 electrons and the bunch width of 100 μm.
+Due to the statistics of the scattering processes, a well-focused electron beam at the
+interaction point is required. We take into consideration a beam size of 15 μm.
+Depending on the design of the extraction line from M27A magnet, we have the
+option of additional electron optics or accelerator modules.
+Then an important subject is the synchronization between the 10 PW laser
+beam and the LINAC electron bunches. From the facility point of view, both HPLS
+and GBS systems foresee the possibility of external electronic synchronization.
+We also need to align the electron beam profile with the laser beam with high
+precision. We thus propose the optical synchronization/alignment system in E7.
+There are two arms of the 10 PW lasers in E7, but for the alignment purposes it
+would be beneficial to have available the lower power 1 PW pulses at the higher
+repetition rate of 1 Hz. A part of this 1 PW is used for making 90 degree Compton
+scattering with electron bunches from LINAC. If the two arms of the laser are
+synchronized, with these scheme we can also set the time matching between the 10
+PW beams and the LINAC. During the preparations for the experiments, we lead
+the remaining portion of the 1 PW – 1 Hz beam to collide head-on with the electron
+bunches, in order to scan the electron beam profile. The final focusing mirror for
+this will be located on moving stage remotely controlled for the scanning of the
+beam profile.
+
+S260
+
+K. Homma et al.
+
+28
+
+3.1.3. Estimation of Count Rate
+
+In RA5-RR, the most interesting point is the choice of appropriate RR model
+in the regime of ELI-NP. Table 5 is the list of models which we consider in the
+present phase, the where symbols LL, CSok, QSok, SZK and Seto II stand for
+Landau-Lifshitz [39], Sokolov (classical) [41], Sokolov (quantum) [44], SetoZhang-Koga models [45] and the Seto II model [47] respectively. We have
+performed numerical simulations for tracking a radiating electron and the radiation
+spectrum in order to evaluate the model dependency of laser-beam interactions. In
+the spectrum estimation, the quantum emission spectrum [42] is employed for SQ
+and Seto II models while the classical emission spectrum [29] is used for the other
+models.
+Table 5
+Models of RR. The hatched columns include the QED-based modifications.
+
+Model name
+Landau-Lifshitz
+[LL],
+Eq. (3.1.12)
+
+Equation
+
+d 
+e
+w  eFex w  02 w w   Fex
+d
+c
+2
+e
+ 40 (c 2 Fex Fex  w  Fex Fex  w w w  )
+c m0
+
+m0
+
+Sokolov (classical)
+[CSok],
+Eqs. (3.1.13)-(3.1.14)
+Sokolov (quantum)
+[QSok],
+Eqs. (3.1.16)-(3.1.17)
+Seto-Zhang-Koga
+[SZK],
+Eqs.(3.1.18) -(3.1.19)
+
+dp 
+e
+q(  ) I cl 
+
+g Fex [ p  q(  ) 0 f ex ] 
+p
+d
+m0
+m0 2 c 2
+
+Seto II
+[Seto II]
+Eqs.(3.1.22) -(3.1.24)
+
+[1   f (F hom )]  F hom  
+
+ 
+dw 
+e    g (F hom ) F hom 
+
+w
+d
+m0 [1   f (F hom )]2  [ g (F hom )]2
+
+dp 
+e
+I
+
+g Fex ( p   0 f ex )  2cl 2 p 
+d
+m0
+m0 c
+
+d 
+e
+w 
+( Fex  FLAD  ) w
+d
+m0 [1   f ( FLAD )]
+
+29
+
+Combined laser gamma experiments at ELI-NP
+
+S261
+
+Figure 20 - Configuration of an electron scattering by a pulse laser.
+
+We consider the following experiments: the peak intensity of the laser is
+I  1.0  1022 W / cm2 by spot size S P  5.6 μm for 5 PW with pulse duration
+TP  22 fsec and wavelength   820 nm . The incident electron energy is
+E  600 MeV provided by LINAC. Figure 20 is a diagram illustrating the
+configuration of electron scattering along with the definition of relevant angles:
+electron incident angle  L , electron scattering angle  e , and photon detection angle
+ .
+Figures 21 and 22 show the electron orbits and the time evolution of electron
+energy calculated based on SZK, LL, CSok, QSok and Seto II models. Here, the
+case of the head-on collision, i.e.,  L  0 , is considered. As shown in Figure 21,
+the incident electron starts to oscillate under the action of laser electromagnetic
+field as it approaches the pulse laser. The electron tends to decelerate toward the
+direction of laser propagation (  x direction) during the oscillation by light
+pressure. The electron eventually exhibits different dynamics according to the
+employed RR model and passes away into the distance with a certain scattering
+angle. As shown in Figure 22, the electron energy decreases drastically due to RR
+during the oscillation phase. The asymptotic value of electron energy considerably
+depends on the employed RR models. Scattered electron energy is estimated for
+various beam incident angles  L . We recognize two model groups from the final
+energies of an electron. The three models of LL, CSok and SZK are overlapped
+each other. And also QSok and Seto II are overlapped.
+Figure 23 shows the scattered electron energy as a function of incident
+electron angle for each RR model. The electron energy decreases considerably
+from the initial beam energy, 600 MeV, due to radiation damping in any incident
+angles. Typical electron energy loss ranges from approximately 300 MeV for QSok
+and Seto II model to approximately 400 MeV for SZK, LL and CSok model.
+Therefore, evidence of RR could be observed from the scattered electron energy. In
+
+S262
+
+K. Homma et al.
+
+30
+
+addition, dependency of scattered electron energy on RR model becomes obvious
+as the incident angle becomes large.
+
+Figure 21 - Trajectory of a 600 MeV electron head-on colliding with the 1×1022 W/cm2 laser pulse.
+(b) and (c) are the close-up figures of (a).
+
+31
+
+Combined laser gamma experiments at ELI-NP
+
+S263
+
+Figure 22 - Time evolution of electron energy. An electron of the initial energy of 600 MeV head-on
+collides with the 1×1022 W/cm2 laser pulse. Due to radiation from an electron, we can find the energy
+drop of it and it represents the effect of RR. (b) and (c) are the close-up figures of (a).
+
+S264
+
+K. Homma et al.
+
+32
+
+Figure 23 - Scattered electron energy vs. laser incident angle.
+
+Figure 24 - Electron scattering angle vs. laser incident angle.
+
+Figure 24 shows electron scattering angle estimated for various incident
+angles. The incident electron energy in the present case is large enough so that the
+electrons pass through the pulse laser without significant deflections.
+Returning to the topic of the head-on collision case  L  0 , Figure 25 shows
+angle distribution of photon energy per one incident beam electron. This
+calculation was carried out by using the angular resolution d  2 211 . Emitted
+photon energy is confined to small angles around the beam front direction,   0
+because parallel emission is dominant for high-energy electron (the spread angle of
+radiation is d ~ ( Eelectron / m0c2 )1 , strong directivity). The emission angle
+distribution broadens up to   O(10 ) , which is wider than the angle distribution
+of scattered electron. This is because photon emission from oscillating electron
+directly contributes to the emission angle distribution. Thus, the emission spectrum
+measurement might provide an excellent indication for the model dependency of
+RR.
+
+33
+
+Combined laser gamma experiments at ELI-NP
+
+S265
+
+Figure 25 - Angular distributions of emitted photon energy in the case of the 1×1022 W/cm2 laser and
+a 600 MeV electron. The calculation resolution of the detection angle is dθ=2π/211.
+
+3.2. The e+e− pair production in the Extremely Non-linear regime (RA5-Pair)
+3.2.1. Introduction
+
+Typical consequence of quantum electrodynamics (QED) is electron-positron
+pair production. Especially, pair production only by photons is attractive as a
+conversion process between matters and vacuum. There is a long history of
+theoretical work on this process from the beginning of QED. However
+experimental verification is not sufficient for these theories since it is difficult to
+realize the light source with enough energy to produce the electron-positron pairs.
+There are several processes to realize the pair production in vacuum. One is
+the Breit-Wheeler process derived from perturbation theory of QED [49]. Highenergy photons interact with each other and are converted into particle pairs. The
+threshold is determined by the total energy of the interacting two photons. The
+other is spontaneous pair production in a background electromagnetic field [50].
+This process should be considered in the non-perturbative regime under the action
+of numerous photon interactions, which is not understood compared to the
+perturbative regime. The threshold is determined by the background field strength
+and is still far from the available laser intensities.
+Fortunately, we can approach some part of the non-perturbative regime, i.e.,
+strong-field QED, via a combined scheme: interaction between a strong laser field
+and high-energy photons [51]. Detailed cross sections have been obtained
+theoretically based on the semi-classical approach. The theory indicates that stateof-the-art intense lasers can potentially achieve the near threshold condition of pair
+
+S266
+
+K. Homma et al.
+
+34
+
+production. Possible pair production experiment in ELI-NP is considered to
+provide a proof of the strong-field QED.
+In this proposal, we consider a simple experimental configuration similar to
+that of the previous experiment, SLAC E-144 [52]. The SLAC experiment is one of
+the few experimental examples on the pair production in laser fields. It is shown
+that SLAC and ELI-NP could approach different regimes of pair production, being
+complementary in the exploration of strong-field QED.
+3.2.2. Physics Case
+
+We describe several pictures of pair production in vacuum and their relevance
+to the present experiment in ELI-NP. Perturbation theory of QED derives pair
+production due to collision of two energetic photons. This is called Breit-Wheeler
+(BW) pair production [49]. Field energy associated with its strength also becomes
+an energy source of particle pair. Low frequency and strong field limit suggests
+spontaneous pair production from a constant but intense electromagnetic field [53,
+50]. In the framework of QED, this process is regarded as a pair production from
+numerous low energy photons interacting simultaneously. Pair production in strong
+field is therefore not fully explored since non-perturbative treatment is required.
+The spontaneous pair production is illustrated as a tunneling process in
+vacuum. Particles in the negative energy region can pass through the steep
+potential structure of background field by tunneling effect to reach the positive
+energy region. Probability of the tunneling process is estimated by using a typical
+electric field, i.e., Schwinger field ES ~ mc2 e , where  denotes Compton
+wavelength. Resulting probability, PS , is given as
+E 
+
+PS  exp   S 
+(3.2.1)
+E 
+
+stands for the strength of background electric field [50]. The exponential
+dependency is a consequence of the tunneling effect.
+Figure 26 shows typical diagrams of the pair production from high-energy
+photons. Panels (A) and (B) indicate single-photon and multi-photon BW processes
+[54], respectively. Threshold of single-photon BW process is determined by total
+photon energy in the center of mass system (CMS) of generated particle pair. The
+characteristic parameter,  is
+s
+(3.2.2)
+  th , sth  4mc 2 , s  4L
+s
+where sth and s are the minimum energy required for pair production and total
+photon energy in CMS, respectively, while  and  L are photon energies. Headon collision is assumed here. Threshold of single photon BW process is given by
+ 1.
+
+35
+
+Combined laser gamma experiments at ELI-NP
+
+S267
+
+Figure 26 - Diagrams of typical pair production processes involving energetic photons. (A) singlephoton BW process. Two photons γ1 and γ2 interact each other. (B) multi-photon BW process. N
+photons γ1 … γ2 interact each other. (C) Pair production from energetic photon γh in strong field.
+Double lines indicate dressed particle.
+
+For sub threshold case   1 , particle pair can be generated only via multiphoton BH process. If additional photons come from a laser field, minimum
+number of interacting photon to produce one particle pair, N min , is estimated by
+eE
+N min ~  (1  a 2 ), a 
+(3.2.3)
+L mc
+where a is normalized vector potential of laser and  L is now laser frequency [52].
+Required photon energy is quite large for single BW process in laser fields since
+laser frequency is small. For example, minimum photon energy is approximately
+100 GeV for laser energy approximately 1 eV.
+Figure 26 (C) represents pair production in strong field. Double lines stand for
+dressed electrons (or positrons) interacting with vast number of photons in external
+field [55]. Although the pair production is essentially non-perturbative, semiclassical approach can be applied for pair production triggered by an energetic
+photon in strong-field – stimulated pair production. Contribution of external field is
+exactly included in the dynamics of dressed particles [42, 48] and perturbative
+interaction is considered between the energetic photon and the dressed particles.
+Photon interaction in semi-classical regime is characterized by the quantum
+parameter  ,
+
+ e
+(3.2.4)
+  2  fL  fL  2
+( F  p )2
+mc
+mc mc
+where  , F  and p denote Compton wavelength, field 4-tensor and 4momentum of photon, respectively. Pair production cross section, W pair ( ,  ) , is
+then
+
+S268
+
+K. Homma et al.
+
+36
+
+Table 6
+Parameters of the available laser output
+
+SLAC
+E-144
+ELI-NP
+(LINAC)
+ELI-NP
+(LWFA)
+
+χ
+
+electron
+
+electron
+
+laser
+
+photon
+
+E/Es
+
+energy
+
+number
+
+intensity
+
+energy
+
+(Spontane
+
+[GeV]
+
+[×109]
+
+[W/cm2]
+
+[GeV]
+
+ous)
+
+46.6
+
+5
+
+< 30
+
+< 10-5
+
+̴5
+
+< 0.20
+
+0.2
+
+0.6
+
+1
+
+< 0.35
+
+< 10-3
+
+105-6
+
+< 0.25
+
+(̴1)
+
+2.5
+
+0.1
+
+< 1.5
+
+< 10-3
+
+105-6
+
+< 1.00
+
+( > 104 )
+
+dWpair ( ,  )
+
+1018
+(0.4)
+1022
+(70)
+1022
+(70)
+
+Nmin
+(multiphoton)
+
+(strong
+field)
+
+positron
+number
+
+
+
+ m 2 c 4     
+(3.2.5)
+   K 2 3    ds K1 3 ( s ) 
+d
+3 h h    
+
+where  , h and  h are fine structure and Plank constants and photon energy,
+respectively.  ( ) denotes ratio of positron (electron) energies to photon energy,
+i.e.,    e  h and   1   .  is defined by   2 3  1   [48, 56]. Total
+cross section grows exponentially for  larger than 1. Probability of pair
+production is roughly estimated as [57],
+ 81
+(3.2.6)
+P  exp  
+
+ 3
+This formulation invokes the tunneling effects as in the spontaneous pair
+production however the probability is determined by  , not E ES .
+We consider the relevance of above mentioned pair production processes to the
+experiments in ELI-NP [58] while comparing that in SLAC E-144 [52] experiment.
+Experimental parameters are summarized in Table 6 (left three columns: electron
+energy, number of electron per bunch and laser intensity (normalized potential).
+For ELI-NP, we consider two types of electron bunch. One is electron bunch from
+LINAC with energy of 600 MeV. The other is generated via laser wakefield
+acceleration. Considered electron energy is 2500 MeV [59]. Energy range of seed
+photon (the forth column) is roughly estimated by the energy spectrum of photon
+emitted from the incident electron bunch (experimental data for SLAC and
+simulation date for ELI-NP).
+
+
+
+37
+
+Combined laser gamma experiments at ELI-NP
+
+S269
+
+We estimate three typical parameters characterizing above-mentioned three
+pair production processes. Head-on collision between seed photon and pulse laser
+is assumed here. The first parameter E ES on spontaneous pair production
+(Eq.(3.2.1)) is quite small (less than 10-3) even for ELI-NP as shown in the fifth
+column. Therefore, spontaneous pair production is still negligible. The second
+parameter N min in the sixth column is required photon number in multi-photon BW
+process (Eq.(3.2.3)). N min is quite different between ELI-NP (approximately
+105-106) and SLAC (approximately 5). This estimation indicates that pair
+production could take place only in highly non-perturbative regime in ELI-NP
+while multi-photon process with a few photons is dominant in SLAC.
+Despite this large difference of physical regime, the quantum parameter
+(Eq.(3.2.4)) in ELI-NP (600 MeV LINAC) has a value relatively close to that in
+SLAC, as shown in the seventh column. The quantum parameter is here estimated
+by   ( E Es )( E mc2 ) , where E is seed photon energy. Thus similar pair
+production rate is expected in strong field QED under the contribution of different
+number of laser photons.
+Finally, generated positron number per electron bunch is given in the eighth
+column (observed positron number for SLAC and simulation results for ELI-NP).
+The simulation is based on the cross section described in Eq. (3.2.5). The expected
+positron number for 600 MeV electron beam is similar to the result of SLAC, as
+indicated in the quantum parameter. For 2.5 GeV case, the positron number
+increases significantly (greaterer than 104) compared to the other cases. This is a
+consequence of the exponential growth of pair production probability as in
+Eq. (3.2.6). Precise measurements of pair production rate and careful comparison
+with the result of SLAC experiment could provide a proof of the strong field QED.
+3.2.3. Technical Proposal
+
+The requirements and the experimental setup are identical to the ones for the
+experiments of radiation reaction, without any difference. For observing the e+e−
+pairs, removing the beryllium window as the  -pairs converter (GPC).
+3.2.4. Count Estimation
+
+We estimate the pair production rate in the collision between electron beam
+and intense pulse laser. The estimation is based on a numerical simulation
+employing the cross sections of radiation and pair production. The cross sections
+are,
+
+
+
+dWrad (e ,  )  mc 2  
+1
+
+ 2  K 2 3 ( ) 
+  dsK5 3 ( s )   1  e 
+d e
+1  e
+3  
+
+
+
+
+S270
+
+K. Homma et al.
+
+dWpair ( ,  )
+
+38
+
+
+
+ m 2 c 4     
+(3.2.7)
+   K 2 3 ( )   dsK1 3 ( s ) 
+d
+3  h    
+
+where Wrad and W pair are the cross section of radiation and pair production,
+respectively.  ,  e and  ( ) are the quantum parameter, ratio of emitted photon
+energy to incident electron energy and ratio of positron (electron) energy to
+incident photon energy, respectively.  is defined as   2 3  e [(1  e )  ] for
+radiation and   2 3  1 (  ) for pair production.
+The experimental configuration is the same as that in RA5-RR. The primary
+process is again high-energy photon emission and its back reaction of electrons.
+The pair production is seeded by the emitted photons. That is, the pair production
+takes place as a two-step process,
+(1) e  N  L  e    L
+(3.2.8)
+(2)  h  N  L  e  e
+where  h ,  L and N denote high energy photon, laser photon and absorbed
+number of laser photon, respectively. In the present situation, particle pair is also
+generated via direct interaction between electron and laser field without highenergy real photon (trident pair production) [60-62]. Probability of this process is
+expected to be quite small compared to the two-step process. Thus this process is
+neglected in the simulation.
+
+
+
+Figure 27 - Energy spectrum of emitted photon, absorbed photon and generated positron. Electron
+beam energy is 600 MeV. Energy bin size is 10 MeV.
+
+39
+
+Combined laser gamma experiments at ELI-NP
+
+S271
+
+Physical condition considered for the simulations are as explained in RA5-RR.
+Laser intensity, pulse duration, spot size are 1022 W/cm2, 22 fs and 5 m,
+respectively. Electron beam is obtained from accelerator and typical energy is
+600 MeV. The other is obtained by using plasma wake field acceleration and
+energy is 2500 MeV.
+Figure 27 shows the simulation results. The lines indicate energy spectrum of
+emitted photon, absorbed photon and generated positron. In this case, the quantum
+parameter is not so large (less than 0.25). Thus only small fractions of high-energy
+photons with energies in the range of 200-450 MeV are absorbed in the laser field,
+as shown in the purple line. Positron energy is roughly half of the absorbed photon
+energy, i.e., in the range of 100-300 MeV. Total number of positron per one
+electron beam (109 incident electrons) are approximately 1.
+
+4. FUTURE EXTENSION: STAGE 2, 3 AND 4
+Given the successful implementation of laser plasma acceleration, we can
+further plan the following upgrades or add new subjects as indicated in Figure 28.
+“Stage 2” experiment is the realization of an all-optical table-top gammagamma collider at E4 (RA5-GG) to verify the QED-based elastic gamma-gamma
+scattering. This utilizes the same interaction chamber as that used for RA5-DM at
+E4. This proposal requires 210 MeV electrons by means of laser plasma
+acceleration (Research and Development topic).
+“Stage 3” experiments essentially repeat the same measurements as those in
+the stage 1.5 with upgraded electron energies by means of laser plasma
+acceleration. Moreover, we aim at the production of linearly polarized 1 GeV
+gamma-ray source via the extremely nonlinear inverse Compton process with
+5.0 GeV electrons for the next stage.
+“Stage 4” experiment is measurement of vacuum birefringence (RA5-VBir)
+via the depolarization of linearly polarized energetic probe photons due to the
+effect of non-perturbative QED interactions in a focused high-intensity laser field.
+Two ideas for further research were also proposed to ELI-NP and fit best the
+experimental setup in E7: i) Thomson backscattering in the extended lambda cubed
+regime for extension of the available gamma energy above 100 MeV range (D.
+Ursescu et al.) and ii) Compton backscattering using X-ray lasers for the extension
+of the available monochromatic gamma energy in the 400 MeV range (D. Ursescu
+et al.).
+
+S272
+
+K. Homma et al.
+
+40
+
+Figure 28 - Experimental setup of E7 – Stages 3 and 4.
+
+Acknowledgments. The authors wish to express their appreciation to Prof. Dietrich Habs for
+his great contribution to the entire ELI-NP project starting from early stage of proposal and for his
+continuous support. OT, LDA and KS were supported by the Project Extreme Light Infrastructure Nuclear Physics (ELI-NP) - Phase I, a project co-financed by the Romanian Government and
+European Union through the European Regional Development Fund.
+
+REFERENCES
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+
+P. Mohr et al., Phys. Lett. B 488, 127 (2000).
+H. Utsunomiya, P. Mohr, A. Zilges, M. Rayet, Nucl. Phys. A 777, 459 (2006).
+R. Capote et al., Nucl. Data Sheets 110, 3107 (2009).
+D.M. Brink, Ph.D. thesis, Oxford University, 1955.
+D. Belic et al., Phys. Rev. Lett. 83, 5242 (1999).
+S. Goko et al., Phys. Rev. Lett. 96, 192501 (2006).
+E. Esarey, C. B. Schroeder, and W. P. Leemans, Rev. Mod. Phys. 81, Phys. Rev. D 90, 1229
+(2009).
+R. D. Peccei and H. R. Quinn, Phys. Rev. Lett. 38, 1440 (1977); S. Weinberg, Phys. Rev. Lett.
+40, 223 (1978); F. Wilczek, Phys. Rev. Lett. 40, 271 (1978).
+
+41
+9.
+
+10.
+11.
+12.
+13.
+14.
+15.
+16.
+17.
+18.
+
+19.
+20.
+21.
+22.
+23.
+24.
+25.
+
+26.
+27.
+28.
+29.
+30.
+31.
+32.
+33.
+34.
+35.
+36.
+37.
+38.
+39.
+40.
+41.
+42.
+43.
+44.
+
+Combined laser gamma experiments at ELI-NP
+
+S273
+
+Y. Fujii and K. Maeda, The Scalar-Tensor Theory of Gravitation Cambridge Univ. Press (2003);
+Mark P. Hertzberg, Max Tegmark, and Frank Wilczek, Phys. Rev. D 78, 083507 (2008);
+Olivier Wantz and E. P. S. Shellard, Phys. Rev. D 82, 123508 (2010).
+K. Homma, D. Habs, T. Tajima, Appl. Phys. B 106:229-240 (2012), (DOI: 10.1007/s00340-0114567-3), arXiv:1103.1748 [hep-ph].
+T. Tajima and K. Homma, Int. J. Mod. Phys. A vol. 27, No. 25, 1230027 (2012).
+Kensuke Homma, Takashi Hasebe, KazukiKume, Prog. Theor. Exp. Phys. 2014, 083C01 (2014).
+K. Ehret et al. (ALPS Collab.), Phys. Lett. B 689, 149 (2010).
+E. G. Adelberger et al., Phys. Rev. Lett. 98, 131104 (2007); D. J. Kapner et al., Phys. Rev. Lett.
+98, 021101 (2007).
+J. Chiaverini et al., Phys. Rev. Lett. 90, 151101 (2003).
+S. J. Smullin et al., Phys. Rev. D 72, 122001 (2005) [Erratum-ibid. D 72, 129901 (2005)].
+S. K. Lamoreaux, Phys. Rev. Lett. 78, 5 (1997) [Erratum-ibid. 81:5475 (1998)].
+See the parametrization, for example, in the section AXIONS AND OTHER SIMILAR
+PARTICLES in J. Beringer et al. (Particle Data Group), Phys. Rev. D 86, 010001 (2012). And
+also see S. L. Cheng, C. Q. Geng, and W. T. Ni, Phys. Rev. D 52, 3132 (1995) on the possible
+range of the ratio on the electromagnetic to color anomaly factors of the axial current
+associated with the axion, E/N.
+J. E. Kim, Phys. Rev. Lett. 43, 103 (1979); M. A. Shifman, A. I. Vainshtein and V. I. Zakharov,
+Nucl. Phys. B 166, 493 (1980).
+K. Seto, J. Koga, S. Zhangm Review of Laser Engineering, 42, 2, 174 (2014).
+G.A. Mourou, N.J. Fisch, V.M. Malkin, Z.Toroker, E.A. Khazanov, A.M. Sergeev, T.Tajima and
+B.LeGarrec, Opt. Comm. 720 285 (2012).
+D. Habs, T. Tajima and V. Zamfir, Nuclear Physics News 21, 23 (2011).
+J. Koga, Phys. Rev. E 70 046502 (2004).
+A. Zhidkov, J. Koga, A. Sasaki and M. Uesaka, Phys. Rev. Lett. 88 18 (2001).
+H. A. Lorentz, The Theory of Electrons and Its Applications to the Phenomena of Light and
+Radiant Heat, A Course of Lectures Delivered in Columbia Univ., New York, in March and
+April 1906, 2nd edition (Teubner, Leipzig, 1916).
+M. Abraham, Theorie der Elektrizität: ElektromagnetischeTheorie der Strahlung, (Teubner,
+Leipzig, 1905).
+P. A. M. Dirac, Proc. Roy Soc. A 167, 148 (1938).
+J. Larmor, Phil. Trans. Roy. Soc. London A, 190, 205 (1897).
+J. D. Jackson, Classical Electro-dynamics, 3rd Ed. (John Wiley & Sons, New York, 1998).
+W. K. H. Panofski and M. Phillips, Classical Electricity and Magnetism, 1st edition (Addison Wesley Publishing Inc., Cambridge, 1961).
+Shinichiro Tomonaga, Prog. Theor. Phys. 1, 27 (1946).
+J. Schwinger, Phys. Rev. 74, 1439 (1948).
+R. Feynman, Phys. Rev. 76, 769 (1949).
+A. Liénard, L’Éclaiarge Électrique 16, 5-14, 53-59, 106-112 (1898).
+E. Wiechert, Annalen der Physik 309, 667 (1901).
+G. Farmelo, THE STRANGEST MAN The hidden Life of Paul Dirac, Quantum Genius, Ch. 21,
+(Faber and Faber, London, 2009).
+Proc. Roy Soc. A 194, 543 (1948).
+G. W. Ford and R. F. O’Connell, Phys. Lett. A 174, 182-184 (1993).
+L. D. Landau and E. M. Lifshitz, The Classical theory of fields (Pergamon, New York, 1994).
+F. A. Rohrlich, Phys. Lett. A 283, 276 (2001).
+I. V. Sokolov, J. Exp. Theo. Phys. 109, No.2 (2009).
+A. I. Nikishov, V. I. Ritus, Sov. Phys. JETP 19, 529(1964).
+A. A. Sokolov and I. M. Ternov, “Radiation from Relativistic Electrons”, American Institute of
+Physics (translation series, 1986).
+I. V. Sokolov, N. M. Naumova and J. A. Nees, Phys. Plasma 18, 093109 (2011).
+
+S274
+
+K. Homma et al.
+
+42
+
+45. K. Seto, S. Zhang, J. Koga, H. Nagatomo, M. Nakai and K. Mima, Prog. Theor. Exp. Phys 2014,
+043A01 (2014), also arXiv:1310.6646v3, (2013).
+46. K. Seto, Prog. Theor. Exp. Phys 2015, 023A01 (2015), also arXiv: 1405.7346v4 (2014).
+47. K. Seto, Prog. Theor. Exp. Phys 2015, 103A01 (2015), arXiv: 1502. 05319v4.
+48. D. M. Volkov, Z. Phys. 94, 250 (1935).
+49. G. Breit and J. A. Wheeler, Phys. Rev. 46, 1087 (1934).
+50. J. S. Schwinger, Phys. Rev. 82, 664 (1951).
+51. R. Schutzhold et al., Phys. Rev. Lett. 101, 130404 (2008).
+52. C. Bamber, S. J. Boege, T. Koffas et al, Phys. Rev. D 60, 092004 (1999)。
+53. J. Sauter, Phys. Rev. 82, p. 664 (1951).
+54. H. R. Reiss, J. Math. Phys. 3, 59 (1962).
+55. W.H. Furry, Phys.Rev, 81, 115, (1951).
+56. V. B. Berestetskii, E. M. Lifshits, and L. P. Pitaevskii, Quantum Electrodynamics (Pergamon,
+New York, 1982).
+57. N.B. Narozhnyi, Sov. Phys. JETP 27, 360 (1968).
+58. L. Ionela and D. Ursescu, Laser and Particle Beams 32, 89 (2014).
+59. N. Nakajima, Eur. Phys. J. Special Topics 223, 999–1016 (2014).
+60. A. Ilderton, Phys. Rev. Lett. 106, 020404 (2011).
+61. H. Hu, Carsten Müller and C. H. Keitel, Phys. Rev. Lett. 105, 080401 (2010).
+62. B. King and C. H. Keitel, New J. Phys. 14, 103002 (2012).
+
+
