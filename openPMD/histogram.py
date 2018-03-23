@@ -61,8 +61,7 @@ def energy_histogram(timestep=50000, root='.', prefix='h5_all', slice_size=2**20
         a, b = b, b + np.sum(m)
         logging.info('a = {}, b = {}'.format(a, b))
 
-        usq = ne.evaluate("(px**2 + py**2 + pz**2) / w**2")
-        gamma = np.sqrt(1 + usq * ratio**2)
+        gamma = ne.evaluate("sqrt(1 +(px**2 + py**2 + pz**2) / w**2 * ratio**2)")
 
         energy[a:b] = (gamma[m] - 1) * 0.511
         weights[a:b] = w[m]
