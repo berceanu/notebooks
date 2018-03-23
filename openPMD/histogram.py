@@ -5,6 +5,7 @@ import h5py
 import scipy.constants as const
 import numpy as np
 import logging
+import numexpr as ne
 
 
 def chunk_range(x1, x2, size):
@@ -14,6 +15,7 @@ def chunk_range(x1, x2, size):
         x1 = nxt
 
 
+#@profile
 def energy_histogram(timestep=50000, root='.', prefix='h5_all', slice_size=2**20,
                      part_species='e', n_bins=1024, bin_min=20, bin_max=150, mask='all'):
 
@@ -59,10 +61,10 @@ def energy_histogram(timestep=50000, root='.', prefix='h5_all', slice_size=2**20
         a, b = b, b + np.sum(m)
         logging.info('a = {}, b = {}'.format(a, b))
 
-        usq = (px[m]**2 + py[m]**2 + pz[m]**2) / w[m]**2
+        usq = ne.evaluate("(px**2 + py**2 + pz**2) / w**2")
         gamma = np.sqrt(1 + usq * ratio**2)
 
-        energy[a:b] = (gamma - 1) * 0.511
+        energy[a:b] = (gamma[m] - 1) * 0.511
         weights[a:b] = w[m]
 
     h5_file.close()
