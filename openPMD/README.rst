@@ -1,19 +1,18 @@
-To profile the code, after 
+To profile the code, after::
 
-sudo apt install kcachegrind
-pip install pyprof2calltree
+    sudo apt install kcachegrind
+    pip install pyprof2calltree
 
-do
+do::
 
-python prof_histogram.py
-pyprof2calltree -i stats.prof -k
-
-
+    python prof_histogram.py
+    pyprof2calltree -i stats.prof -k
 
 
-conda install pytest-benchmark mock 
 
-To test_ and bechmark_ run ``pytest`` in this folder.
+To test_ and bechmark_ run ``pytest`` in this folder, after::
+    conda install pytest-benchmark mock 
 
 .. _test: https://docs.pytest.org/en/latest
+
 .. _benchmark: https://pypi.python.org/pypi/pytest-benchmark
