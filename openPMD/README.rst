@@ -10,9 +10,6 @@ do::
 
 
 
-To test_ and bechmark_ run ``pytest`` in this folder, after::
+To `test <https://docs.pytest.org/en/latest>`_ and `bechmark <https://pypi.python.org/pypi/pytest-benchmark>`_ run ``pytest`` in this folder, after::
+
     conda install pytest-benchmark mock 
-
-.. _test: https://docs.pytest.org/en/latest
-
-.. _benchmark: https://pypi.python.org/pypi/pytest-benchmark
