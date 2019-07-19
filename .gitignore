@@ -11,3 +11,5 @@ data
 *.rst
 fortran-code
 tags
+
+openPMD/__pycache__/
